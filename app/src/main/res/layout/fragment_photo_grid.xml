@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}">
+
+    <GridView
+        android:layout_above="@+id/mBottom"
+        android:id="@+id/mediaGrid"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clipToPadding="false"
+        android:drawSelectorOnTop="true"
+        android:gravity="center_horizontal"
+        android:stackFromBottom="false"
+        android:transcriptMode="disabled" />
+
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="center"
+        android:text="@string/st_nothing_found"
+        android:textColor="@color/grey_holo"
+        android:textSize="19sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp" />
+
+    <ProgressBar
+        android:id="@+id/loading"
+        style="@style/Widget.Sherlock.Light.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+
+    <View
+        android:background="@color/abs__bright_foreground_disabled_holo_dark"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="64dp"
+        android:layout_alignParentBottom="true" />
+
+    <FrameLayout
+        android:id="@+id/mBottom"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/imgBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="@string/st_touch_photos"
+                android:textSize="22sp"
+                android:padding="8sp"
+                android:gravity="left|center_vertical"
+                android:layout_toLeftOf="@+id/image_count"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/image_count"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_photo_empty"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:layout_gravity="right|center_vertical" />
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/buttonMakeCollage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Make collage!"
+            android:textSize="22sp" />
+    </FrameLayout>
+</RelativeLayout>

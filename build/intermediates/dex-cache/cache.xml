@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\classes-39a3bbdf10585ac45fd47eba544acd7aec19a56f.jar"
+        jar="C:\Users\1\AndroidStudioProjects\CollageApp\build\intermediates\exploded-aar\com.actionbarsherlock\actionbarsherlock\4.4.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="af64527b748983a75de9c0756e9768b56b240a49"/>
+    <item
+        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\android-support-v4-51b849bcd0bd68c05e13c47f61ce59221d2dd6af.jar"
+        jar="C:\Users\1\AndroidStudioProjects\CollageApp\app\libs\android-support-v4.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="ded9acc6a9792b8f1afc470f0c9cd36d178914cd"/>
+
+</pre-dex-items>
