@@ -30,9 +30,15 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         view.findViewById(R.id.buttonMyBestPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonMyPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchUsersPhotos).setOnClickListener(this);
+        view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
+        view.findViewById(R.id.buttonSearchNear).setOnClickListener(this);
+        goneView(view.findViewById(R.id.buttonSearchNear));
+        view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
         InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
+        previewView.setEmptyDrawable(R.drawable.ic_action_person);
         previewView.requestAvatar();
+
         ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
     }
 
@@ -50,6 +56,16 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
             case R.id.buttonSearchUsersPhotos:
                 getRootController().openFragmentSearchUserByNick();
                 break;
+            case R.id.buttonSearchFeed:
+                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
+                        application.getAccount().getMe());
+                break;
+            case R.id.buttonSearchNear:
+                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_NEAR,
+                        application.getAccount().getMe());
+                break;
+//
+
         }
 
     }
