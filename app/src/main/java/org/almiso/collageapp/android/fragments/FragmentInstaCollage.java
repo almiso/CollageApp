@@ -1,20 +1,28 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -73,7 +81,6 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
     private Bitmap bitmap2;
     private Bitmap bitmap3;
     private Bitmap bitmap4;
-
 
     private Bitmap resultPhoto;
 
@@ -226,17 +233,6 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
 
                     try {
 
-//                        final Bitmap res = Bitmap
-//                                .createBitmap(PreviewConfig.MEDIA_PREVIEW, PreviewConfig.MEDIA_PREVIEW,
-//                                Bitmap.Config.ARGB_8888);
-//                        final Bitmap res = Optimizer.optimize(data);
-//                        Bitmap fullImageCached = Bitmap.
-//                                createBitmap(ApiUtils.MAX_SIZE / 2, ApiUtils.MAX_SIZE / 2,
-//                                Bitmap.Config.ARGB_8888);
-//                        Optimizer.scaleToFill(fullImageCached, getResources().getDisplayMetrics().widthPixels,
-//                                getResources().getDisplayMetrics().widthPixels, res);
-
-
                         final Bitmap res = Optimizer.optimize(data);
                         if (res == null) {
                             throw new Exception("unable to load image");
@@ -290,38 +286,61 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
 
     private void updateGlobalPreview() {
         if (complited1 && complited2 && complited3 && complited4) {
-            Logger.d(TAG, "Ready");
-            goneView(preview1);
-            goneView(preview2);
-            goneView(preview3);
-            goneView(preview4);
             if (bitmap1 != null && bitmap2 != null && bitmap3 != null && bitmap4 != null) {
-                resultPhoto = combineImages(bitmap1, bitmap2, bitmap3, bitmap4);
-                if (resultPhoto != null) {
 
+                LayoutInflater inflater = (LayoutInflater) application.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final View view = inflater.inflate(R.layout.dialog_add_text_on_photo, null);
 
-                    DisplayMetrics metrics = getResources().getDisplayMetrics();
-                    int width = metrics.widthPixels;
+                AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                        .setView(view)
+                        .setTitle(R.string.st_photo)
+                        .setPositiveButton(R.string.st_add, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                EditText edPhotoText = (EditText) view.findViewById(R.id.edPhotoText);
+                                String text = edPhotoText.getText().toString().trim();
+                                makeCollage(text);
+                            }
+                        }).setNegativeButton(R.string.st_cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                makeCollage("");
+                            }
+                        }).create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
+                dialog.show();
 
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) preview1.getLayoutParams();
-                    layoutParams.height = width;
-                    layoutParams.width = width;
-                    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-
-                    image.setLayoutParams(layoutParams);
-
-                    image.setImageBitmap(resultPhoto);
-                    showView(image);
-                    shareImage.setEnabled(true);
-                }
 
             }
         }
     }
 
-    private Bitmap combineImages(Bitmap bm1, Bitmap bm2, Bitmap bm3, Bitmap bm4) {
-        // can add a 3rd parameter 'String loc' if you want to save the new
-        // image - left some code to do that at the bottom
+
+    private void makeCollage(String text) {
+        goneView(preview1);
+        goneView(preview2);
+        goneView(preview3);
+        goneView(preview4);
+        resultPhoto = combineImages(bitmap1, bitmap2, bitmap3, bitmap4, text);
+        if (resultPhoto != null) {
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
+            int width = metrics.widthPixels;
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) preview1.getLayoutParams();
+            layoutParams.height = width;
+            layoutParams.width = width;
+            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
+            image.setLayoutParams(layoutParams);
+
+            image.setImageBitmap(resultPhoto);
+            showView(image);
+            shareImage.setEnabled(true);
+        }
+    }
+
+    private Bitmap combineImages(Bitmap bm1, Bitmap bm2, Bitmap bm3, Bitmap bm4, String text) {
         Bitmap image = null;
 
         image = Bitmap.createBitmap(getResources().getDisplayMetrics().widthPixels,
@@ -331,26 +350,38 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
         float edge = getResources().getDisplayMetrics().widthPixels / 2;
 
         Canvas canvas = new Canvas(image);
+        canvas.drawBitmap(bm1, null, new RectF(0f, 0f, edge, edge), null);
+        canvas.drawBitmap(bm2, null, new RectF(edge, 0f, edge * 2, edge), null);
+        canvas.drawBitmap(bm3, null, new RectF(0f, edge, edge, edge * 2), null);
+        canvas.drawBitmap(bm4, null, new RectF(edge, edge, edge * 2, edge * 2), null);
+        if (!TextUtils.isEmpty(text)) {
 
-        Paint paint = new Paint();
-        paint.setAlpha(255);
+            Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+            paint.setColor(Color.WHITE);
+            paint.setTextSize(getSp(28f));
+            paint.setStyle(Paint.Style.FILL);
+            paint.setShadowLayer(10f, 10f, 10f, Color.BLACK);
+            paint.setTypeface(Typeface.SERIF);
 
 
-        canvas.drawBitmap(bm1, null, new RectF(0f, 0f, edge, edge), paint);
-        canvas.drawBitmap(bm2, null, new RectF(edge, 0f, edge * 2, edge), paint);
-        canvas.drawBitmap(bm3, null, new RectF(0f, edge, edge, edge * 2), paint);
-        canvas.drawBitmap(bm4, null, new RectF(edge, edge, edge * 2, edge * 2), paint);
+            Rect rectText = new Rect();
+            paint.getTextBounds(text, 0, text.length(), rectText);
+            int x = 0;
+            Logger.d(TAG, "widthPixels = " + getResources().getDisplayMetrics().widthPixels);
+            Logger.d(TAG, "text.length() = " + text.length());
+            Logger.d(TAG, "image.getWidth() = " + image.getWidth());
 
-        // this is an extra bit I added, just incase you want to save the new
-        // image somewhere and then return the location
-        /*
-         * String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
-		 *
-		 * OutputStream os = null; try { os = new FileOutputStream(loc +
-		 * tmpImg); cs.compress(CompressFormat.PNG, 100, os); }
-		 * catch(IOException e) { Log.e("combineImages",
-		 * "problem combining images", e); }
-		 */
+            Logger.d(TAG, "rectText.width() = " + rectText.width());
+            if (getResources().getDisplayMetrics().widthPixels > text.length()) {
+                x = (image.getWidth() / 2) - (rectText.width() / 2);
+            }
+
+
+            Logger.d(TAG, "x = " + x);
+            canvas.drawText(text, x, image.getHeight() - rectText.height() * 2, paint);
+
+
+        }
 
         return image;
     }
