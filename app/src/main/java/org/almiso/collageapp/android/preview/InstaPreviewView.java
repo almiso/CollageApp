@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
+import org.almiso.collageapp.android.core.model.InstaUser;
 
 /**
  * Created by almiso on 10.06.2014.
@@ -37,7 +38,16 @@ public class InstaPreviewView extends BaseView<InstaMediaLoader> {
 
     public void requestAvatar() {
         String avatarUrl = application.getAccount().getProfilePictureUrl();
-        InstaSearchResult searchResult = new InstaSearchResult("", 0, "", 0, avatarUrl, avatarUrl, avatarUrl);
+        InstaSearchResult searchResult = new InstaSearchResult("", 0, "image", 0, avatarUrl, avatarUrl, avatarUrl);
+        this.searchResult = searchResult;
+        requestBind();
+    }
+
+    public void requestUserAvatar(InstaUser user) {
+        InstaSearchResult searchResult = new InstaSearchResult("", 0, "image", 0,
+                user.getProfile_picture_url(),
+                user.getProfile_picture_url(),
+                user.getProfile_picture_url());
         this.searchResult = searchResult;
         requestBind();
     }

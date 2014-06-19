@@ -10,9 +10,9 @@ public class ApiUtils {
     private static CollageApplication application;
 
     //Base URLs. Need to be change.
-    public static String PATTERN_CLIENT_ID = "7c3fa5e4f18b41f4aac621e8c0f35f3f";
-    public static String PATTERN_CLIENT_SECRET = "7b618023458f4378b7ee51ab42d9792a";
-    public static String CALLBACK_URL = "https://github.com/almiso/CollageApp";
+    public static String PATTERN_CLIENT_ID = "PLEASE USE YOUR OWN CLIENT_ID";
+    public static String PATTERN_CLIENT_SECRET = "PLEASE USE YOUR OWN CLIENT_SECRET";
+    public static String CALLBACK_URL = "PLEASE USE YOUR OWN CALLBACK_URL";
 
 
     //Private Instagram URLs
@@ -33,7 +33,7 @@ public class ApiUtils {
 
     public static String PATTERN_MY_BEST_PHOTOS = PATTERN_API + "users/self/media/liked?";
     public static String PATTERN_USER = PATTERN_API + "users/";
-
+    public static String PATTERN_LOCATION = PATTERN_API + "locations/";
     public static int MAX_SIZE;
 
 

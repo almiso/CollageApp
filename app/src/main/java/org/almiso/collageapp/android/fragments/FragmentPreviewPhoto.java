@@ -39,6 +39,7 @@ public class FragmentPreviewPhoto extends CollageFragment {
     private ProgressBar progressBar;
 
     private boolean wasLoaded = false;
+    private boolean wasSaved = false;
     private Bitmap savingPhoto;
 
     @Override
@@ -140,7 +141,13 @@ public class FragmentPreviewPhoto extends CollageFragment {
                 return true;
             case R.id.ic_save:
                 if (wasLoaded) {
-                    saveImage(savingPhoto);
+                    if (!wasSaved) {
+                        wasSaved = true;
+                        saveImage(savingPhoto);
+                    } else {
+                        Toast.makeText(getActivity(), R.string.st_photo_was_saved, Toast.LENGTH_LONG)
+                                .show();
+                    }
                 } else {
                     Toast.makeText(getActivity(), R.string.st_photo_not_loaded, Toast.LENGTH_LONG)
                             .show();

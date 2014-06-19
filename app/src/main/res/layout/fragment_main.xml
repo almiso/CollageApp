@@ -16,11 +16,23 @@
             android:paddingBottom="16dp"
             android:orientation="horizontal">
 
-            <org.almiso.collageapp.android.preview.InstaPreviewView
-                android:id="@+id/avatar"
+            <RelativeLayout
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:background="@color/grey_holo" />
+                android:background="@color/grey_holo">
+
+                <org.almiso.collageapp.android.preview.InstaPreviewView
+                    android:id="@+id/avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/avatarTouchLayer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/st_selector_avatar" />
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/name"
@@ -53,5 +65,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/st_search_user_photos" />
+
+        <Button
+            android:id="@+id/buttonSearchFeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/st_search_feed" />
+        <Button
+            android:id="@+id/buttonSearchNear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/st_search_near" />
     </LinearLayout>
 </RelativeLayout>

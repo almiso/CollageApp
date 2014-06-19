@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item
-    android:id="@+id/ic_user_prof"
-    android:icon="@drawable/ic_action_person"
-    android:title="@string/st_user_name_default"
-    android:showAsAction="always|collapseActionView" />
-
+    <item
+        android:id="@+id/userAvatar"
+        android:title="@string/st_user_name_default"
+        android:actionLayout="@layout/user_avatar_small"
+        android:showAsAction="always" />
 </menu>

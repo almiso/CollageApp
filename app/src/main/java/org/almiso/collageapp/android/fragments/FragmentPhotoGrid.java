@@ -29,7 +29,6 @@ import org.almiso.collageapp.android.core.ExceptionSourceListener;
 import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
-import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.preview.PreviewConfig;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
@@ -46,6 +45,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     public static final int ACTION_SEARCH_MY_PHOTOS = 1;
     public static final int ACTION_SEARCH_MY_BEST_PHOTOS = 2;
     public static final int ACTION_SEARCH_USER_PHOTOS = 3;
+    public static final int ACTION_SEARCH_FEED = 4;
+    public static final int ACTION_SEARCH_NEAR= 5;
 
     /*
         Fields
@@ -345,8 +346,11 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
                     getRootController().openCollagePreview(selectedPhotos);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(application, application.getString(R.string.st_not_enougth_photos), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(application, application.getString(R.string.st_not_enough_photos), Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.avatarTouchLayer:
+                Toast.makeText(application, application.getString(R.string.st_user_name_default), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -431,9 +435,18 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
         if (user != null) {
             getSherlockActivity().getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
+            MenuItem avatarItem = menu.findItem(R.id.userAvatar);
+
+            InstaPreviewView imageView = (InstaPreviewView) avatarItem.getActionView().findViewById(R.id.image);
+            imageView.setEmptyDrawable(R.drawable.ic_action_person);
+            imageView.requestUserAvatar(user);
+
+            View touchLayer = avatarItem.getActionView().findViewById(R.id.avatarTouchLayer);
+            touchLayer.setOnClickListener(this);
         } else {
             getSherlockActivity().getSupportActionBar().setTitle(R.string.st_user_name_default);
         }
+
 
     }
 

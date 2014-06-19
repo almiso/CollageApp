@@ -9,12 +9,16 @@
 
     <string name="st_repeat">Repeat</string>
     <string name="st_cancel">Cancel</string>
+    <string name="st_add">Add</string>
 
     <string name="st_sing_in">Sing in</string>
 
     <string name="st_search_my_photos">Search my photos</string>
     <string name="st_search_my_best_photos">Search my best photos</string>
     <string name="st_search_user_photos">Search for someone photos</string>
+    <string name="st_search_feed">Search in feed</string>
+    <string name="st_search_near">Search near</string>
+
     <string name="st_settings">Settings</string>
     <string name="st_account">Account</string>
     <string name="st_exit">Log out</string>
@@ -32,6 +36,7 @@
     <string name="st_error_loading">An error occurred while loading data</string>
     <string name="st_user_private_acc">You cannot view this resource</string>
     <string name="st_no_photos">This user has not added any photos yet</string>
+    <string name="st_error_get_location">An error occurred when determining your location</string>
 
     <string name="st_close">Close</string>
     <string name="st_progress_title">Please wait</string>
@@ -49,7 +54,9 @@
     <string name="st_photo_not_loaded">The photo is not loaded yet</string>
     <string name="st_photo_saved">The photo was saved to gallery</string>
     <string name="st_share_using">Share photo using</string>
-    <string name="st_not_enougth_photos">Must be 4 photos</string>
-
+    <string name="st_not_enough_photos">Must be 4 photos</string>
+    <string name="st_photo_was_saved">You have already saved this photo</string>
+    <string name="st_add_photo_text">Would you like to add some text on photo?</string>
+    <string name="st_enter_text_hint">Enter text</string>
 
 </resources>
