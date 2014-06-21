@@ -7,6 +7,7 @@ import android.location.LocationManager;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageApplication;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
+import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentPhotoGrid;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.ui.source.ViewSource;
@@ -91,7 +92,7 @@ public class InstaSearchSource {
     private String prepareUrl() {
         String url = "";
         if (nextUrl == null || nextUrl.equals("")) {
-            if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_MY_BEST_PHOTOS) {
+            if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_MY_LIKED_PHOTOS) {
                 url = ApiUtils.PATTERN_MY_BEST_PHOTOS + "count=" + PHOTO_COUNT + "&access_token=" +
                         application.getAuthKernel().getAccount().getAccessToken();
             } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_FEED) {
@@ -251,8 +252,19 @@ public class InstaSearchSource {
             String thumbnailUrl = allPhotos.getJSONObject("thumbnail").getString("url");
             String standardResolutionUrl = allPhotos.getJSONObject("standard_resolution").getString("url");
 
+            JSONObject mUser = record.getJSONObject("user");
+
+            InstaUser user = new InstaUser();
+            user.setFull_name(mUser.getString("username"));
+            user.setBio(mUser.getString("bio"));
+            user.setWebsite(mUser.getString("website"));
+            user.setProfile_picture_url(mUser.getString("profile_picture"));
+            user.setFull_name(mUser.getString("full_name"));
+            user.setId(Long.parseLong(mUser.getString("id")));
+
+
             InstaSearchResult entry = new InstaSearchResult(id, index, "type", likes, lowResolutionUrl, thumbnailUrl,
-                    standardResolutionUrl);
+                    standardResolutionUrl, user);
             if ("image".equalsIgnoreCase(type)) {
                 arrayList.add(entry);
             }

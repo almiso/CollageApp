@@ -10,11 +10,12 @@
     <string name="st_repeat">Repeat</string>
     <string name="st_cancel">Cancel</string>
     <string name="st_add">Add</string>
+    <string name="st_more">More</string>
 
     <string name="st_sing_in">Sing in</string>
 
     <string name="st_search_my_photos">Search my photos</string>
-    <string name="st_search_my_best_photos">Search my best photos</string>
+    <string name="st_search_my_liked_photos">Search my liked photos</string>
     <string name="st_search_user_photos">Search for someone photos</string>
     <string name="st_search_feed">Search in feed</string>
     <string name="st_search_near">Search near</string>
@@ -58,5 +59,9 @@
     <string name="st_photo_was_saved">You have already saved this photo</string>
     <string name="st_add_photo_text">Would you like to add some text on photo?</string>
     <string name="st_enter_text_hint">Enter text</string>
+
+    <string name="st_user_profile">Profile</string>
+    <string name="st_follows">Follows</string>
+    <string name="st_followed_by">Followed by</string>
 
 </resources>

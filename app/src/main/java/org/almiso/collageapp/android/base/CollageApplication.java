@@ -60,4 +60,8 @@ public class CollageApplication extends Application {
     public boolean isLoggedIn() {
         return kernel.getAuthKernel().isLoggedIn();
     }
+
+    public long getMyId() {
+        return kernel.getAuthKernel().getAccount().getMe().getId();
+    }
 }

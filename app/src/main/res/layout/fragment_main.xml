@@ -39,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
+                android:layout_marginLeft="8sp"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:padding="4sp" />
@@ -52,11 +53,11 @@
             android:text="@string/st_search_my_photos" />
 
         <Button
-            android:id="@+id/buttonMyBestPhotos"
+            android:id="@+id/buttonMyLikedPhotos"
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_my_best_photos" />
+            android:text="@string/st_search_my_liked_photos" />
 
 
         <Button
@@ -72,11 +73,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/st_search_feed" />
+
         <Button
             android:id="@+id/buttonSearchNear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/st_search_near" />
+
+        <Button
+            android:id="@+id/buttonMyFollows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/st_follows" />
+
+        <Button
+            android:id="@+id/buttonMyFollowedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/st_followed_by" />
     </LinearLayout>
 </RelativeLayout>

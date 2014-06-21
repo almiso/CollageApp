@@ -5,6 +5,8 @@ import android.util.Log;
 
 import org.almiso.collageapp.android.base.CollageApplication;
 import org.almiso.collageapp.android.core.model.InstaUser;
+import org.almiso.collageapp.android.core.model.InstaUserDependence;
+import org.almiso.collageapp.android.fragments.FragmentUserList;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.tasks.CollageException;
 import org.almiso.collageapp.android.util.ApiUtils;
@@ -21,6 +23,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -34,8 +37,9 @@ public class Api {
 
     private static final String PATTERN_API = "https://api.instagram.com/v1/";
     private static final String PATTERN_SEARCH = PATTERN_API + "users/search?q=";
+    public static final String PATTERN_SEARCH_USER = PATTERN_API + "users/";
     private static final String PATTERN_COUNT = "&count=";
-    private static final String PATTERN_ACCESS_TOKEN = "&access_token=46461385.f59def8.42df3b82464943218291370ab65eba76";
+    private static final String PATTERN_ACCESS_TOKEN = "&access_token=";//46461385.f59def8.42df3b82464943218291370ab65eba76";
 
 
     public Api(CollageApplication application) {
@@ -50,7 +54,8 @@ public class Api {
     public synchronized InstaUser getUser(String userNick, int count) throws CollageException {
         InstaUser user;
         long mUserId = -1;
-        String mUrl = PATTERN_SEARCH + userNick + PATTERN_COUNT + count + PATTERN_ACCESS_TOKEN;
+        String mUrl = PATTERN_SEARCH + userNick + PATTERN_COUNT + count + PATTERN_ACCESS_TOKEN +
+                application.getAuthKernel().getAccount().getAccessToken();
 
         String data = null;
         HttpURLConnection conn = null;
@@ -101,6 +106,10 @@ public class Api {
             user.setFull_name(jObject.getString("full_name"));
             user.setId(Long.parseLong(jObject.getString("id")));
 
+//            JSONObject userProfile = jObject.getJSONObject("counts");
+//            user.setMediaCount(Long.parseLong(userProfile.getString("media")));
+//            user.setFollowsCount(Long.parseLong(userProfile.getString("follows")));
+//            user.setFollowedByCount(Long.parseLong(userProfile.getString("followed_by")));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -153,5 +162,132 @@ public class Api {
         return result;
     }
 
+    public synchronized InstaUserDependence getUserDependence(long userId) throws CollageException {
+        InstaUserDependence data = null;
 
+        String mUrl = PATTERN_SEARCH_USER + userId + "/?access_token=" +
+                application.getAuthKernel().getAccount().getAccessToken();
+
+        HttpURLConnection conn = null;
+        String result = null;
+        try {
+            conn = (HttpURLConnection) new URL(mUrl).openConnection();
+            conn.setDoInput(true);
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            conn.disconnect();
+            conn = null;
+            result = sb.toString();
+        } catch (MalformedURLException ex) {
+            Log.e(TAG, "Url parsing was failed: " + mUrl);
+            throw new CollageException(3, "Error during getUserDependence");
+        } catch (IOException ex) {
+            Log.d(TAG, mUrl + " does not exists");
+            throw new CollageException(4, "Error during getUserDependence");
+        } catch (OutOfMemoryError e) {
+            Log.w(TAG, "Out of memory!!!");
+            throw new CollageException(3, "Error during getUserDependence");
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+
+        JSONArray jArray;
+        try {
+            JSONObject jObject = (new JSONObject(result)).getJSONObject("data");
+            JSONObject res = jObject.getJSONObject("counts");
+
+            data = new InstaUserDependence(userId,
+                    Long.parseLong(res.getString("media")),
+                    Long.parseLong(res.getString("follows")),
+                    Long.parseLong(res.getString("followed_by")));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new CollageException(3, "Error during getUserDependence");
+        }
+
+        return data;
+    }
+
+    public ArrayList<InstaUser> getFriends(long userId, int action) throws CollageException {
+        ArrayList<InstaUser> data = null;
+
+        String mUrl = PATTERN_SEARCH_USER + userId + getFollowType(action) + "access_token=" +
+                application.getAuthKernel().getAccount().getAccessToken();
+
+        HttpURLConnection conn = null;
+        String result = null;
+        try {
+            conn = (HttpURLConnection) new URL(mUrl).openConnection();
+            conn.setDoInput(true);
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            conn.disconnect();
+            conn = null;
+            result = sb.toString();
+        } catch (MalformedURLException ex) {
+            Log.e(TAG, "Url parsing was failed: " + mUrl);
+            throw new CollageException(3, "Error during getUserDependence");
+        } catch (IOException ex) {
+            Log.d(TAG, mUrl + " does not exists");
+            throw new CollageException(3, "Error during getUserDependence");
+        } catch (OutOfMemoryError e) {
+            Log.w(TAG, "Out of memory!!!");
+            throw new CollageException(3, "Error during getUserDependence");
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+
+        JSONArray jArray;
+
+        try {
+            jArray = (new JSONObject(result)).getJSONArray("data");
+            if (jArray.length() == 0) {
+                Logger.d(TAG, "jArray.length() == 0");
+                throw new CollageException(2, "Error during getUserId");
+            }
+            data = new ArrayList<InstaUser>();
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject jObject = jArray.getJSONObject(i);
+                InstaUser user = new InstaUser();
+                user.setFull_name(jObject.getString("username"));
+                user.setBio(jObject.getString("bio"));
+                user.setWebsite(jObject.getString("website"));
+                user.setProfile_picture_url(jObject.getString("profile_picture"));
+                user.setFull_name(jObject.getString("full_name"));
+                user.setId(Long.parseLong(jObject.getString("id")));
+                data.add(user);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new CollageException(3, "Error during getUserId");
+        }
+
+
+        return data;
+    }
+
+    private String getFollowType(int action) {
+        if (action == FragmentUserList.ACTION_FOLLOWS) {
+            return "/follows?";
+        } else if (action == FragmentUserList.ACTION_FOLLOWED_BY) {
+            return "/followed-by?";
+        } else {
+            return "/follows?";
+        }
+    }
 }

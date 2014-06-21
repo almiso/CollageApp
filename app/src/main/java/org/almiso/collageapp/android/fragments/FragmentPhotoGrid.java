@@ -43,16 +43,17 @@ import java.util.LinkedHashMap;
 public class FragmentPhotoGrid extends CollageFragment implements View.OnClickListener, ViewSourceListener, ExceptionSourceListener {
 
     public static final int ACTION_SEARCH_MY_PHOTOS = 1;
-    public static final int ACTION_SEARCH_MY_BEST_PHOTOS = 2;
+    public static final int ACTION_SEARCH_MY_LIKED_PHOTOS = 2;
     public static final int ACTION_SEARCH_USER_PHOTOS = 3;
     public static final int ACTION_SEARCH_FEED = 4;
-    public static final int ACTION_SEARCH_NEAR= 5;
+    public static final int ACTION_SEARCH_NEAR = 5;
 
     /*
         Fields
      */
     private InstaUser user;
     private int ACTION;
+    private boolean canOpenProf;
     private LinkedHashMap<Integer, InstaSearchResult> selectedPhotos;
     private ArrayList<InstaSearchResult> searchResults = new ArrayList<InstaSearchResult>();
     private BaseAdapter adapter;
@@ -107,6 +108,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             Object mUser = (Object) savedInstanceState.getSerializable("user");
             user = (InstaUser) mUser;
             ACTION = savedInstanceState.getInt("action");
+            canOpenProf = savedInstanceState.getBoolean("canOpenProf");
 
             Object select = (Object) savedInstanceState.getSerializable("selectedPhotos");
             selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) select;
@@ -119,6 +121,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         outState.putSerializable("user", user);
         outState.putSerializable("selectedPhotos", selectedPhotos);
         outState.putInt("action", ACTION);
+        outState.putBoolean("canOpenProf", canOpenProf);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             Object mUser = (Object) savedInstanceState.getSerializable("user");
             user = (InstaUser) mUser;
             ACTION = savedInstanceState.getInt("action");
+            canOpenProf = savedInstanceState.getBoolean("canOpenProf");
             Object select = (Object) savedInstanceState.getSerializable("selectedPhotos");
             selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) select;
         } else {
@@ -134,9 +138,11 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         if (getArguments() != null) {
             user = (InstaUser) getArguments().getSerializable("user");
             ACTION = getArguments().getInt("action");
+            canOpenProf = getArguments().getBoolean("canOpenProf");
         } else {
             user = null;
             ACTION = ACTION_SEARCH_MY_PHOTOS;
+            canOpenProf = false;
         }
         View view = inflater.inflate(R.layout.fragment_photo_grid, null);
         if (user == null) {
@@ -161,8 +167,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     }
 
     private void setUpView(View view) {
-        instaSearchSource = application.getDataSourceKernel().getInstaSearchSource();
-
+        instaSearchSource = application.getDataSourceKernel().getInstaSearchSource(user.getId() + ACTION);
+//        instaSearchSource = new InstaSearchSource(application);
         image_count = (ImageView) view.findViewById(R.id.image_count);
 
         buttonMakeCollage = (Button) view.findViewById(R.id.buttonMakeCollage);
@@ -172,6 +178,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         gridView = (GridView) view.findViewById(R.id.mediaGrid);
         progress = view.findViewById(R.id.loading);
         empty = (TextView) view.findViewById(R.id.empty);
+        goneView(empty, false);
+        goneView(gridView, false);
         imgBottom = (RelativeLayout) view.findViewById(R.id.imgBottom);
 
         gridView.setVisibility(View.GONE);
@@ -208,7 +216,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final InstaSearchResult result = (InstaSearchResult) parent.getItemAtPosition(position);
-                getRootController().openPreview(result);
+                boolean canOpenProfile = ACTION == ACTION_SEARCH_FEED;
+                getRootController().openPreview(result, canOpenProfile);
                 return false;
             }
         });
@@ -350,7 +359,9 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
                 }
                 break;
             case R.id.avatarTouchLayer:
-                Toast.makeText(application, application.getString(R.string.st_user_name_default), Toast.LENGTH_SHORT).show();
+                if (user != null && canOpenProf && (user.getId() != application.getMyId())) {
+                    getRootController().openFragmentUserProfile(user);
+                }
                 break;
         }
     }
@@ -382,11 +393,10 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     @Override
     public void onSourceStateChanged() {
         if (instaSearchSource.getViewSource() != null) {
-
             if (instaSearchSource.getViewSource().getItemsCount() == 0) {
                 if (instaSearchSource.getViewSource().getState() == ViewSourceState.IN_PROGRESS) {
                     goneView(gridView);
-                    goneView(empty);
+                    goneView(empty, false);
                     showView(progress);
                 } else {
                     showView(empty);

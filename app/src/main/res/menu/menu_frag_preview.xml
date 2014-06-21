@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/ic_save"
-        android:title="@string/st_save_to_gall"
-        android:showAsAction="never" />
+        android:icon="@drawable/abs__ic_menu_moreoverflow_holo_dark"
+        android:title="@string/st_more"
+        android:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/ic_save"
+                android:title="@string/st_save_to_gall"
+                android:showAsAction="never" />
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/userAvatar"
+        android:title="@string/st_user_name_default"
+        android:actionLayout="@layout/user_avatar_small"
+        android:showAsAction="always" />
 
 </menu>

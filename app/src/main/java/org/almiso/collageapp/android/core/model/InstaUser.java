@@ -14,6 +14,7 @@ public class InstaUser implements Serializable {
     private String profile_picture_url;
     private String full_name;
 
+
     public InstaUser() {
     }
 
@@ -29,9 +30,9 @@ public class InstaUser implements Serializable {
     }
 
     public String getDisplayName() {
-        if(username != null && !username.equals(""))
+        if (username != null && !username.equals(""))
             return username;
-        else  if(full_name != null && !full_name.equals(""))
+        else if (full_name != null && !full_name.equals(""))
             return full_name;
         else return "User";
     }
@@ -84,4 +85,6 @@ public class InstaUser implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
+
+
 }

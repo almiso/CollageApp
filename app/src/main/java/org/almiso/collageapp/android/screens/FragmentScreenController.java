@@ -20,6 +20,8 @@ import org.almiso.collageapp.android.fragments.FragmentPhotoGrid;
 import org.almiso.collageapp.android.fragments.FragmentPreviewPhoto;
 import org.almiso.collageapp.android.fragments.FragmentSearchUserByNick;
 import org.almiso.collageapp.android.fragments.FragmentSettings;
+import org.almiso.collageapp.android.fragments.FragmentUserList;
+import org.almiso.collageapp.android.fragments.FragmentUserProfile;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -199,9 +201,10 @@ public class FragmentScreenController implements RootController {
     }
 
     @Override
-    public void openFragmentSearch(int action, InstaUser user) {
+    public void openFragmentSearch(int action, InstaUser user, boolean canOpenProf) {
         Bundle args = new Bundle();
         args.putInt("action", action);
+        args.putBoolean("canOpenProf", canOpenProf);
         args.putSerializable("user", user);
         FragmentPhotoGrid frag = new FragmentPhotoGrid();
         frag.setArguments(args);
@@ -209,8 +212,9 @@ public class FragmentScreenController implements RootController {
     }
 
     @Override
-    public void openPreview(InstaSearchResult result) {
+    public void openPreview(InstaSearchResult result, boolean canOpenProf) {
         Bundle args = new Bundle();
+        args.putBoolean("canOpenProf", canOpenProf);
         args.putSerializable("result", result);
         FragmentPreviewPhoto frag = new FragmentPreviewPhoto();
         frag.setArguments(args);
@@ -227,4 +231,22 @@ public class FragmentScreenController implements RootController {
         openScreen(frag);
     }
 
+    @Override
+    public void openFragmentUserProfile(InstaUser user) {
+        Bundle args = new Bundle();
+        args.putSerializable("user", user);
+        FragmentUserProfile frag = new FragmentUserProfile();
+        frag.setArguments(args);
+        openScreen(frag);
+    }
+
+    @Override
+    public void openFragmentFriendList(int action, InstaUser user) {
+        Bundle args = new Bundle();
+        args.putInt("action", action);
+        args.putSerializable("user", user);
+        FragmentUserList frag = new FragmentUserList();
+        frag.setArguments(args);
+        openScreen(frag);
+    }
 }

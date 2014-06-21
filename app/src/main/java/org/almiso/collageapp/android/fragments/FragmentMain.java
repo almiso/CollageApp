@@ -27,12 +27,16 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
     }
 
     private void setUpView(View view) {
-        view.findViewById(R.id.buttonMyBestPhotos).setOnClickListener(this);
+        view.findViewById(R.id.buttonMyLikedPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonMyPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchUsersPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchNear).setOnClickListener(this);
+        view.findViewById(R.id.buttonMyFollows).setOnClickListener(this);
+        view.findViewById(R.id.buttonMyFollowedBy).setOnClickListener(this);
+
         goneView(view.findViewById(R.id.buttonSearchNear));
+
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
         InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
@@ -47,23 +51,32 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.buttonMyPhotos:
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_PHOTOS,
-                        application.getAccount().getMe());
+                        application.getAccount().getMe(), false);
                 break;
-            case R.id.buttonMyBestPhotos:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_BEST_PHOTOS,
-                        application.getAccount().getMe());
+            case R.id.buttonMyLikedPhotos:
+                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_LIKED_PHOTOS,
+                        application.getAccount().getMe(), false);
                 break;
             case R.id.buttonSearchUsersPhotos:
                 getRootController().openFragmentSearchUserByNick();
                 break;
             case R.id.buttonSearchFeed:
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
-                        application.getAccount().getMe());
+                        application.getAccount().getMe(), false);
                 break;
             case R.id.buttonSearchNear:
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_NEAR,
+                        application.getAccount().getMe(), false);
+                break;
+            case R.id.buttonMyFollows:
+                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS,
                         application.getAccount().getMe());
                 break;
+            case R.id.buttonMyFollowedBy:
+                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY,
+                        application.getAccount().getMe());
+                break;
+
 //
 
         }

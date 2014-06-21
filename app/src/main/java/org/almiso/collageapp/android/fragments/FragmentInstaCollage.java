@@ -367,11 +367,6 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
             Rect rectText = new Rect();
             paint.getTextBounds(text, 0, text.length(), rectText);
             int x = 0;
-            Logger.d(TAG, "widthPixels = " + getResources().getDisplayMetrics().widthPixels);
-            Logger.d(TAG, "text.length() = " + text.length());
-            Logger.d(TAG, "image.getWidth() = " + image.getWidth());
-
-            Logger.d(TAG, "rectText.width() = " + rectText.width());
             if (getResources().getDisplayMetrics().widthPixels > text.length()) {
                 x = (image.getWidth() / 2) - (rectText.width() / 2);
             }

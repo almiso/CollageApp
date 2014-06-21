@@ -14,11 +14,12 @@ public class InstaSearchResult implements Serializable {
     private String lowResolutionUrl; // "images": "low_resolution":
     private String thumbnailUrl; // "images": "thumbnail":
     private String standardResolutionUrl; // "images": "standard_resolution":
+    private InstaUser author;
 
     private boolean isChecked;
 
     public InstaSearchResult(String id, int index, String type, long likes, String lowResolutionUrl,
-                             String thumbnailUrl, String standardResolutionUrl) {
+                             String thumbnailUrl, String standardResolutionUrl, InstaUser author) {
         this.id = id;
         this.index = index;
         this.type = type;
@@ -26,6 +27,7 @@ public class InstaSearchResult implements Serializable {
         this.lowResolutionUrl = lowResolutionUrl;
         this.thumbnailUrl = thumbnailUrl;
         this.standardResolutionUrl = standardResolutionUrl;
+        this.author = author;
     }
 
     public int getIndex() {
@@ -55,5 +57,10 @@ public class InstaSearchResult implements Serializable {
     public String getLowResolutionUrl() {
         return lowResolutionUrl;
     }
+
+    public InstaUser getAuthor() {
+        return author;
+    }
+
 
 }

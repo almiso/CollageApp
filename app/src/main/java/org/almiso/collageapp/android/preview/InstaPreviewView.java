@@ -38,7 +38,8 @@ public class InstaPreviewView extends BaseView<InstaMediaLoader> {
 
     public void requestAvatar() {
         String avatarUrl = application.getAccount().getProfilePictureUrl();
-        InstaSearchResult searchResult = new InstaSearchResult("", 0, "image", 0, avatarUrl, avatarUrl, avatarUrl);
+        InstaSearchResult searchResult = new InstaSearchResult("", 0, "image", 0,
+                avatarUrl, avatarUrl, avatarUrl, application.getAccount().getMe());
         this.searchResult = searchResult;
         requestBind();
     }
@@ -47,7 +48,7 @@ public class InstaPreviewView extends BaseView<InstaMediaLoader> {
         InstaSearchResult searchResult = new InstaSearchResult("", 0, "image", 0,
                 user.getProfile_picture_url(),
                 user.getProfile_picture_url(),
-                user.getProfile_picture_url());
+                user.getProfile_picture_url(), user);
         this.searchResult = searchResult;
         requestBind();
     }
