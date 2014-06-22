@@ -61,6 +61,7 @@
     <string name="st_enter_text_hint">Enter text</string>
 
     <string name="st_user_profile">Profile</string>
+    <string name="st_media">Media</string>
     <string name="st_follows">Follows</string>
     <string name="st_followed_by">Followed by</string>
 

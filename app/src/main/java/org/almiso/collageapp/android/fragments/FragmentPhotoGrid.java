@@ -29,6 +29,7 @@ import org.almiso.collageapp.android.core.ExceptionSourceListener;
 import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
+import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.preview.PreviewConfig;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
@@ -40,7 +41,8 @@ import java.util.LinkedHashMap;
 /**
  * Created by almiso on 07.06.2014.
  */
-public class FragmentPhotoGrid extends CollageFragment implements View.OnClickListener, ViewSourceListener, ExceptionSourceListener {
+public class FragmentPhotoGrid extends CollageFragment implements View.OnClickListener,
+        ViewSourceListener, ExceptionSourceListener {
 
     public static final int ACTION_SEARCH_MY_PHOTOS = 1;
     public static final int ACTION_SEARCH_MY_LIKED_PHOTOS = 2;
@@ -56,7 +58,6 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     private boolean canOpenProf;
     private LinkedHashMap<Integer, InstaSearchResult> selectedPhotos;
     private ArrayList<InstaSearchResult> searchResults = new ArrayList<InstaSearchResult>();
-    private BaseAdapter adapter;
     private InstaSearchSource instaSearchSource;
 
     /*
@@ -68,6 +69,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     private View progress;
     private TextView empty;
     private GridView gridView;
+    private BaseAdapter adapter;
 
     @Override
     public void onResume() {
@@ -89,6 +91,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
     public void onDestroy() {
         super.onDestroy();
         instaSearchSource.cancelQuery();
+        application.getDataSourceKernel().removeInstaSearchSource(user.getId() + ACTION);
     }
 
     @Override
@@ -132,6 +135,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             canOpenProf = savedInstanceState.getBoolean("canOpenProf");
             Object select = (Object) savedInstanceState.getSerializable("selectedPhotos");
             selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) select;
+
+            searchResults = (ArrayList<InstaSearchResult>) savedInstanceState.getSerializable("selectedPhotos");
         } else {
             selectedPhotos = new LinkedHashMap<Integer, InstaSearchResult>();
         }
@@ -154,7 +159,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             });
         } else {
             setUpView(view);
-            if (searchResults.size() < 1) {
+            if (instaSearchSource.getViewSource() == null) {
                 secureCallback(new Runnable() {
                     @Override
                     public void run() {
@@ -168,7 +173,8 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
 
     private void setUpView(View view) {
         instaSearchSource = application.getDataSourceKernel().getInstaSearchSource(user.getId() + ACTION);
-//        instaSearchSource = new InstaSearchSource(application);
+        Logger.d(TAG, "instaSearchSource is null = " + (instaSearchSource == null));
+        Logger.d(TAG, "instaSearchSource.getViewSource() is null = " + (instaSearchSource.getViewSource() == null));
         image_count = (ImageView) view.findViewById(R.id.image_count);
 
         buttonMakeCollage = (Button) view.findViewById(R.id.buttonMakeCollage);
@@ -348,49 +354,6 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
 
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonMakeCollage:
-                if (selectedPhotos.size() == 4) {
-                    getRootController().openCollagePreview(selectedPhotos);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(application, application.getString(R.string.st_not_enough_photos), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.avatarTouchLayer:
-                if (user != null && canOpenProf && (user.getId() != application.getMyId())) {
-                    getRootController().openFragmentUserProfile(user);
-                }
-                break;
-        }
-    }
-
-    private void updateBottomLayout() {
-        if (selectedPhotos.size() == 0) {
-            buttonMakeCollage.setVisibility(View.GONE);
-            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_1));
-            imgBottom.setVisibility(View.VISIBLE);
-        } else if (selectedPhotos.size() == 1) {
-            buttonMakeCollage.setVisibility(View.GONE);
-            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_2));
-            imgBottom.setVisibility(View.VISIBLE);
-        } else if (selectedPhotos.size() == 2) {
-            buttonMakeCollage.setVisibility(View.GONE);
-            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_3));
-            imgBottom.setVisibility(View.VISIBLE);
-        } else if (selectedPhotos.size() == 3) {
-            buttonMakeCollage.setVisibility(View.GONE);
-            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_4));
-            imgBottom.setVisibility(View.VISIBLE);
-        } else if (selectedPhotos.size() == 4) {
-            buttonMakeCollage.setVisibility(View.VISIBLE);
-            imgBottom.setVisibility(View.GONE);
-        }
-
-    }
-
-    @Override
     public void onSourceStateChanged() {
         if (instaSearchSource.getViewSource() != null) {
             if (instaSearchSource.getViewSource().getItemsCount() == 0) {
@@ -433,6 +396,49 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         showView(empty);
         goneView(gridView);
         goneView(progress);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonMakeCollage:
+                if (selectedPhotos.size() == 4) {
+                    getRootController().openCollagePreview(selectedPhotos);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(application, application.getString(R.string.st_not_enough_photos), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.avatarTouchLayer:
+                if (user != null && canOpenProf && (user.getId() != application.getMyId())) {
+                    getRootController().openFragmentUserProfile(user);
+                }
+                break;
+        }
+    }
+
+    private void updateBottomLayout() {
+        if (selectedPhotos.size() == 0) {
+            buttonMakeCollage.setVisibility(View.GONE);
+            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_1));
+            imgBottom.setVisibility(View.VISIBLE);
+        } else if (selectedPhotos.size() == 1) {
+            buttonMakeCollage.setVisibility(View.GONE);
+            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_2));
+            imgBottom.setVisibility(View.VISIBLE);
+        } else if (selectedPhotos.size() == 2) {
+            buttonMakeCollage.setVisibility(View.GONE);
+            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_3));
+            imgBottom.setVisibility(View.VISIBLE);
+        } else if (selectedPhotos.size() == 3) {
+            buttonMakeCollage.setVisibility(View.GONE);
+            image_count.setImageDrawable(getResources().getDrawable(R.drawable.ic_photo_4));
+            imgBottom.setVisibility(View.VISIBLE);
+        } else if (selectedPhotos.size() == 4) {
+            buttonMakeCollage.setVisibility(View.VISIBLE);
+            imgBottom.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

@@ -12,12 +12,31 @@ import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
+import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
 /**
  * Created by almiso on 13.06.2014.
  */
-public class FragmentMain extends CollageFragment implements View.OnClickListener {
+public class FragmentMain extends CollageFragment implements View.OnClickListener, UserDependenceReceiver {
+
+    private InstaUserDependence mDependence;
+
+    //Controls
+    private TextView mediaCount;
+    private TextView followsCount;
+    private TextView followedByCount;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mDependence == null) {
+            loadDependence();
+        }
+        updateDataLayout();
+    }
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,23 +46,22 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
     }
 
     private void setUpView(View view) {
-        view.findViewById(R.id.buttonMyLikedPhotos).setOnClickListener(this);
+        mediaCount = (TextView) view.findViewById(R.id.mediaCount);
+        followsCount = (TextView) view.findViewById(R.id.followsCount);
+        followedByCount = (TextView) view.findViewById(R.id.followedByCount);
+
         view.findViewById(R.id.buttonMyPhotos).setOnClickListener(this);
-        view.findViewById(R.id.buttonSearchUsersPhotos).setOnClickListener(this);
-        view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
-        view.findViewById(R.id.buttonSearchNear).setOnClickListener(this);
         view.findViewById(R.id.buttonMyFollows).setOnClickListener(this);
         view.findViewById(R.id.buttonMyFollowedBy).setOnClickListener(this);
 
-        goneView(view.findViewById(R.id.buttonSearchNear));
+
+        view.findViewById(R.id.buttonMyLikedPhotos).setOnClickListener(this);
+        view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
 
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
-        InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
-        previewView.setEmptyDrawable(R.drawable.ic_action_person);
-        previewView.requestAvatar();
 
-        ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
+        initFields(view);
     }
 
     @Override
@@ -57,17 +75,6 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_LIKED_PHOTOS,
                         application.getAccount().getMe(), false);
                 break;
-            case R.id.buttonSearchUsersPhotos:
-                getRootController().openFragmentSearchUserByNick();
-                break;
-            case R.id.buttonSearchFeed:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
-                        application.getAccount().getMe(), false);
-                break;
-            case R.id.buttonSearchNear:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_NEAR,
-                        application.getAccount().getMe(), false);
-                break;
             case R.id.buttonMyFollows:
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS,
                         application.getAccount().getMe());
@@ -76,11 +83,40 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY,
                         application.getAccount().getMe());
                 break;
-
-//
+            case R.id.buttonSearchFeed:
+                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
+                        application.getAccount().getMe(), false);
+                break;
 
         }
 
+    }
+
+    private void initFields(View view) {
+        ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
+        InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
+        previewView.setEmptyDrawable(R.drawable.ic_action_person);
+        previewView.requestAvatar();
+    }
+
+    private void updateDataLayout() {
+        if (mDependence == null) {
+            return;
+        }
+        mediaCount.setText(String.valueOf(mDependence.getMediaCount()));
+        followsCount.setText(String.valueOf(mDependence.getFollowsCount()));
+        followedByCount.setText(String.valueOf(mDependence.getFollowedByCount()));
+    }
+
+    private void loadDependence() {
+        InstaUserDependence dep = new InstaUserDependence(application.getMyId(), 0, 0, 0, true);
+        application.getUiKernel().getInstaUserDependenceLoader().requestSearchUser(dep, this);
+    }
+
+    @Override
+    public void onUserDependenceReceived(InstaUserDependence dependence) {
+        mDependence = dependence;
+        updateDataLayout();
     }
 
     @Override
@@ -101,8 +137,13 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
             case R.id.ic_settings:
                 getRootController().openFragmentSettings();
                 return true;
+            case R.id.ic_search_user:
+                getRootController().openFragmentSearchUserByNick();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

@@ -31,12 +31,18 @@ public class DataSourceKernel {
     }
 
     public InstaSearchSource getInstaSearchSource(long index) {
-        if (userSource.containsKey(index)) {
+        if (searchSource.containsKey(index)) {
             return searchSource.get(index);
         } else {
             InstaSearchSource source = new InstaSearchSource(kernel.getApplication());
             searchSource.put(index, source);
             return source;
+        }
+    }
+
+    public void removeInstaSearchSource(long index) {
+        if (searchSource.containsKey(index)) {
+            searchSource.remove(index);
         }
     }
 

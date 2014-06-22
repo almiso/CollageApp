@@ -98,6 +98,7 @@ public class InstaSearchSource {
             } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_FEED) {
                 url = ApiUtils.PATTERN_USER + "self/feed/?count=" + +PHOTO_COUNT + "&access_token=" +
                         application.getAuthKernel().getAccount().getAccessToken();
+
 //            } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_NEAR) {
 //                Location location = getMyLocation();
 //                Logger.d(TAG, "location = " + location);

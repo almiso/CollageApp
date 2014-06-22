@@ -18,6 +18,7 @@ import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -168,28 +169,104 @@ public class Api {
         String mUrl = PATTERN_SEARCH_USER + userId + "/?access_token=" +
                 application.getAuthKernel().getAccount().getAccessToken();
 
+        Logger.d(TAG, "Loading user dependence by url = " + mUrl);
+
         HttpURLConnection conn = null;
         String result = null;
+        StringBuilder stringBuilder = new StringBuilder();
         try {
             conn = (HttpURLConnection) new URL(mUrl).openConnection();
-            conn.setDoInput(true);
             conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setDoInput(true);
             conn.connect();
+
+
+//            int responseCode = conn.getResponseCode();
+//            if (responseCode != 200) {
+//                InputStream errorStream = conn.getErrorStream();
+//                if (errorStream != null) {
+//                    String errorResult;
+//                    BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream));
+//
+//
+//                    String errorLine = null;
+//                    while ((errorLine = reader.readLine()) != null) {
+//                        stringBuilder.append(errorLine + "\n");
+//                    }
+//                    errorResult = stringBuilder.toString();
+//                    try {
+//
+//                        JSONObject jObject = new JSONObject(errorResult);
+//                        JSONObject errObj = jObject.getJSONObject("meta");
+//
+//                        String error_type = errObj.getString("error_type");
+//                        String error_message = errObj.getString("error_message");
+//
+//                        Logger.d(TAG, "error_type  = " + error_type);
+//                        Logger.d(TAG, "error_message  = " + error_message);
+//                        if (error_type.equals("APINotAllowedError") ||
+//                                error_message.equalsIgnoreCase("you cannot view this resource")) {
+//                            Logger.d(TAG, "Success! pushing CollageException.");
+//                            throw new CollageException(5, "Error APINotAllowedError");
+//                        }
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            } else {
+//
+//            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
+
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                stringBuilder.append(line + "\n");
             }
             conn.disconnect();
             conn = null;
-            result = sb.toString();
+            result = stringBuilder.toString();
+
         } catch (MalformedURLException ex) {
             Log.e(TAG, "Url parsing was failed: " + mUrl);
             throw new CollageException(3, "Error during getUserDependence");
         } catch (IOException ex) {
-            Log.d(TAG, mUrl + " does not exists");
-            throw new CollageException(4, "Error during getUserDependence");
+            Log.d(TAG, "IOException on " + mUrl);
+            InputStream errorStream = conn.getErrorStream();
+            if (errorStream != null) {
+                String errorResult;
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(errorStream));
+                String errorLine = null;
+                try {
+                    while ((errorLine = errorReader.readLine()) != null) {
+                        stringBuilder.append(errorLine + "\n");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new CollageException(4, "Error during getUserDependence");
+                }
+                errorResult = stringBuilder.toString();
+                try {
+                    JSONObject jObject = new JSONObject(errorResult);
+                    JSONObject errObj = jObject.getJSONObject("meta");
+
+                    String error_type = errObj.getString("error_type");
+                    String error_message = errObj.getString("error_message");
+
+                    Logger.d(TAG, "error_type  = " + error_type);
+                    Logger.d(TAG, "error_message  = " + error_message);
+                    if (error_type.equals("APINotAllowedError") ||
+                            error_message.equalsIgnoreCase("you cannot view this resource")) {
+                        return  new InstaUserDependence(userId, 0, 0, 0, true);
+//                        throw new CollageException(5, "Error APINotAllowedError");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                throw new CollageException(4, "Error during getUserDependence");
+            }
         } catch (OutOfMemoryError e) {
             Log.w(TAG, "Out of memory!!!");
             throw new CollageException(3, "Error during getUserDependence");
@@ -206,7 +283,7 @@ public class Api {
             data = new InstaUserDependence(userId,
                     Long.parseLong(res.getString("media")),
                     Long.parseLong(res.getString("follows")),
-                    Long.parseLong(res.getString("followed_by")));
+                    Long.parseLong(res.getString("followed_by")), false);
 
         } catch (JSONException e) {
             e.printStackTrace();

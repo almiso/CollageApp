@@ -51,6 +51,28 @@ public class CollageBaseFragment extends SherlockFragment {
                 }
             });
 
+
+    private ProgressInterface dialogProgressInterfaceBackground = new ProgressInterface() {
+
+
+        @Override
+        public void showContent() {
+        }
+
+        @Override
+        public void hideContent() {
+        }
+
+
+        @Override
+        public void showProgress() {
+        }
+
+        @Override
+        public void hideProgress() {
+        }
+    };
+
     private ProgressInterface dialogProgressInterface = new ProgressInterface() {
 
         private ProgressDialog progress;
@@ -109,6 +131,10 @@ public class CollageBaseFragment extends SherlockFragment {
 
     public ProgressInterface getDefaultProgressInterface() {
         return defaultProgressInterface;
+    }
+
+    public ProgressInterface getBackgroundProgressInterface() {
+        return dialogProgressInterfaceBackground;
     }
 
     public void setDefaultProgressInterface(

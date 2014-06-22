@@ -39,7 +39,10 @@ public class Account {
                 putString("full_name", full_name).
                 putString("profile_picture", profile_picture).
                 putString("access_token", access_token).
-                putString("request_token", request_token).commit();
+                putString("request_token", request_token)
+                .commit();
+
+
     }
 
     public void logOut() {
@@ -74,6 +77,7 @@ public class Account {
     public long getId() {
         return preferences.getLong("id", -1);
     }
+
 
     public InstaUser getMe() {
         InstaUser user = new InstaUser();

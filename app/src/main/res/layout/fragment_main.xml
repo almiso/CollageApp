@@ -13,17 +13,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            android:layout_marginBottom="20dp"
+            android:padding="4dp"
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@color/grey_holo">
+                android:layout_width="100dp"
+                android:layout_height="100dp">
 
                 <org.almiso.collageapp.android.preview.InstaPreviewView
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
+                    android:background="@color/grey_holo"
                     android:layout_height="match_parent" />
 
                 <ImageView
@@ -33,24 +34,122 @@
                     android:src="@drawable/st_selector_avatar" />
             </RelativeLayout>
 
-
-            <TextView
-                android:id="@+id/name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:layout_marginLeft="8sp"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:padding="4sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:layout_marginLeft="8sp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:padding="4sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="4dp"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/buttonMyPhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_profile_btn"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/mediaCount"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="--"
+                            android:gravity="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:gravity="center"
+                            android:text="@string/st_media" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/buttonMyFollows"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_profile_btn"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/followsCount"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="--"
+                            android:gravity="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:gravity="center"
+                            android:text="@string/st_follows" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/buttonMyFollowedBy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_profile_btn"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/followedByCount"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:text="--"
+                            android:gravity="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_height="match_parent" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.5"
+                            android:singleLine="true"
+                            android:gravity="center"
+                            android:text="@string/st_followed_by" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/buttonMyPhotos"
+            android:id="@+id/buttonSearchFeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_my_photos" />
+            android:text="@string/st_search_feed" />
+
 
         <Button
             android:id="@+id/buttonMyLikedPhotos"
@@ -59,40 +158,5 @@
             android:layout_height="wrap_content"
             android:text="@string/st_search_my_liked_photos" />
 
-
-        <Button
-            android:id="@+id/buttonSearchUsersPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/st_search_user_photos" />
-
-        <Button
-            android:id="@+id/buttonSearchFeed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/st_search_feed" />
-
-        <Button
-            android:id="@+id/buttonSearchNear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/st_search_near" />
-
-        <Button
-            android:id="@+id/buttonMyFollows"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/st_follows" />
-
-        <Button
-            android:id="@+id/buttonMyFollowedBy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/st_followed_by" />
     </LinearLayout>
 </RelativeLayout>

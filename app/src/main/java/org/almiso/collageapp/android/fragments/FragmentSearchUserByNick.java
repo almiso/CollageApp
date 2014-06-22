@@ -113,7 +113,7 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
                         e.printStackTrace();
                     }
                 } else {
-                    getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_USER_PHOTOS, user, true);
+                    getRootController().openFragmentUserProfile(user);
                 }
 
             }

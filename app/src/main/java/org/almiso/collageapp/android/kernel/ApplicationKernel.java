@@ -96,8 +96,6 @@ public class ApplicationKernel {
         return dataSourceKernel;
     }
 
-
-
     public void logOut() {
         long start = SystemClock.uptimeMillis();
         authKernel.logOut();

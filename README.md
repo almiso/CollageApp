@@ -6,6 +6,10 @@ It allows you to make a simple collage of four photos taken their instagram
 
 ## Changelog
 
+### Version 1.4
+* Update users profile view
+* Fixed loading user`s dependencies
+
 ### Version 1.2
 * Added relationship endpoints
 * Added ability to view users profile

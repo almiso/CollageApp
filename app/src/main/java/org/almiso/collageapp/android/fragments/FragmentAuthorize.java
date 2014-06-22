@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.MenuItem;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
 import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.tasks.AsyncAction;
 import org.almiso.collageapp.android.tasks.AsyncException;
@@ -94,15 +95,9 @@ public class FragmentAuthorize extends CollageFragment {
 
 
             @Override
-            public void onException(AsyncException e) {
-                super.onException(e);
-                Logger.e(TAG, "AsyncException in login ", e);
-            }
-
-
-            @Override
             public void afterExecute() {
                 if (result.containsKey("access_token")) {
+
                     application.getAuthKernel().logIn(result.getAsLong("id"),
                             result.getAsString("username"),
                             result.getAsString("full_name"),
