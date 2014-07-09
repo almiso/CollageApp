@@ -7,4 +7,15 @@
     <color name="st_selector">#08000000</color>
     <color name="st_avatar_selector">#80808080</color>
 
+    <color name="st_actionbar_bg_def">#5677fc</color>
+    <color name="st_actionbar_title">#FFFFFF</color>
+    <color name="st_actionbar_subtitle">#FFFFFF</color>
+
+    <color name="st_frag_bg_def">#f2f2ef</color>
+
+    <color name="st_btn_main_normal">#8bc34a</color>
+    <color name="st_btn_main_pressed">#7cb342</color>
+
+    <color name="st_edit_hint">#b2b2b2</color>
+
 </resources>

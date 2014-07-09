@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.navigation.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <entry>
+      <key      
+        class = "com.android.navigation.ActivityState"      
+        className = "activity.StartActivity">
+        <location        
+          x = "0"        
+          y = "0"/>
+      </key>
+      <value      
+        x = "319"      
+        y = "0"      
+        class = "com.android.navigation.Point"/>
+    </entry>
+  </locations>
+</navigationModel>

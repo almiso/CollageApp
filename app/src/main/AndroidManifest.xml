@@ -13,6 +13,7 @@
         android:label="@string/st_app_name"
         android:theme="@style/AppTheme">
         <activity
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"
             android:name=".activity.StartActivity"
             android:label="@string/st_app_name">
@@ -20,6 +21,13 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:theme="@style/AvatarActivity"
+            android:screenOrientation="portrait"
+            android:name=".activity.AvatarPreview"
+            android:label="@string/st_photo">
         </activity>
     </application>
 

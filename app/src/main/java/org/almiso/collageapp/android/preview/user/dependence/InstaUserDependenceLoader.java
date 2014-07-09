@@ -47,7 +47,6 @@ public class InstaUserDependenceLoader extends BaseUserLoader<BaseTask> {
             synchronized (locker) {
                 onDependenceLoaded(dependence, task);
             }
-
         }
 
         @Override

@@ -2,25 +2,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/st_frag_bg_def"
     tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp"
-        android:layout_height="match_parent">
+        android:layout_margin="12dp"
+        android:padding="12dp"
+        android:background="@color/white">
 
 
         <EditText
             android:id="@+id/editTextNick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="left"
+            android:textColorHint="@color/st_edit_hint"
             android:inputType="textPersonName"
             android:maxLines="2"
             android:hint="@string/st_enter_nick" />
 
         <Button
+            style="@style/ButtonMain"
             android:id="@+id/buttonSearchPhotos"
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"

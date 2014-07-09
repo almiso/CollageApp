@@ -22,10 +22,10 @@ public class StartActivity extends CollageActivity implements RootControllerHold
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        long start = SystemClock.uptimeMillis();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        protected void onCreate(Bundle savedInstanceState) {
+            long start = SystemClock.uptimeMillis();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_start);
 
         Bundle savedState = null;
         if (savedInstanceState != null && savedInstanceState.containsKey("screen_controller")) {

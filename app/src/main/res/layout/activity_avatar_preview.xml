@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dd000000"
+    tools:context="${packageName}.${activityClass}">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="12dp"
+        android:layout_centerInParent="true"
+        android:padding="12dp"
+        android:src="@drawable/ic_photo_empty"
+        android:background="@color/white">
+    </ImageView>
+</RelativeLayout>

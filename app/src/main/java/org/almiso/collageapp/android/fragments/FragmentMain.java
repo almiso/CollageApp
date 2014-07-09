@@ -1,5 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
+import org.almiso.collageapp.android.activity.AvatarPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
@@ -87,6 +89,12 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
                         application.getAccount().getMe(), false);
                 break;
+            case R.id.avatarTouchLayer:
+                Intent intent = new Intent(application, AvatarPreview.class);
+                startActivity(intent);
+                break;
+
+//
 
         }
 
