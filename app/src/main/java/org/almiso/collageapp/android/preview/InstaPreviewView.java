@@ -16,14 +16,22 @@ public class InstaPreviewView extends BaseView<InstaMediaLoader> {
 
     public InstaPreviewView(Context context) {
         super(context);
+        init(context);
     }
 
     public InstaPreviewView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public InstaPreviewView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
+        if (this.isInEditMode()) {
+        }
     }
 
     @Override

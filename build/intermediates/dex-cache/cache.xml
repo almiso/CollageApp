@@ -2,16 +2,16 @@
 <pre-dex-items>
 
     <item
-        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\classes-39a3bbdf10585ac45fd47eba544acd7aec19a56f.jar"
-        jar="C:\Users\1\AndroidStudioProjects\CollageApp\build\intermediates\exploded-aar\com.actionbarsherlock\actionbarsherlock\4.4.0\classes.jar"
+        dex="C:\Users\OWNER_ANDROID\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-e4680d04efcb83735abd0f1179f641424a5b0bff.jar"
+        jar="C:\Users\OWNER_ANDROID\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="af64527b748983a75de9c0756e9768b56b240a49"/>
+        sha1="44ec51e9d395a47aab135e5e1b556c0007442156"/>
     <item
-        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\android-support-v4-51b849bcd0bd68c05e13c47f61ce59221d2dd6af.jar"
-        jar="C:\Users\1\AndroidStudioProjects\CollageApp\app\libs\android-support-v4.jar"
+        dex="C:\Users\OWNER_ANDROID\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\classes-f1dd49f046a8667ac588169781302f6dfce54f81.jar"
+        jar="C:\Users\OWNER_ANDROID\AndroidStudioProjects\CollageApp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\18.0.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="ded9acc6a9792b8f1afc470f0c9cd36d178914cd"/>
+        sha1="8f11f56e350eacabf2273f646d981356eea0ed77"/>
 
 </pre-dex-items>

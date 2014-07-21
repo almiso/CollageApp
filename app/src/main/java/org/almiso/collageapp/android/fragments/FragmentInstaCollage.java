@@ -19,6 +19,9 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,10 +30,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -386,11 +385,11 @@ public class FragmentInstaCollage extends CollageFragment implements View.OnClic
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_collage);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setTitle(R.string.st_collage);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 
     @Override

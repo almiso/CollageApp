@@ -3,8 +3,7 @@ package org.almiso.collageapp.android.screens;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
@@ -33,13 +32,13 @@ public class FragmentScreenController implements RootController {
 
     protected static final String TAG = "FragmentScreenController";
 
-    private SherlockFragmentActivity activity;
+    private ActionBarActivity activity;
     private CollageApplication application;
 
 
     private ArrayList<CollageFragment> backStack = new ArrayList<CollageFragment>();
 
-    public FragmentScreenController(SherlockFragmentActivity activity, CollageApplication application, Bundle savedState) {
+    public FragmentScreenController(ActionBarActivity activity, CollageApplication application, Bundle savedState) {
         this.activity = activity;
         this.application = application;
 

@@ -7,11 +7,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
@@ -27,17 +26,16 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-//import android.app.ProgressDialog;
 
 /**
  * Created by almiso on 07.06.2014.
  */
-public class CollageBaseFragment extends SherlockFragment {
+public class CollageBaseFragment extends Fragment {
 
     protected static String TAG = "CollageBaseFragment";
 
     protected CollageApplication application;
-    protected SherlockFragmentActivity activity;
+    protected ActionBarActivity activity;
     private RootController rootController;
     private DisplayMetrics metrics;
 
@@ -366,7 +364,7 @@ public class CollageBaseFragment extends SherlockFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ensureApp();
-        activity = getSherlockActivity();
+        activity = (ActionBarActivity) getActivity();
         metrics = getResources().getDisplayMetrics();
         setHasOptionsMenu(true);
     }
@@ -392,10 +390,10 @@ public class CollageBaseFragment extends SherlockFragment {
 
     private void ensureApp() {
         if (application == null) {
-            application = (CollageApplication) getSherlockActivity().getApplicationContext();
+            application = (CollageApplication) getActivity().getApplicationContext();
         }
         rootController = null;
-        if (getSherlockActivity() instanceof StartActivity) {
+        if (getActivity() instanceof StartActivity) {
             rootController = ((StartActivity) getActivity()).getRootController();
         }
     }

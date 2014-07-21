@@ -1,13 +1,15 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -25,6 +27,7 @@ public class FragmentSettings extends CollageFragment implements View.OnClickLis
 
     private void setUpView(View view) {
         view.findViewById(R.id.buttonExit).setOnClickListener(this);
+        ((TextView) view.findViewById(R.id.tvVersion)).setText(getVersionString());
     }
 
     @Override
@@ -36,15 +39,39 @@ public class FragmentSettings extends CollageFragment implements View.OnClickLis
         }
     }
 
+    private String getVersionString() {
+        String result = "";
+        String versionName = "";
+        int versionCode = 1;
+
+        PackageManager manager = application.getPackageManager();
+        PackageInfo info = null;
+
+
+        try {
+            info = manager.getPackageInfo(application.getPackageName(), 0);
+            versionName = info.versionName;
+            versionCode = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            versionName = "1.0.0";
+            versionCode = 1;
+            e.printStackTrace();
+        }
+//        result = getString(R.string.st_version_name) + " " + versionName + " (" + getString(R.string.st_vercion_code)
+//                + " " + versionCode + ")";
+        result = versionName;
+        return result;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_settings);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setTitle(R.string.st_settings);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 
     @Override

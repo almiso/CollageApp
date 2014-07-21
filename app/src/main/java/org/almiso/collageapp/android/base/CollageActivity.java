@@ -1,13 +1,13 @@
 package org.almiso.collageapp.android.base;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Created by almiso on 06.06.2014.
  */
-public class CollageActivity extends SherlockFragmentActivity {
+public class CollageActivity extends ActionBarActivity {
 
     protected CollageApplication application;
 

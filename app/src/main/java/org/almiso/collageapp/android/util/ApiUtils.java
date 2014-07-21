@@ -15,7 +15,6 @@ public class ApiUtils {
     public static String CALLBACK_URL = "PLEASE USE YOUR OWN CALLBACK_URL";
 
 
-
     //Private Instagram URLs
     private static final String PATTERN_API = "https://api.instagram.com/v1/";
 

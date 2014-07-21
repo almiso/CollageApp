@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/st_frag_bg_def"
-    tools:context="${packageName}.${activityClass}">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/st_frag_bg_def"
+                tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,13 +28,13 @@
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
                     android:background="@color/grey_holo"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/avatarTouchLayer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/st_selector_avatar" />
+                    android:src="@drawable/st_selector_avatar"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -47,10 +47,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Name"
+                    android:fontFamily="sans-serif"
                     android:layout_marginLeft="8sp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:padding="4sp" />
+                    android:padding="4sp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,18 +72,20 @@
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="--"
+                            android:fontFamily="sans-serif-light"
                             android:gravity="center"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
+                            android:fontFamily="sans-serif-light"
                             android:singleLine="true"
                             android:gravity="center"
-                            android:text="@string/st_media" />
+                            android:text="@string/st_media"/>
 
                     </LinearLayout>
 
@@ -99,18 +102,20 @@
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="--"
+                            android:fontFamily="sans-serif-light"
                             android:gravity="center"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
+                            android:fontFamily="sans-serif-light"
                             android:singleLine="true"
                             android:gravity="center"
-                            android:text="@string/st_follows" />
+                            android:text="@string/st_follows"/>
 
                     </LinearLayout>
 
@@ -130,15 +135,18 @@
                             android:gravity="center"
                             android:textSize="24sp"
                             android:textStyle="bold"
-                            android:layout_height="match_parent" />
+                            android:fontFamily="sans-serif-light"
+                            android:layout_height="match_parent"/>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1.5"
                             android:singleLine="true"
+                            android:ellipsize="end"
                             android:gravity="center"
-                            android:text="@string/st_followed_by" />
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/st_followed_by"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -152,7 +160,7 @@
             android:id="@+id/buttonSearchFeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_feed" />
+            android:text="@string/st_search_feed"/>
 
 
         <Button
@@ -161,7 +169,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_my_liked_photos" />
+            android:text="@string/st_search_my_liked_photos"/>
 
     </LinearLayout>
 </RelativeLayout>

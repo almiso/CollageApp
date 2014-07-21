@@ -6,6 +6,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,10 +21,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -446,11 +445,11 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_frag_search, menu);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
         if (user != null) {
-            getSherlockActivity().getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
+            activity.getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
             MenuItem avatarItem = menu.findItem(R.id.userAvatar);
 
             InstaPreviewView imageView = (InstaPreviewView) avatarItem.getActionView().findViewById(R.id.image);
@@ -460,7 +459,7 @@ public class FragmentPhotoGrid extends CollageFragment implements View.OnClickLi
             View touchLayer = avatarItem.getActionView().findViewById(R.id.avatarTouchLayer);
             touchLayer.setOnClickListener(this);
         } else {
-            getSherlockActivity().getSupportActionBar().setTitle(R.string.st_user_name_default);
+            activity.getSupportActionBar().setTitle(R.string.st_user_name_default);
         }
 
 

@@ -2,11 +2,10 @@ package org.almiso.collageapp.android.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -38,10 +37,10 @@ public class FragmentLaunch extends CollageFragment implements View.OnClickListe
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(false);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_app_name);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setHomeButtonEnabled(false);
+        activity.getSupportActionBar().setTitle(R.string.st_app_name);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 }

@@ -23,6 +23,8 @@
     <string name="st_settings">Settings</string>
     <string name="st_account">Account</string>
     <string name="st_exit">Log out</string>
+    <string name="st_about_app">About app</string>
+    <string name="st_version">Version</string>
 
     <string name="st_search_user">Search user</string>
     <string name="st_enter_nick">Enter user nick</string>

@@ -24,7 +24,6 @@ It allows you to make a simple collage of four photos taken their instagram
 
 
 ## Libraries used
-* ActionBarSherlock <https://github.com/JakeWharton/ActionBarSherlock>
 * Some features from Telegram S Edition Android App <https://github.com/ex3ndr/telegram>
 
 ## License

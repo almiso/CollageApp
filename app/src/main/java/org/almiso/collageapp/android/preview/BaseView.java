@@ -33,7 +33,7 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
 
     public BaseView(Context context) {
         super(context);
-//        if (!isInEditMode()) {
+//        if (isInEditMode()) {
             application = (CollageApplication) context.getApplicationContext();
             loader = bindLoader();
 //        }
@@ -41,7 +41,7 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
 
     public BaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        if (!isInEditMode()) {
+//        if (isInEditMode()) {
             application = (CollageApplication) context.getApplicationContext();
             loader = bindLoader();
 //        }
@@ -50,7 +50,7 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
 
     public BaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        if (!isInEditMode()) {
+//        if (isInEditMode()) {
             application = (CollageApplication) context.getApplicationContext();
             loader = bindLoader();
 //        }

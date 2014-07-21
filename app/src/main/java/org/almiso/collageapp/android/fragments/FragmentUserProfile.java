@@ -2,15 +2,14 @@ package org.almiso.collageapp.android.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -163,11 +162,11 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_user_profile);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setTitle(R.string.st_user_profile);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 
     @Override

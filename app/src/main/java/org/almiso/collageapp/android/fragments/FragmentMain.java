@@ -3,13 +3,12 @@ package org.almiso.collageapp.android.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.AvatarPreview;
@@ -132,11 +131,11 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_frag_main, menu);
 
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(false);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_app_name);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setHomeButtonEnabled(false);
+        activity.getSupportActionBar().setTitle(R.string.st_app_name);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 
     @Override

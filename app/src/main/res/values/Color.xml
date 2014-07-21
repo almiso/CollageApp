@@ -18,4 +18,10 @@
 
     <color name="st_edit_hint">#b2b2b2</color>
 
+    <color name="st_category">#91a7ff</color>
+
+
+    <color name="st_transparent">#88000000</color>
+
+
 </resources>

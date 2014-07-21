@@ -3,6 +3,9 @@ package org.almiso.collageapp.android.fragments;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -10,15 +13,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
 import org.almiso.collageapp.android.base.CollageFragment;
-import org.almiso.collageapp.android.core.model.InstaUserDependence;
-import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.tasks.AsyncAction;
 import org.almiso.collageapp.android.tasks.AsyncException;
 import org.almiso.collageapp.android.tasks.CollageException;
@@ -115,11 +112,11 @@ public class FragmentAuthorize extends CollageFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        getSherlockActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSherlockActivity().getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSherlockActivity().getSupportActionBar().setHomeButtonEnabled(true);
-        getSherlockActivity().getSupportActionBar().setTitle(R.string.st_sing_in);
-        getSherlockActivity().getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setTitle(R.string.st_sing_in);
+        activity.getSupportActionBar().setSubtitle(null);
     }
 
     @Override
