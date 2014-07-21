@@ -27,14 +27,13 @@
                 <org.almiso.collageapp.android.preview.InstaPreviewView
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
-                    android:background="@color/grey_holo"
                     android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/avatarTouchLayer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/st_selector_avatar"/>
+                    android:src="@drawable/st_selector_avatar_circle"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -64,7 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_profile_btn"
+                        android:background="@drawable/bg_profile_btn_rect"
                         android:orientation="vertical">
 
                         <TextView
@@ -94,7 +93,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_profile_btn"
+                        android:background="@drawable/bg_profile_btn_rect"
                         android:orientation="vertical">
 
                         <TextView
@@ -124,7 +123,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/bg_profile_btn"
+                        android:background="@drawable/bg_profile_btn_rect"
                         android:orientation="vertical">
 
                         <TextView
@@ -160,16 +159,10 @@
             android:id="@+id/buttonSearchFeed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_feed"/>
+            android:text="@string/st_feed"/>
 
 
-        <Button
-            style="@style/ButtonMain"
-            android:id="@+id/buttonMyLikedPhotos"
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content"
-            android:text="@string/st_search_my_liked_photos"/>
+
 
     </LinearLayout>
 </RelativeLayout>

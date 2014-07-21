@@ -13,6 +13,6 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:id="@+id/avatarTouchLayer"
-        android:src="@drawable/st_selector_avatar" />
+        android:src="@drawable/st_selector_avatar_rect" />
 
 </FrameLayout>

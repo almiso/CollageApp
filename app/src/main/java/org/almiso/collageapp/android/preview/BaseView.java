@@ -2,6 +2,7 @@ package org.almiso.collageapp.android.preview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import org.almiso.collageapp.android.base.CollageApplication;
  */
 public abstract class BaseView<T extends BaseLoader> extends View implements ImageReceiver {
 
+
     private static final String TAG = "BaseView";
     private long arriveTime;
     private Drawable emptyDrawable;
@@ -26,6 +28,8 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
     private Rect rect = new Rect();
     private Rect rect1 = new Rect();
     private Paint avatarPaint = new Paint(Paint.FILTER_BITMAP_FLAG);
+    private int bgColor = Color.TRANSPARENT;
+    private int shape = SHAPE.SHAPE_RECTANGLE;
 
     private boolean isBinded = false;
 
@@ -34,16 +38,16 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
     public BaseView(Context context) {
         super(context);
 //        if (isInEditMode()) {
-            application = (CollageApplication) context.getApplicationContext();
-            loader = bindLoader();
+        application = (CollageApplication) context.getApplicationContext();
+        loader = bindLoader();
 //        }
     }
 
     public BaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
 //        if (isInEditMode()) {
-            application = (CollageApplication) context.getApplicationContext();
-            loader = bindLoader();
+        application = (CollageApplication) context.getApplicationContext();
+        loader = bindLoader();
 //        }
 
     }
@@ -51,8 +55,8 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
     public BaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 //        if (isInEditMode()) {
-            application = (CollageApplication) context.getApplicationContext();
-            loader = bindLoader();
+        application = (CollageApplication) context.getApplicationContext();
+        loader = bindLoader();
 //        }
 
     }
@@ -75,6 +79,14 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
 
     public void setEmptyDrawable(int res) {
         this.emptyDrawable = getResources().getDrawable(res);
+    }
+
+    public void setBgColor(int color) {
+        this.bgColor = color;
+    }
+
+    public void setShape(int shape) {
+        this.shape = shape;
     }
 
     private void unbindAvatar() {
@@ -115,6 +127,17 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
         if (emptyDrawable != null) {
             emptyDrawable.setBounds(0, 0, getWidth(), getHeight());
             emptyDrawable.draw(canvas);
+
+            Paint paint = new Paint();
+            paint.setColor(bgColor);
+
+            if (shape == SHAPE.SHAPE_RECTANGLE) {
+//                canvas.drawBitmap(holder.getBitmap(), rect, rect1, avatarPaint);
+                canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
+            } else if (shape == SHAPE.SHAPE_CIRCLE) {
+                canvas.drawCircle(getWidth() / 2, getWidth() / 2, getWidth() / 2, paint);
+            }
+
         }
 
         if (holder != null) {
@@ -127,9 +150,13 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
                 rect1.set(0, 0, getWidth(), getHeight());
             }
 
-
             rect.set(0, 0, holder.getW(), holder.getH());
-            canvas.drawBitmap(holder.getBitmap(), rect, rect1, avatarPaint);
+            if (shape == SHAPE.SHAPE_RECTANGLE) {
+                canvas.drawBitmap(holder.getBitmap(), rect, rect1, avatarPaint);
+            } else if (shape == SHAPE.SHAPE_CIRCLE) {
+                canvas.drawBitmap(holder.getRoundedCornerBitmap(), rect, rect1, avatarPaint);
+            }
+
         }
     }
 
@@ -144,4 +171,10 @@ public abstract class BaseView<T extends BaseLoader> extends View implements Ima
         }
         invalidate();
     }
+
+    public static class SHAPE {
+        public static final int SHAPE_RECTANGLE = 1;
+        public static final int SHAPE_CIRCLE = 2;
+    }
+
 }

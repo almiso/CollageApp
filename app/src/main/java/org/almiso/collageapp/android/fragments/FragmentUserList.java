@@ -2,6 +2,7 @@ package org.almiso.collageapp.android.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.ExceptionSourceListener;
 import org.almiso.collageapp.android.core.InstaUserSource;
 import org.almiso.collageapp.android.core.model.InstaUser;
+import org.almiso.collageapp.android.preview.BaseView;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
@@ -198,7 +200,9 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
 
                         InstaPreviewView previewView = new InstaPreviewView(context);
                         previewView.setEmptyDrawable(R.drawable.ic_action_person);
-                        previewView.setBackgroundColor(getResources().getColor(R.color.grey_holo));
+                        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
+                        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
+//                        previewView.setBackgroundColor(getResources().getColor(R.color.grey_holo));
 
                         FrameLayout.LayoutParams photoParams = new FrameLayout.LayoutParams(getPx(48), getPx(48));
                         photoParams.setMargins(getPx(4), getPx(4), getPx(4), getPx(4));
@@ -209,7 +213,8 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
                         TextView size = new TextView(context);
                         size.setBackgroundColor(Color.TRANSPARENT);
                         size.setTextColor(Color.BLACK);
-                        size.setTextSize(18);
+                        size.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+                        size.setTextSize(22);
 
                         FrameLayout.LayoutParams sizeParams = new FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,

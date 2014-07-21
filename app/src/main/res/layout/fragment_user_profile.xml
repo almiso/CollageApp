@@ -26,14 +26,13 @@
                 <org.almiso.collageapp.android.preview.InstaPreviewView
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
-                    android:background="@color/grey_holo"
                     android:layout_height="match_parent" />
 
                 <ImageView
                     android:id="@+id/avatarTouchLayer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/st_selector_avatar" />
+                    android:src="@drawable/st_selector_avatar_circle" />
             </RelativeLayout>
 
             <LinearLayout
@@ -49,7 +48,8 @@
                     android:layout_marginLeft="8sp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:padding="4sp" />
+                    android:padding="4sp"
+                    android:fontFamily="sans-serif" />
 
 
                 <RelativeLayout
@@ -69,8 +69,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_profile_btn"
-                            android:orientation="vertical">
+                            android:background="@drawable/bg_profile_btn_rect"
+                            android:orientation="vertical"
+                            android:fontFamily="sans-serif-light">
 
                             <TextView
                                 android:id="@+id/mediaCount"
@@ -80,7 +81,8 @@
                                 android:gravity="center"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:fontFamily="sans-serif-light" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -88,7 +90,8 @@
                                 android:layout_weight="1.5"
                                 android:singleLine="true"
                                 android:gravity="center"
-                                android:text="@string/st_media" />
+                                android:text="@string/st_media"
+                                android:fontFamily="sans-serif-light" />
 
                         </LinearLayout>
 
@@ -97,7 +100,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_profile_btn"
+                            android:background="@drawable/bg_profile_btn_rect"
                             android:orientation="vertical">
 
                             <TextView
@@ -108,7 +111,8 @@
                                 android:gravity="center"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:fontFamily="sans-serif-light" />
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -116,7 +120,8 @@
                                 android:layout_weight="1.5"
                                 android:singleLine="true"
                                 android:gravity="center"
-                                android:text="@string/st_follows" />
+                                android:text="@string/st_follows"
+                                android:fontFamily="sans-serif-light" />
 
                         </LinearLayout>
 
@@ -125,7 +130,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_profile_btn"
+                            android:background="@drawable/bg_profile_btn_rect"
                             android:orientation="vertical">
 
                             <TextView
@@ -136,7 +141,8 @@
                                 android:gravity="center"
                                 android:textSize="24sp"
                                 android:textStyle="bold"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:fontFamily="sans-serif-light"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -144,7 +150,8 @@
                                 android:layout_weight="1.5"
                                 android:singleLine="true"
                                 android:gravity="center"
-                                android:text="@string/st_followed_by" />
+                                android:text="@string/st_followed_by"
+                                android:fontFamily="sans-serif-light"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -161,7 +168,8 @@
                             android:text="@string/st_user_private_acc"
                             android:gravity="center"
                             android:textSize="18sp"
-                            android:padding="4sp"/>
+                            android:padding="4sp"
+                            android:fontFamily="sans-serif-light"/>
                     </LinearLayout>
 
                     <ProgressBar

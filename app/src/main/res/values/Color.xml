@@ -4,8 +4,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey_holo">#808080</color>
+    <color name="grey_holo_h">#e0e0e0</color>
     <color name="st_selector">#08000000</color>
     <color name="st_avatar_selector">#80808080</color>
+    <color name="st_media_button_selector">#e0e0e0</color>
 
     <color name="st_actionbar_bg_def">#5677fc</color>
     <color name="st_actionbar_title">#FFFFFF</color>

@@ -1,5 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,9 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
+import org.almiso.collageapp.android.activity.AvatarPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
+import org.almiso.collageapp.android.preview.BaseView;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
@@ -104,9 +107,15 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
         goneView(layoutError);
         goneView(progress);
 
+
+        view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
+
         InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
         previewView.setEmptyDrawable(R.drawable.ic_action_person);
-        view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
+        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
+        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
+
+
         if (user != null) {
             previewView.requestUserAvatar(user);
             ((TextView) view.findViewById(R.id.name)).setText(user.getDisplayName().toUpperCase());
@@ -147,6 +156,11 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
                 break;
             case R.id.buttonFollowedBy:
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY, user);
+                break;
+            case R.id.avatarTouchLayer:
+                Intent intent = new Intent(application, AvatarPreview.class);
+                intent.putExtra("EXTRA_USER", user);
+                startActivity(intent);
                 break;
         }
 

@@ -17,7 +17,7 @@
     <string name="st_search_my_photos">Search my photos</string>
     <string name="st_search_my_liked_photos">Search my liked photos</string>
     <string name="st_search_user_photos">Search for someone photos</string>
-    <string name="st_search_feed">Search in feed</string>
+    <string name="st_feed">Feed</string>
     <string name="st_search_near">Search near</string>
 
     <string name="st_settings">Settings</string>
@@ -40,6 +40,7 @@
     <string name="st_user_private_acc">You cannot view this resource</string>
     <string name="st_no_photos">This user has not added any photos yet</string>
     <string name="st_error_get_location">An error occurred when determining your location</string>
+    <string name="st_error_load_avatar">Error on loading avatar</string>
 
     <string name="st_close">Close</string>
     <string name="st_progress_title">Please wait</string>

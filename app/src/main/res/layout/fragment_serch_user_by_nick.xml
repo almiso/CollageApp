@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/st_frag_bg_def"
-    tools:context="${packageName}.${activityClass}">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/st_frag_bg_def"
+                tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,8 @@
             android:textColorHint="@color/st_edit_hint"
             android:inputType="textPersonName"
             android:maxLines="2"
-            android:hint="@string/st_enter_nick" />
+            android:hint="@string/st_enter_nick"
+            android:fontFamily="sans-serif-light"/>
 
         <Button
             style="@style/ButtonMain"
@@ -30,6 +32,6 @@
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"
             android:layout_height="wrap_content"
-            android:text="@string/st_search_user" />
+            android:text="@string/st_search_user"/>
     </LinearLayout>
 </RelativeLayout>

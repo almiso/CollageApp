@@ -14,6 +14,7 @@ import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.AvatarPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
+import org.almiso.collageapp.android.preview.BaseView;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
@@ -54,13 +55,8 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         view.findViewById(R.id.buttonMyPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonMyFollows).setOnClickListener(this);
         view.findViewById(R.id.buttonMyFollowedBy).setOnClickListener(this);
-
-
-        view.findViewById(R.id.buttonMyLikedPhotos).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
-
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
-
 
         initFields(view);
     }
@@ -70,10 +66,6 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         switch (v.getId()) {
             case R.id.buttonMyPhotos:
                 getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_PHOTOS,
-                        application.getAccount().getMe(), false);
-                break;
-            case R.id.buttonMyLikedPhotos:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_LIKED_PHOTOS,
                         application.getAccount().getMe(), false);
                 break;
             case R.id.buttonMyFollows:
@@ -90,11 +82,9 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
                 break;
             case R.id.avatarTouchLayer:
                 Intent intent = new Intent(application, AvatarPreview.class);
+                intent.putExtra("EXTRA_USER", application.getAccount().getMe());
                 startActivity(intent);
                 break;
-
-//
-
         }
 
     }
@@ -103,6 +93,8 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
         InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
         previewView.setEmptyDrawable(R.drawable.ic_action_person);
+        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
+        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
         previewView.requestAvatar();
     }
 
