@@ -26,4 +26,11 @@
     <color name="st_transparent">#88000000</color>
 
 
+    <color name="st_grid_state_pressed">#1Affffff</color>
+    <color name="st_grid_state_focused">#80000000</color>
+
+
+
+
+
 </resources>

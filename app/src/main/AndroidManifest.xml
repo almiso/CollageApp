@@ -12,9 +12,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/st_app_name"
         android:theme="@style/AppTheme">
+
+
+        <!--android:screenOrientation="portrait"-->
         <activity
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"
             android:name=".activity.StartActivity"
             android:label="@string/st_app_name">
             <intent-filter>

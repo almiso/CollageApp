@@ -12,6 +12,7 @@ public abstract class QueueWorker<T extends QueueProcessor.BaseTask> extends Thr
         this.processor = processor;
     }
 
+
     protected abstract boolean processTask(T task) throws Exception;
 
     protected boolean needRepeatOnError() {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/st_frag_bg_def"
+                tools:context="${packageName}.${activityClass}">
+
+    <GridView
+        android:layout_above="@+id/mBottom"
+        android:id="@+id/mediaGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="12dp"
+        android:padding="12dp"
+        android:background="@color/white"
+        android:stretchMode="columnWidth"
+        android:columnWidth="@dimen/image_thumbnail_size"
+        android:horizontalSpacing="@dimen/image_thumbnail_spacing"
+        android:verticalSpacing="@dimen/image_thumbnail_spacing"
+        android:numColumns="auto_fit"
+        android:listSelector="@drawable/photogrid_list_selector" />
+
+    <!--android:clipToPadding="false"-->
+    <!--android:drawSelectorOnTop="true"-->
+    <!--android:gravity="center_horizontal"-->
+    <!--android:stackFromBottom="false"-->
+    <!--android:transcriptMode="disabled"-->
+    <!--android:listSelector="@drawable/photogrid_list_selector"-->
+</RelativeLayout>
