@@ -22,7 +22,7 @@ import org.almiso.collageapp.android.preview.InstaPreviewView;
 /**
  * Created by almiso on 09.07.2014.
  */
-public class AvatarPreview extends CollageActivity implements View.OnClickListener {
+public class ActivityAvatarPreview extends CollageActivity implements View.OnClickListener {
 
     private InstaPreviewView image;
     private ShareActionProvider mShareActionProvider;

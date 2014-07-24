@@ -19,6 +19,6 @@ public class SearchInstaTask extends BaseTask {
 
     @Override
     public String getStorageKey() {
-        return result.geThumbnailUrl();
+        return result.getThumbnailUrl();
     }
 }

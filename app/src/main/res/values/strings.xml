@@ -14,6 +14,8 @@
 
     <string name="st_sing_in">Sing in</string>
 
+    <string name="st_content_description">Img</string>
+
     <string name="st_search_my_photos">Search my photos</string>
     <string name="st_search_my_liked_photos">Search my liked photos</string>
     <string name="st_search_user_photos">Search for someone photos</string>
@@ -69,5 +71,8 @@
     <string name="st_media">Media</string>
     <string name="st_follows">Follows</string>
     <string name="st_followed_by">Followed by</string>
+
+    <string name="st_open_edit_mode">Open edit mode</string>
+    <string name="st_close_edit_mode">Close edit mode</string>
 
 </resources>

@@ -1,10 +1,35 @@
-package org.almiso.collageapp.android.loader;
+/*
+ * Copyright (C) 2012 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.almiso.collageapp.android.media.util;
 
 /**
- * Created by Alexandr Sosorev on 22.07.2014.
+ * Some simple test data to use for this sample app.
  */
 public class Images {
 
+    /**
+     * This are PicasaWeb URLs and could potentially change. Ideally the PicasaWeb API should be
+     * used to fetch the URLs.
+     *
+     * Credit to Romain Guy for the photos:
+     * http://www.curious-creature.org/
+     * https://plus.google.com/109538161516040592207/about
+     * http://www.flickr.com/photos/romainguy
+     */
     public final static String[] imageUrls = new String[] {
             "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s1024/A%252520Photographer.jpg",
             "https://lh4.googleusercontent.com/--dq8niRp7W4/URquVgmXvgI/AAAAAAAAAbs/-gnuLQfNnBA/s1024/A%252520Song%252520of%252520Ice%252520and%252520Fire.jpg",
@@ -107,6 +132,15 @@ public class Images {
             "https://lh4.googleusercontent.com/-e9NHZ5k5MSs/URqvMIBZjtI/AAAAAAAAAbs/1fV810rDNfQ/s1024/Yosemite%252520Tree.jpg",
     };
 
+    /**
+     * This are PicasaWeb thumbnail URLs and could potentially change. Ideally the PicasaWeb API
+     * should be used to fetch the URLs.
+     *
+     * Credit to Romain Guy for the photos:
+     * http://www.curious-creature.org/
+     * https://plus.google.com/109538161516040592207/about
+     * http://www.flickr.com/photos/romainguy
+     */
     public final static String[] imageThumbUrls = new String[] {
             "https://lh6.googleusercontent.com/-55osAWw3x0Q/URquUtcFr5I/AAAAAAAAAbs/rWlj1RUKrYI/s240-c/A%252520Photographer.jpg",
             "https://lh4.googleusercontent.com/--dq8niRp7W4/URquVgmXvgI/AAAAAAAAAbs/-gnuLQfNnBA/s240-c/A%252520Song%252520of%252520Ice%252520and%252520Fire.jpg",

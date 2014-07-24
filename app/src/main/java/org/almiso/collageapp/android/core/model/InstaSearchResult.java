@@ -34,7 +34,7 @@ public class InstaSearchResult implements Serializable {
         return index;
     }
 
-    public String geThumbnailUrl() {
+    public String getThumbnailUrl() {
         return thumbnailUrl;
     }
 

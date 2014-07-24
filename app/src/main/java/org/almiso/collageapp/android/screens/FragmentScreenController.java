@@ -203,16 +203,15 @@ public class FragmentScreenController implements RootController {
     public void openFragmentSearch(int action, InstaUser user, boolean canOpenProf) {
 
         //TODO change back to normal. Now is testing
-        /*
-            Bundle args = new Bundle();
-            args.putInt("action", action);
-            args.putBoolean("canOpenProf", canOpenProf);
-            args.putSerializable("user", user);
-            FragmentPhotoGrid frag = new FragmentPhotoGrid();
-            frag.setArguments(args);
-            openScreen(frag);
-        */
-        openScreen(new FragmentImageGrid());
+        Bundle args = new Bundle();
+        args.putInt("action", action);
+        args.putBoolean("canOpenProf", canOpenProf);
+        args.putSerializable("user", user);
+        FragmentImageGrid frag = new FragmentImageGrid();
+        frag.setArguments(args);
+        openScreen(frag);
+
+//        openScreen(new FragmentImageGrid());
 
     }
 

@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
-import org.almiso.collageapp.android.activity.AvatarPreview;
+import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
@@ -158,7 +158,7 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY, user);
                 break;
             case R.id.avatarTouchLayer:
-                Intent intent = new Intent(application, AvatarPreview.class);
+                Intent intent = new Intent(application, ActivityAvatarPreview.class);
                 intent.putExtra("EXTRA_USER", user);
                 startActivity(intent);
                 break;

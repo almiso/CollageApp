@@ -195,7 +195,7 @@ public class ImageFetcher extends ImageResizer {
      */
     private Bitmap processBitmap(String data) {
         if (BuildConfig.DEBUG) {
-            Logger.d(TAG, "processBitmap - " + data);
+//            Logger.d(TAG, "processBitmap - " + data);
         }
 
         final String key = ImageCache.hashKeyForDisk(data);
@@ -216,7 +216,7 @@ public class ImageFetcher extends ImageResizer {
                     snapshot = mHttpDiskCache.get(key);
                     if (snapshot == null) {
                         if (BuildConfig.DEBUG) {
-                            Logger.d(TAG, "processBitmap, not found in http cache, downloading...");
+//                            Logger.d(TAG, "processBitmap, not found in http cache, downloading...");
                         }
                         DiskLruCache.Editor editor = mHttpDiskCache.edit(key);
                         if (editor != null) {

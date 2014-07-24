@@ -313,7 +313,7 @@ public class ImageCache {
         }
 
         if (BuildConfig.DEBUG && memValue != null) {
-            Logger.d(TAG, "Memory cache hit");
+//            Logger.d(TAG, "Memory cache hit");
         }
 
         return memValue;
@@ -344,7 +344,7 @@ public class ImageCache {
                     final DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
                     if (snapshot != null) {
                         if (BuildConfig.DEBUG) {
-                            Logger.d(TAG, "Disk cache hit");
+//                            Logger.d(TAG, "Disk cache hit");
                         }
                         inputStream = snapshot.getInputStream(DISK_CACHE_INDEX);
                         if (inputStream != null) {

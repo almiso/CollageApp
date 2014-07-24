@@ -40,7 +40,7 @@ public class InstaMediaLoader extends BaseLoader<BaseTask> {
     }
 
     public Bitmap tryLoadInstaPreview(InstaSearchResult result) {
-        return checkCachePreview(result.geThumbnailUrl());
+        return checkCachePreview(result.getThumbnailUrl());
     }
 
     public void cancelRequest(ImageReceiver receiver) {
@@ -84,7 +84,7 @@ public class InstaMediaLoader extends BaseLoader<BaseTask> {
                 }
             }
 
-            byte[] data = IOUtils.downloadFile(thumbTask.getResult().geThumbnailUrl());
+            byte[] data = IOUtils.downloadFile(thumbTask.getResult().getThumbnailUrl());
             synchronized (fullImageCachedLock) {
                 fullImageCached = Bitmap.createBitmap(ApiUtils.MAX_SIZE / 2, ApiUtils.MAX_SIZE / 2,
                         Bitmap.Config.ARGB_8888);

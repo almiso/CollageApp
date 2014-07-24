@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
-import org.almiso.collageapp.android.activity.AvatarPreview;
+import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.preview.BaseView;
@@ -81,7 +81,7 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
                         application.getAccount().getMe(), false);
                 break;
             case R.id.avatarTouchLayer:
-                Intent intent = new Intent(application, AvatarPreview.class);
+                Intent intent = new Intent(application, ActivityAvatarPreview.class);
                 intent.putExtra("EXTRA_USER", application.getAccount().getMe());
                 startActivity(intent);
                 break;

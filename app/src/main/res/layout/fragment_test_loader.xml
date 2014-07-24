@@ -6,24 +6,50 @@
                 android:background="@color/st_frag_bg_def"
                 tools:context="${packageName}.${activityClass}">
 
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:gravity="center"
+        android:text="@string/st_nothing_found"
+        android:textColor="@color/grey_holo"
+        android:textSize="19sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"/>
+
     <GridView
-        android:layout_above="@+id/mBottom"
-        android:id="@+id/mediaGrid"
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="12dp"
         android:padding="12dp"
+        android:layout_above="@+id/mBottom"
         android:background="@color/white"
         android:stretchMode="columnWidth"
         android:columnWidth="@dimen/image_thumbnail_size"
         android:horizontalSpacing="@dimen/image_thumbnail_spacing"
         android:verticalSpacing="@dimen/image_thumbnail_spacing"
-        android:numColumns="auto_fit" />
+        android:numColumns="auto_fit"
+        android:listSelector="@drawable/photogrid_list_selector"/>
 
-    <!--android:clipToPadding="false"-->
-    <!--android:drawSelectorOnTop="true"-->
-    <!--android:gravity="center_horizontal"-->
-    <!--android:stackFromBottom="false"-->
-    <!--android:transcriptMode="disabled"-->
-    <!--android:listSelector="@drawable/photogrid_list_selector"-->
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <FrameLayout
+        android:id="@+id/mBottom"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@color/white"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_alignParentBottom="true">
+    </FrameLayout>
+
 </RelativeLayout>

@@ -2,9 +2,26 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="@string/st_more"
+        android:icon="@drawable/ic_action_overflow"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/editMode"
+                android:title="enable"
+                app:showAsAction="never"/>
+
+        </menu>
+    </item>
+
+
     <item
         android:id="@+id/userAvatar"
         android:title="@string/st_user_name_default"
         app:actionLayout="@layout/user_avatar_small"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
+
+
 </menu>

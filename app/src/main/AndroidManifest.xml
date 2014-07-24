@@ -3,6 +3,7 @@
           package="org.almiso.collageapp.android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
@@ -25,16 +26,30 @@
             </intent-filter>
         </activity>
 
+        <!--<activity-->
+        <!--android:name=".activity.ActivityAvatarPreview"-->
+        <!--android:parentActivityName=".activity.StartActivity"-->
+        <!--android:theme="@style/AvatarActivity"-->
+        <!--android:screenOrientation="portrait"-->
+        <!--android:label="@string/st_photo">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.PARENT_ACTIVITY"-->
+        <!--android:value=".activity.StartActivity"/>-->
+        <!--</activity>-->
         <activity
-            android:name=".activity.AvatarPreview"
-            android:parentActivityName=".activity.StartActivity"
+            android:name=".activity.ActivityAvatarPreview"
             android:theme="@style/AvatarActivity"
             android:screenOrientation="portrait"
             android:label="@string/st_photo">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.StartActivity"/>
         </activity>
+
+        <activity
+            android:name=".activity.ActivityPhotoPreview"
+            android:theme="@style/AvatarActivity"
+            android:label="@string/st_photo">
+        </activity>
+
+
     </application>
 
 </manifest>
