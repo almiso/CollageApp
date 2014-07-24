@@ -12,13 +12,13 @@ import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentAuthorize;
+import org.almiso.collageapp.android.fragments.FragmentImageGrid;
 import org.almiso.collageapp.android.fragments.FragmentInstaCollage;
 import org.almiso.collageapp.android.fragments.FragmentLaunch;
 import org.almiso.collageapp.android.fragments.FragmentMain;
 import org.almiso.collageapp.android.fragments.FragmentPreviewPhoto;
 import org.almiso.collageapp.android.fragments.FragmentSearchUserByNick;
 import org.almiso.collageapp.android.fragments.FragmentSettings;
-import org.almiso.collageapp.android.fragments.FragmentTestLoader;
 import org.almiso.collageapp.android.fragments.FragmentUserList;
 import org.almiso.collageapp.android.fragments.FragmentUserProfile;
 
@@ -212,7 +212,7 @@ public class FragmentScreenController implements RootController {
             frag.setArguments(args);
             openScreen(frag);
         */
-        openScreen(new FragmentTestLoader());
+        openScreen(new FragmentImageGrid());
 
     }
 

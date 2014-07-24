@@ -139,6 +139,16 @@ public class Logger {
         }
     }
 
+    public static void e(String TAG, String message) {
+        if (!ENABLED) {
+            return;
+        }
+        Log.e("CollageApp|" + TAG, message);
+        if (isEnabled && isInitied) {
+            addLogRecord(new LogRecord(System.currentTimeMillis(), TAG, Thread.currentThread().getName(), message));
+        }
+    }
+
     public static void e(String TAG, String message, Exception e) {
         if (!ENABLED) {
             return;

@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 import org.almiso.collageapp.android.base.CollageApplication;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
-import org.almiso.collageapp.android.mdeia.Optimizer;
+import org.almiso.collageapp.android.media.Optimizer;
 import org.almiso.collageapp.android.preview.media.BaseTask;
 import org.almiso.collageapp.android.preview.media.SearchInstaTask;
 import org.almiso.collageapp.android.preview.queue.QueueWorker;

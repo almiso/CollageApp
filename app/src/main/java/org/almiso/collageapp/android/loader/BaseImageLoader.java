@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.almiso.collageapp.android.base.CollageApplication;
+import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.preview.queue.QueueProcessor;
 import org.almiso.collageapp.android.preview.queue.QueueWorker;
 
@@ -63,6 +64,8 @@ public abstract class BaseImageLoader<T extends QueueProcessor.BaseTask> {
     }
 
     protected void notifyMediaLoaded(final QueueProcessor.BaseTask task, final Bitmap bitmap) {
+        Logger.d(TAG, "<START ---------------------------------------->");
+        Logger.d(TAG, "on notifyMediaLoaded");
         handler.post(new Runnable() {
             @Override
             public void run() {
@@ -72,14 +75,19 @@ public abstract class BaseImageLoader<T extends QueueProcessor.BaseTask> {
                         continue;
                     }
 
+                    Logger.d(TAG, "holder.getKey() = " + holder.getKey());
+                    Logger.d(TAG, "task.getKey() = " + task.getKey());
                     if (holder.getKey().equals(task.getKey())) {
                         receivers.remove(holder);
                         ImageReceiver receiver = holder.getReceiverReference().get();
                         if (receiver != null) {
+
+                            Logger.d(TAG, "on onImageReceived");
                             receiver.onImageReceived(bitmap, true);
                         }
                     }
                 }
+                Logger.d(TAG, "<END ---------------------------------------->");
 //                imageCache.decReference(task.getKey(), BaseLoader.this);
             }
         });

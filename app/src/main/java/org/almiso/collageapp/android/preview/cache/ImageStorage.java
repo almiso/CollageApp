@@ -3,7 +3,7 @@ package org.almiso.collageapp.android.preview.cache;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import org.almiso.collageapp.android.mdeia.Optimizer;
+import org.almiso.collageapp.android.media.Optimizer;
 import org.almiso.collageapp.android.util.IOUtils;
 
 import java.io.File;

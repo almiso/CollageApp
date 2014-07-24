@@ -1,4 +1,4 @@
-package org.almiso.collageapp.android.mdeia;
+package org.almiso.collageapp.android.media;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

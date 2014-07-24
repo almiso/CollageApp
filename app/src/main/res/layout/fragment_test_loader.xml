@@ -18,8 +18,7 @@
         android:columnWidth="@dimen/image_thumbnail_size"
         android:horizontalSpacing="@dimen/image_thumbnail_spacing"
         android:verticalSpacing="@dimen/image_thumbnail_spacing"
-        android:numColumns="auto_fit"
-        android:listSelector="@drawable/photogrid_list_selector" />
+        android:numColumns="auto_fit" />
 
     <!--android:clipToPadding="false"-->
     <!--android:drawSelectorOnTop="true"-->

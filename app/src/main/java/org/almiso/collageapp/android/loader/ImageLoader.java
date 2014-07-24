@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.support.v4.app.FragmentManager;
 
 import org.almiso.collageapp.android.base.CollageApplication;
-import org.almiso.collageapp.android.mdeia.Optimizer;
+import org.almiso.collageapp.android.media.Optimizer;
 import org.almiso.collageapp.android.preview.queue.QueueWorker;
 import org.almiso.collageapp.android.util.IOUtils;
 
@@ -95,7 +95,7 @@ public class ImageLoader extends BaseImageLoader<ImageTask> {
         }
 
         Bitmap bitmap = null;
-        synchronized (mPauseWorkLock) {
+//        synchronized (mPauseWorkLock) {
             if (mImageCache != null && !mExitTasksEarly) {
                 bitmap = mImageCache.getBitmapFromMemCache(String.valueOf(task.getStorageKey()));
             }
@@ -105,7 +105,7 @@ public class ImageLoader extends BaseImageLoader<ImageTask> {
                 final Bitmap newRes = loadImage(task);
                 mImageCache.addBitmapToCache(task.getStorageKey(), newRes);
                 notifyMediaLoaded(task, newRes);
-            }
+//            }
         }
     }
 

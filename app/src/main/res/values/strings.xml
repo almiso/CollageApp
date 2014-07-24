@@ -41,6 +41,8 @@
     <string name="st_no_photos">This user has not added any photos yet</string>
     <string name="st_error_get_location">An error occurred when determining your location</string>
     <string name="st_error_load_avatar">Error on loading avatar</string>
+    <string name="st_error_no_connection">No network connection found</string>
+
 
     <string name="st_close">Close</string>
     <string name="st_progress_title">Please wait</string>

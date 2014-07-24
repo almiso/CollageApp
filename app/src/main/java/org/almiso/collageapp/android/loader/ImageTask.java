@@ -19,8 +19,4 @@ public class ImageTask extends BaseTask {
         return String.valueOf(data);
     }
 
-//    @Override
-//    public String getKey() {
-//        return String.valueOf(data);
-//    }
 }

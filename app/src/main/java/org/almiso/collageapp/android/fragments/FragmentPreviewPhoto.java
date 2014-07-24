@@ -19,7 +19,7 @@ import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.mdeia.Optimizer;
+import org.almiso.collageapp.android.media.Optimizer;
 import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.util.IOUtils;
 

@@ -5,15 +5,13 @@ import android.os.Handler;
 import android.os.Looper;
 
 import org.almiso.collageapp.android.base.CollageApplication;
-import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.mdeia.Optimizer;
+import org.almiso.collageapp.android.media.Optimizer;
 import org.almiso.collageapp.android.preview.cache.BitmapHolder;
 import org.almiso.collageapp.android.preview.cache.ImageCache;
 import org.almiso.collageapp.android.preview.cache.ImageStorage;
 import org.almiso.collageapp.android.preview.queue.QueueProcessor;
 import org.almiso.collageapp.android.preview.queue.QueueWorker;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.concurrent.CopyOnWriteArrayList;

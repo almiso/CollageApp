@@ -15,8 +15,9 @@ import android.widget.ImageView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
-import org.almiso.collageapp.android.loader.ImageFetcher;
+import org.almiso.collageapp.android.loader.ImageFetcherOld;
 import org.almiso.collageapp.android.loader.Images;
+import org.almiso.collageapp.android.log.Logger;
 
 /**
  * Created by Alexandr Sosorev on 22.07.2014.
@@ -26,7 +27,7 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
     private int mImageThumbSize;
     private int mImageThumbSpacing;
     private ImageAdapter mAdapter;
-    private ImageFetcher mImageFetcher;
+    private ImageFetcherOld mImageFetcher;
 
 
     @Override
@@ -39,7 +40,7 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
     @Override
     public void onPause() {
         super.onPause();
-        mImageFetcher.setPauseWork(false);
+//        mImageFetcher.setPauseWork(false);
         mImageFetcher.setExitTasksEarly(true);
 //        mImageFetcher.flushCache();
     }
@@ -60,9 +61,9 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
         mImageThumbSize = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_size);
         mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
 
-        // The ImageFetcher takes care of loading images into our ImageView
+        // The ImageFetcherFAWEF takes care of loading images into our ImageView
         // children asynchronously
-        mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
+        mImageFetcher = new ImageFetcherOld(getActivity(), mImageThumbSize);
         mImageFetcher.setLoadingImage(R.drawable.ic_action_picture_dark);
         mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), 0.25f);
     }
@@ -74,6 +75,8 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
     }
 
     private void setUpView(View view) {
+
+
         final GridView mGridView = (GridView) view.findViewById(R.id.mediaGrid);
         mGridView.setAdapter(mAdapter);
         mGridView.setOnItemClickListener(this);
@@ -83,7 +86,7 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
                 // Pause fetcher to ensure smoother scrolling when flinging
                 if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                 } else {
-                    mImageFetcher.setPauseWork(false);
+//                    mImageFetcher.setPauseWork(false);
                 }
             }
 
@@ -157,6 +160,7 @@ public class FragmentTestLoader extends CollageFragment implements AdapterView.O
 
         @Override
         public View getView(int position, View convertView, ViewGroup container) {
+            Logger.d(TAG, "on getView");
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(mContext);

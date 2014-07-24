@@ -12,9 +12,9 @@ import org.almiso.collageapp.android.base.CollageApplication;
 /**
  * Created by Alexandr Sosorev on 22.07.2014.
  */
-public class ImageFetcher {
+public class ImageFetcherOld {
 
-    protected static final String TAG = "ImageFetcher";
+//    protected static final String TAG = "ImageFetcherm";
 
     private Resources mResources;
     private Bitmap mLoadingBitmap;
@@ -24,7 +24,7 @@ public class ImageFetcher {
 
     private ImageLoader loader;
 
-    public ImageFetcher(Context context, int imageSize) {
+    public ImageFetcherOld(Context context, int imageSize) {
 //        super(context, imageSize);
         init(context);
     }
