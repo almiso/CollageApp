@@ -1,6 +1,8 @@
 package org.almiso.collageapp.android.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,9 +35,29 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
         return view;
     }
 
-    private void setUpView(View view) {
+    private void setUpView(final View view) {
         view.findViewById(R.id.buttonSearchPhotos).setOnClickListener(this);
+        view.findViewById(R.id.buttonSearchPhotos).setEnabled(false);
+
         edNickname = (EditText) view.findViewById(R.id.editTextNick);
+        edNickname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() < 1) {
+                    view.findViewById(R.id.buttonSearchPhotos).setEnabled(false);
+                } else {
+                    view.findViewById(R.id.buttonSearchPhotos).setEnabled(true);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+            }
+        });
     }
 
     @Override

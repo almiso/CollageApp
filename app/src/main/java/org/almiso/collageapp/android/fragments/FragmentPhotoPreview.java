@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityPhotoPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
-import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.ImageWorker;
 import org.almiso.collageapp.android.media.util.VersionUtils;
@@ -53,7 +52,6 @@ public class FragmentPhotoPreview extends CollageFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Logger.d(TAG, "onCreateView in FragmentPhotoPreview");
         View v = inflater.inflate(R.layout.fragment_photo_preview, container, false);
         mImageView = (ImageView) v.findViewById(R.id.imageView);
         return v;
@@ -76,7 +74,6 @@ public class FragmentPhotoPreview extends CollageFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-//                activity.onBackPressed();
                 getActivity().finish();
                 return true;
             default:

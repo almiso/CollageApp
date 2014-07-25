@@ -8,20 +8,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
-import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
-import org.almiso.collageapp.android.preview.BaseView;
-import org.almiso.collageapp.android.preview.InstaPreviewView;
+import org.almiso.collageapp.android.media.util.Constants;
+import org.almiso.collageapp.android.media.util.ImageCache;
+import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
 /**
  * Created by almiso on 13.06.2014.
  */
-public class FragmentMain extends CollageFragment implements View.OnClickListener, UserDependenceReceiver {
+public class FragmentMain extends CollageImageFragment implements View.OnClickListener, UserDependenceReceiver {
 
     private InstaUserDependence mDependence;
 
@@ -29,7 +31,6 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
     private TextView mediaCount;
     private TextView followsCount;
     private TextView followedByCount;
-
 
     @Override
     public void onResume() {
@@ -40,9 +41,19 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         updateDataLayout();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, null);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         setUpView(view);
         return view;
     }
@@ -58,44 +69,22 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
+        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(application, Constants.IMAGE_CACHE_DIR);
+        cacheParams.setMemCacheSizePercent(0.25f);
+
+
         initFields(view);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.buttonMyPhotos:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_MY_PHOTOS,
-                        application.getAccount().getMe(), false);
-                break;
-            case R.id.buttonMyFollows:
-                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS,
-                        application.getAccount().getMe());
-                break;
-            case R.id.buttonMyFollowedBy:
-                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY,
-                        application.getAccount().getMe());
-                break;
-            case R.id.buttonSearchFeed:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_FEED,
-                        application.getAccount().getMe(), false);
-                break;
-            case R.id.avatarTouchLayer:
-                Intent intent = new Intent(application, ActivityAvatarPreview.class);
-                intent.putExtra("EXTRA_USER", application.getAccount().getMe());
-                startActivity(intent);
-                break;
-        }
-
-    }
 
     private void initFields(View view) {
         ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
-        InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
-        previewView.setEmptyDrawable(R.drawable.ic_action_person);
-        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
-        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
-        previewView.requestAvatar();
+
+        ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
+        mImageFetcher.setImageSize(100);
+        mImageFetcher.setShape(ImageShape.SHAPE_CIRCLE);
+        mImageFetcher.setImageFadeIn(false);
+        mImageFetcher.loadImage(application.getAccount().getMe().getProfile_picture_url(), avatar);
     }
 
     private void updateDataLayout() {
@@ -113,6 +102,34 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonMyPhotos:
+                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_MY_PHOTOS,
+                        application.getAccount().getMe(), false);
+                break;
+            case R.id.buttonMyFollows:
+                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS,
+                        application.getAccount().getMe());
+                break;
+            case R.id.buttonMyFollowedBy:
+                getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWED_BY,
+                        application.getAccount().getMe());
+                break;
+            case R.id.buttonSearchFeed:
+                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_FEED,
+                        application.getAccount().getMe(), false);
+                break;
+            case R.id.avatarTouchLayer:
+                Intent intent = new Intent(application, ActivityAvatarPreview.class);
+                intent.putExtra("EXTRA_USER", application.getAccount().getMe());
+                startActivity(intent);
+                break;
+        }
+
+    }
+
+    @Override
     public void onUserDependenceReceived(InstaUserDependence dependence) {
         mDependence = dependence;
         updateDataLayout();
@@ -124,10 +141,11 @@ public class FragmentMain extends CollageFragment implements View.OnClickListene
         inflater.inflate(R.menu.menu_frag_main, menu);
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
         activity.getSupportActionBar().setHomeButtonEnabled(false);
+
         activity.getSupportActionBar().setTitle(R.string.st_app_name);
-        activity.getSupportActionBar().setSubtitle(null);
+        activity.getSupportActionBar().setSubtitle(R.string.st_main_subtitle);
     }
 
     @Override

@@ -18,7 +18,6 @@ import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentPhotoPreview;
-import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.VersionUtils;
@@ -51,7 +50,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        mPager.setAdapter(mAdapter);
         mImageFetcher.setExitTasksEarly(false);
         instaSearchSource.setListener(this);
         onSourceStateChanged();
@@ -64,8 +62,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
         mImageFetcher.setExitTasksEarly(true);
         mImageFetcher.flushCache();
         instaSearchSource.setListener(null);
-//        instaSearchSource.cancelQuery();
-        application.getDataSourceKernel().removeInstaSearchSource(user.getId() + ACTION);
     }
 
     @Override
@@ -86,13 +82,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logger.d(TAG, "onCreate in ActivityPhotoPreview");
-
-//        if (savedInstanceState != null) {
-//            user = (InstaUser) savedInstanceState.getSerializable(EXTRA_USER);
-//            ACTION = savedInstanceState.getInt(EXTRA_ACTION);
-//            currentId = savedInstanceState.getInt(EXTRA_IMAGE);
-//        }
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -102,7 +91,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
             setContentView(R.layout.activity_photo_preview);
             setUpView();
         } else {
-            Logger.d(TAG,"Fuck in ActivityPhotoPreview");
             Handler handler = new Handler();
             handler.post(new Runnable() {
                 @Override
@@ -134,8 +122,15 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
         mAdapter = new ImagePagerAdapter(getSupportFragmentManager());
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
-
         mPager.setOffscreenPageLimit(2);
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mPager.setCurrentItem(currentId, false);
+            }
+        });
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -157,9 +152,9 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
             });
             mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             actionBar.hide();
-
-
         }
+
+
     }
 
 
@@ -191,7 +186,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
                 InstaSearchResult searchResult = searchResults.get(position);
                 return FragmentPhotoPreview.newInstance(searchResult.getStandardResolutionUrl());
             } else {
-                Logger.d(TAG, "getItem in Activity");
                 return FragmentPhotoPreview.newInstance("");
             }
 
@@ -210,10 +204,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
 
     @Override
     public void onSourceStateChanged() {
-        if (currentId != -1) {
-            mPager.setCurrentItem(currentId);
-        }
-//        mAdapter.notifyDataSetChanged();
     }
 
     @Override

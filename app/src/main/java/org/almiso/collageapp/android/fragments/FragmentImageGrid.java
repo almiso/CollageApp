@@ -18,6 +18,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -27,40 +28,35 @@ import android.widget.TextView;
 import org.almiso.collageapp.android.BuildConfig;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityPhotoPreview;
-import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.ExceptionSourceListener;
 import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.media.util.ImageCache;
-import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.RecyclingImageView;
 import org.almiso.collageapp.android.media.util.VersionUtils;
-import org.almiso.collageapp.android.preview.InstaPreviewView;
 import org.almiso.collageapp.android.preview.PreviewConfig;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by Alexandr Sosorev on 24.07.2014.
  */
-public class FragmentImageGrid extends CollageFragment implements AdapterView.OnItemClickListener, ViewSourceListener, ExceptionSourceListener, View.OnClickListener {
+public class FragmentImageGrid extends CollageImageFragment implements AdapterView.OnItemClickListener, ViewSourceListener, ExceptionSourceListener, View.OnClickListener {
     public static final int ACTION_SEARCH_MY_PHOTOS = 1;
-    public static final int ACTION_SEARCH_MY_LIKED_PHOTOS = 2;
     public static final int ACTION_SEARCH_USER_PHOTOS = 3;
     public static final int ACTION_SEARCH_FEED = 4;
-    public static final int ACTION_SEARCH_NEAR = 5;
     private static final String TAG = "ImageGridFragment";
     private static final String IMAGE_CACHE_DIR = "thumbs";
 
     private int mImageThumbSize;
     private int mImageThumbSpacing;
     private ImageAdapter mAdapter;
-    private ImageFetcher mImageFetcher;
 
     /*
      * Fields
@@ -68,11 +64,12 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     private InstaUser user;
     private int ACTION;
     private boolean canOpenProf;
-    private LinkedHashMap<Integer, InstaSearchResult> selectedPhotos;
     private ArrayList<InstaSearchResult> searchResults = new ArrayList<InstaSearchResult>();
     private InstaSearchSource instaSearchSource;
 
     private boolean isInEditMode = false;
+
+    private LinkedHashMap<Integer, InstaSearchResult> selectedPhotos;
 
     /*
      *    UI Controls
@@ -81,11 +78,13 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     private TextView empty;
     private GridView gridView;
     private FrameLayout mBottom;
+    private TextView tvEmpty;
+    private ViewGroup mContainerView;
+    private Button buttonMakeCollage;
 
     @Override
     public void onResume() {
         super.onResume();
-        mImageFetcher.setExitTasksEarly(false);
         mAdapter.notifyDataSetChanged();
 
         instaSearchSource.setListener(this);
@@ -97,9 +96,6 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     @Override
     public void onPause() {
         super.onPause();
-        mImageFetcher.setPauseWork(false);
-        mImageFetcher.setExitTasksEarly(true);
-        mImageFetcher.flushCache();
         instaSearchSource.setListener(null);
         application.getDataSourceKernel().getExceptionSource().unregisterListener(this);
     }
@@ -107,19 +103,17 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mImageFetcher.closeCache();
-//        instaSearchSource.cancelQuery();
         application.getDataSourceKernel().removeInstaSearchSource(user.getId() + ACTION);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (selectedPhotos.size() > 0) {
-            for (int i = 1; i < selectedPhotos.size() + 1; i++) {
-                selectedPhotos.get(i).setChecked(false);
-            }
-        }
+//        if (selectedPhotos.size() > 0) {
+//            for (int i = 1; i < selectedPhotos.size() + 1; i++) {
+//                selectedPhotos.get(i).setChecked(false);
+//            }
+//        }
     }
 
     public FragmentImageGrid() {
@@ -139,17 +133,11 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            Object mUser = (Object) savedInstanceState.getSerializable("user");
-            user = (InstaUser) mUser;
+            user = (InstaUser) savedInstanceState.getSerializable("user");
             ACTION = savedInstanceState.getInt("action");
             canOpenProf = savedInstanceState.getBoolean("canOpenProf");
-
-            Object select = (Object) savedInstanceState.getSerializable("selectedPhotos");
-            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) select;
-
+            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) savedInstanceState.getSerializable("selectedPhotos");
             isInEditMode = savedInstanceState.getBoolean("isInEditMode");
-
-
         }
 
 
@@ -157,24 +145,15 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
         mImageThumbSpacing = getResources().getDimensionPixelSize(R.dimen.image_thumbnail_spacing);
 
         mAdapter = new ImageAdapter(getActivity());
-
-        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(getActivity(), IMAGE_CACHE_DIR);
-        cacheParams.setMemCacheSizePercent(0.25f);
-
-        mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
+        mImageFetcher.setImageSize(mImageThumbSize);
         mImageFetcher.setLoadingImage(R.drawable.ic_action_picture_dark);
-        mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(), cacheParams);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            Object mUser = (Object) savedInstanceState.getSerializable("user");
-            user = (InstaUser) mUser;
+            user = (InstaUser) savedInstanceState.getSerializable("user");
             ACTION = savedInstanceState.getInt("action");
-            canOpenProf = savedInstanceState.getBoolean("canOpenProf");
-            Object select = (Object) savedInstanceState.getSerializable("selectedPhotos");
-            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) select;
-
+            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) savedInstanceState.getSerializable("selectedPhotos");
             isInEditMode = savedInstanceState.getBoolean("isInEditMode");
         } else {
             selectedPhotos = new LinkedHashMap<Integer, InstaSearchResult>();
@@ -215,6 +194,9 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
         instaSearchSource = application.getDataSourceKernel().getInstaSearchSource(user.getId() + ACTION);
 
         mBottom = (FrameLayout) view.findViewById(R.id.mBottom);
+        tvEmpty = (TextView) view.findViewById(android.R.id.empty);
+        mContainerView = (ViewGroup) view.findViewById(R.id.container);
+        buttonMakeCollage = (Button) view.findViewById(R.id.buttonMakeCollage);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
         final GridView mGridView = (GridView) view.findViewById(R.id.gridView);
@@ -288,23 +270,16 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
             if (getNumColumns() == 0) {
                 return 0;
             }
-
-            // Size + number of columns for top empty row
-//            return Images.imageThumbUrls.length + mNumColumns;
-//            return Images.imageThumbUrls.length;
             return searchResults.size() + 1;
         }
 
         @Override
         public InstaSearchResult getItem(int position) {
-//            return position < mNumColumns ? null : Images.imageThumbUrls[position - mNumColumns];
-//            return Images.imageThumbUrls[position];
             return searchResults.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-//            return position < mNumColumns ? 0 : position - mNumColumns;
             return position;
         }
 
@@ -337,7 +312,7 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
         public View getView(int position, View convertView, ViewGroup container) {
             if (position < searchResults.size()) {
                 instaSearchSource.getViewSource().onItemsShown(position);
-                ImageView imageView = null;
+                ImageView imageView;
 
                 if (convertView == null) {
                     FrameLayout res = new FrameLayout(context);
@@ -408,29 +383,6 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
                 }
                 return res;
             }
-
-
-            // Now handle the main ImageView thumbnails
-//            ImageView imageView;
-//            if (convertView == null) { // if it's not recycled, instantiate and
-//                // initialize
-//                imageView = new RecyclingImageView(context);
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                imageView.setLayoutParams(mImageViewLayoutParams);
-//            } else { // Otherwise re-use the converted view
-//                imageView = (ImageView) convertView;
-//            }
-//
-//            // Check the height matches our calculated column width
-//            if (imageView.getLayoutParams().height != mItemHeight) {
-//                imageView.setLayoutParams(mImageViewLayoutParams);
-//            }
-
-            // Finally load the image asynchronously into the ImageView, this
-            // also takes care of
-            // setting a placeholder image while the background thread runs
-//            mImageFetcher.loadImage(Images.imageThumbUrls[position], imageView);
-//            return imageView;
         }
 
         /**
@@ -489,9 +441,8 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
             activity.getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
             MenuItem avatarItem = menu.findItem(R.id.userAvatar);
 
-            InstaPreviewView imageView = (InstaPreviewView) avatarItem.getActionView().findViewById(R.id.image);
-            imageView.setEmptyDrawable(R.drawable.ic_action_person);
-            imageView.requestUserAvatar(user);
+            RecyclingImageView imageView = (RecyclingImageView) avatarItem.getActionView().findViewById(R.id.image);
+            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView);
 
             View touchLayer = avatarItem.getActionView().findViewById(R.id.avatarTouchLayer);
             touchLayer.setOnClickListener(this);
@@ -521,6 +472,14 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     private void updateBottom() {
         if (isInEditMode) {
             showView(mBottom);
+            Logger.d(TAG, "size = " + selectedPhotos.size());
+            if (selectedPhotos.isEmpty() || selectedPhotos.size() == 0) {
+                showView(tvEmpty);
+                buttonMakeCollage.setEnabled(false);
+            } else {
+                hideView(tvEmpty);
+                buttonMakeCollage.setEnabled(true);
+            }
         } else {
             goneView(mBottom);
         }
@@ -539,8 +498,9 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!isInEditMode) {
+            // Just open photo preview
             Intent i = new Intent(getActivity(), ActivityPhotoPreview.class);
-            i.putExtra(ActivityPhotoPreview.EXTRA_IMAGE, (int) position);
+            i.putExtra(ActivityPhotoPreview.EXTRA_IMAGE, position);
             i.putExtra(ActivityPhotoPreview.EXTRA_USER, user);
             i.putExtra(ActivityPhotoPreview.EXTRA_ACTION, ACTION);
             if (VersionUtils.hasJellyBean()) {
@@ -550,8 +510,41 @@ public class FragmentImageGrid extends CollageFragment implements AdapterView.On
                 startActivity(i);
             }
         } else {
-
+            // Select photo and add it to list
+            final InstaSearchResult result = (InstaSearchResult) adapterView.getItemAtPosition(position);
+            selectedPhotos.put(selectedPhotos.size() + 1, result);
+            addItem(result);
+            updateBottom();
         }
+    }
+
+    private void addItem(final InstaSearchResult result) {
+        final ViewGroup newView = (ViewGroup) LayoutInflater.from(application).inflate(R.layout.item_img_selected,
+                mContainerView, false);
+
+        ImageView img = (ImageView) newView.findViewById(R.id.imgSelected);
+        mImageFetcher.loadImage(result.getThumbnailUrl(), img);
+
+        newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mContainerView.removeView(newView);
+                selectedPhotos.remove(getKeyByValue(selectedPhotos, result));
+                updateBottom();
+            }
+        });
+
+        mContainerView.addView(newView, 0);
+
+    }
+
+    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (value.equals(entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     @Override

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    android:background="@drawable/bg_settings_layout">
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:background="@drawable/bg_settings_layout">
 
-    <org.almiso.collageapp.android.preview.InstaPreviewView
+    <org.almiso.collageapp.android.media.util.RecyclingImageView
         android:layout_height="48dp"
         android:layout_width="48dp"
-        android:id="@+id/image" />
+        android:id="@+id/image"/>
 
     <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:id="@+id/avatarTouchLayer"
-        android:src="@drawable/st_selector_avatar_rect" />
+        android:src="@drawable/st_selector_avatar_rect"/>
 
 </FrameLayout>

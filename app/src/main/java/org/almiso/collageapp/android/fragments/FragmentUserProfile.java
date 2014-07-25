@@ -8,23 +8,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
-import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
-import org.almiso.collageapp.android.preview.BaseView;
-import org.almiso.collageapp.android.preview.InstaPreviewView;
+import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
 /**
  * Created by almiso on 21.06.2014.
  */
-public class FragmentUserProfile extends CollageFragment implements View.OnClickListener, UserDependenceReceiver {
+public class FragmentUserProfile extends CollageImageFragment implements View.OnClickListener, UserDependenceReceiver {
 
 
     protected static String TAG = "FragmentUserProfile";
@@ -110,15 +110,14 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
 
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
-        InstaPreviewView previewView = (InstaPreviewView) view.findViewById(R.id.avatar);
-        previewView.setEmptyDrawable(R.drawable.ic_action_person);
-        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
-        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
-
-
         if (user != null) {
-            previewView.requestUserAvatar(user);
             ((TextView) view.findViewById(R.id.name)).setText(user.getDisplayName().toUpperCase());
+
+            ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
+            mImageFetcher.setImageSize(100);
+            mImageFetcher.setShape(ImageShape.SHAPE_CIRCLE);
+            mImageFetcher.setImageFadeIn(false);
+            mImageFetcher.loadImage(user.getProfile_picture_url(), avatar);
         }
     }
 
@@ -149,7 +148,7 @@ public class FragmentUserProfile extends CollageFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonMedia:
-                getRootController().openFragmentSearch(FragmentPhotoGrid.ACTION_SEARCH_USER_PHOTOS, user, false);
+                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_USER_PHOTOS, user, false);
                 break;
             case R.id.buttonFollows:
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS, user);

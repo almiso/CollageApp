@@ -3,22 +3,27 @@
 
     <item android:state_enabled="true" android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/st_btn_main_pressed" />
+            <solid android:color="@color/st_btn_main_pressed"/>
         </shape>
     </item>
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/st_btn_main_pressed" />
+            <solid android:color="@color/st_btn_main_pressed"/>
         </shape>
     </item>
     <item android:state_enabled="true" android:state_hovered="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/st_btn_main_pressed" />
+            <solid android:color="@color/st_btn_main_pressed"/>
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/st_btn_main_disable"/>
         </shape>
     </item>
     <item android:state_enabled="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/st_btn_main_normal" />
+            <solid android:color="@color/st_btn_main_normal"/>
         </shape>
     </item>
 

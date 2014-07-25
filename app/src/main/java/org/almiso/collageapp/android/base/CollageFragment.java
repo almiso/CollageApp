@@ -7,8 +7,9 @@ import android.view.animation.AlphaAnimation;
 /**
  * Created by almiso on 07.06.2014.
  */
-public class CollageFragment extends CollageBaseFragment {
+public abstract class CollageFragment extends CollageBaseFragment {
     private boolean saveInStack = true;
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

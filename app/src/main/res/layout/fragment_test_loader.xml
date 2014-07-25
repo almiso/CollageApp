@@ -44,12 +44,57 @@
     <FrameLayout
         android:id="@+id/mBottom"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="160dp"
         android:background="@color/white"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="12dp"
         android:layout_alignParentBottom="true">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="92dp">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:divider="?android:dividerVertical"
+                android:orientation="horizontal"
+                android:showDividers="middle"/>
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@android:id/empty"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:textSize="18sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center|top"
+            android:gravity="center"
+            android:text="@string/st_empty_collage"
+            android:fontFamily="sans-serif-light"
+            android:textColor="?android:textColorSecondary"/>
+
+        <Button
+            android:id="@+id/buttonMakeCollage"
+            style="@style/ButtonMain"
+            android:layout_width="match_parent"
+            android:layout_gravity="center|bottom"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/st_make_collage"
+            android:layout_height="48dp"/>
+
     </FrameLayout>
 
 </RelativeLayout>

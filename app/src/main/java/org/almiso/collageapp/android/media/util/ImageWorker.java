@@ -20,6 +20,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -54,8 +60,14 @@ public abstract class ImageWorker {
     private static final int MESSAGE_FLUSH = 2;
     private static final int MESSAGE_CLOSE = 3;
 
+    private int shape = ImageShape.SHAPE_RECTANGLE;
+
     protected ImageWorker(Context context) {
         mResources = context.getResources();
+    }
+
+    public void setShape(int shape) {
+        this.shape = shape;
     }
 
     /**
@@ -82,7 +94,13 @@ public abstract class ImageWorker {
 
         if (value != null) {
             // Bitmap found in memory cache
-            imageView.setImageDrawable(value);
+            if (shape == ImageShape.SHAPE_RECTANGLE) {
+                imageView.setImageDrawable(value);
+            } else if (shape == ImageShape.SHAPE_CIRCLE) {
+                imageView.setImageBitmap(getRoundedCornerBitmap(value));
+            } else {
+                imageView.setImageDrawable(value);
+            }
         } else if (cancelPotentialWork(data, imageView)) {
             //BEGIN_INCLUDE(execute_background_task)
             final BitmapWorkerTask task = new BitmapWorkerTask(data, imageView);
@@ -329,6 +347,8 @@ public abstract class ImageWorker {
                 if (BuildConfig.DEBUG) {
 //                    Log.d(TAG, "onPostExecute - setting bitmap");
                 }
+
+
                 setImageDrawable(imageView, value);
             }
             //END_INCLUDE(complete_background_work)
@@ -385,7 +405,7 @@ public abstract class ImageWorker {
      * @param imageView
      * @param drawable
      */
-    private void setImageDrawable(ImageView imageView, Drawable drawable) {
+    private void setImageDrawable(ImageView imageView, BitmapDrawable drawable) {
         if (mFadeInBitmap) {
             // Transition drawable with a transparent drawable and the final drawable
             final TransitionDrawable td =
@@ -397,10 +417,29 @@ public abstract class ImageWorker {
             imageView.setBackgroundDrawable(
                     new BitmapDrawable(mResources, mLoadingBitmap));
 
-            imageView.setImageDrawable(td);
+//            imageView.setImageDrawable(td);
+
+            if (shape == ImageShape.SHAPE_RECTANGLE) {
+                imageView.setImageDrawable(td);
+            } else if (shape == ImageShape.SHAPE_CIRCLE) {
+                imageView.setImageBitmap(getRoundedCornerBitmap(drawable));
+            } else {
+                imageView.setImageDrawable(td);
+            }
+
             td.startTransition(FADE_IN_TIME);
         } else {
-            imageView.setImageDrawable(drawable);
+            // Bitmap found in memory cache
+            if (shape == ImageShape.SHAPE_RECTANGLE) {
+                imageView.setImageDrawable(drawable);
+            } else if (shape == ImageShape.SHAPE_CIRCLE) {
+                imageView.setImageBitmap(getRoundedCornerBitmap(drawable));
+            } else {
+                imageView.setImageDrawable(drawable);
+            }
+
+
+//            imageView.setImageDrawable(drawable);
         }
     }
 
@@ -482,5 +521,30 @@ public abstract class ImageWorker {
 
     public void closeCache() {
         new CacheAsyncTask().execute(MESSAGE_CLOSE);
+    }
+
+
+    public Bitmap getRoundedCornerBitmap(BitmapDrawable bitmap) {
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getBitmap().getWidth(), bitmap.getBitmap()
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        float pixels = 100f;
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getBitmap().getWidth(), bitmap.getBitmap().getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = pixels;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap.getBitmap(), rect, rect, paint);
+
+        return output;
     }
 }

@@ -20,7 +20,7 @@ public interface RootController {
 
     public void openFragmentSearchUserByNick();
 
-    void openPreview(InstaSearchResult result, boolean canOpenProf);
+//    void openPreview(InstaSearchResult result, boolean canOpenProf);
 
     public void openFragmentSearch(int action, InstaUser user, boolean canOpenProf);
 

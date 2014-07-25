@@ -16,7 +16,6 @@ import org.almiso.collageapp.android.fragments.FragmentImageGrid;
 import org.almiso.collageapp.android.fragments.FragmentInstaCollage;
 import org.almiso.collageapp.android.fragments.FragmentLaunch;
 import org.almiso.collageapp.android.fragments.FragmentMain;
-import org.almiso.collageapp.android.fragments.FragmentPreviewPhoto;
 import org.almiso.collageapp.android.fragments.FragmentSearchUserByNick;
 import org.almiso.collageapp.android.fragments.FragmentSettings;
 import org.almiso.collageapp.android.fragments.FragmentUserList;
@@ -202,7 +201,6 @@ public class FragmentScreenController implements RootController {
     @Override
     public void openFragmentSearch(int action, InstaUser user, boolean canOpenProf) {
 
-        //TODO change back to normal. Now is testing
         Bundle args = new Bundle();
         args.putInt("action", action);
         args.putBoolean("canOpenProf", canOpenProf);
@@ -211,18 +209,6 @@ public class FragmentScreenController implements RootController {
         frag.setArguments(args);
         openScreen(frag);
 
-//        openScreen(new FragmentImageGrid());
-
-    }
-
-    @Override
-    public void openPreview(InstaSearchResult result, boolean canOpenProf) {
-        Bundle args = new Bundle();
-        args.putBoolean("canOpenProf", canOpenProf);
-        args.putSerializable("result", result);
-        FragmentPreviewPhoto frag = new FragmentPreviewPhoto();
-        frag.setArguments(args);
-        openScreen(frag);
     }
 
 

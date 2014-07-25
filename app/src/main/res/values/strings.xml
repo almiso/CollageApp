@@ -2,7 +2,7 @@
 <resources>
 
     <string name="st_app_name">CollageApp</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="st_main_subtitle">Make beautiful collages</string>
 
     <string name="st_yes">Yes</string>
     <string name="st_no">No</string>
@@ -33,6 +33,8 @@
     <string name="st_start_search">Search photos</string>
     <string name="st_welcome">Welcome to Collage App!</string>
     <string name="st_welcome_sub">Here you can make collage of 4 photos, taken from users Instagram</string>
+    <string name="st_empty_collage">Tap on photos to add to collage</string>
+    <string name="st_make_collage">Make collage!</string>
 
     <string name="st_error_title">Error</string>
     <string name="st_error_unknown">An unknown error occurred</string>

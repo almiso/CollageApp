@@ -1,14 +1,10 @@
 package org.almiso.collageapp.android.core;
 
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
-
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageApplication;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
-import org.almiso.collageapp.android.fragments.FragmentPhotoGrid;
+import org.almiso.collageapp.android.fragments.FragmentImageGrid;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.ui.source.ViewSource;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
@@ -28,7 +24,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by almiso on 10.06.2014.
@@ -92,28 +87,11 @@ public class InstaSearchSource {
     private String prepareUrl() {
         String url = "";
         if (nextUrl == null || nextUrl.equals("")) {
-            if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_MY_LIKED_PHOTOS) {
-                url = ApiUtils.PATTERN_MY_BEST_PHOTOS + "count=" + PHOTO_COUNT + "&access_token=" +
-                        application.getAuthKernel().getAccount().getAccessToken();
-            } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_FEED) {
+            if (ACTION == FragmentImageGrid.ACTION_SEARCH_FEED) {
                 url = ApiUtils.PATTERN_USER + "self/feed/?count=" + +PHOTO_COUNT + "&access_token=" +
                         application.getAuthKernel().getAccount().getAccessToken();
-
-//            } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_NEAR) {
-//                Location location = getMyLocation();
-//                Logger.d(TAG, "location = " + location);
-//                if (location != null) {
-//                    url = ApiUtils.PATTERN_LOCATION + "search?/lat=" + +location.getLatitude() + "&lng=" +
-//                            location.getLongitude() +
-//                            "&access_token=" +
-//                            application.getAuthKernel().getAccount().getAccessToken();
-//                } else {
-//                    url = "";
-//                    application.getDataSourceKernel().getExceptionSource().
-//                            notifyException(application.getResources().getString(R.string.st_error_get_location));
-//                }
-            } else if (ACTION == FragmentPhotoGrid.ACTION_SEARCH_MY_PHOTOS ||
-                    ACTION == FragmentPhotoGrid.ACTION_SEARCH_USER_PHOTOS) {
+            } else if (ACTION == FragmentImageGrid.ACTION_SEARCH_MY_PHOTOS ||
+                    ACTION == FragmentImageGrid.ACTION_SEARCH_USER_PHOTOS) {
                 url = ApiUtils.PATTERN_USER + String.valueOf(this.userId)
                         + "/media/recent/?count=" + PHOTO_COUNT +
                         "&access_token=" + application.getAuthKernel().getAccount().getAccessToken();
@@ -124,17 +102,6 @@ public class InstaSearchSource {
         } else {
             return nextUrl;
         }
-    }
-
-    private Location getMyLocation() {
-        LocationManager lm = (LocationManager) application.getSystemService(Context.LOCATION_SERVICE);
-        List<String> providers = lm.getProviders(true);
-        Location location = null;
-        for (int i = providers.size() - 1; i >= 0; i--) {
-            location = lm.getLastKnownLocation(providers.get(i));
-            if (location != null) break;
-        }
-        return location;
     }
 
 

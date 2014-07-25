@@ -15,18 +15,18 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.almiso.collageapp.android.R;
-import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.ExceptionSourceListener;
 import org.almiso.collageapp.android.core.InstaUserSource;
 import org.almiso.collageapp.android.core.model.InstaUser;
-import org.almiso.collageapp.android.preview.BaseView;
-import org.almiso.collageapp.android.preview.InstaPreviewView;
+import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
 
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 /**
  * Created by almiso on 21.06.2014.
  */
-public class FragmentUserList extends CollageFragment implements View.OnClickListener, ViewSourceListener, ExceptionSourceListener {
+public class FragmentUserList extends CollageImageFragment implements ViewSourceListener, ExceptionSourceListener {
 
     public static final int ACTION_FOLLOWS = 1;
     public static final int ACTION_FOLLOWED_BY = 2;
@@ -104,7 +104,7 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
             user = null;
             ACTION = ACTION_FOLLOWS;
         }
-        View view = inflater.inflate(R.layout.fragment_user_list, null);
+        View view = inflater.inflate(R.layout.fragment_user_list, container, false);
         if (user == null) {
             view.post(new Runnable() {
                 @Override
@@ -198,11 +198,7 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
                                 new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, getPx(56));
                         res.setLayoutParams(params);
 
-                        InstaPreviewView previewView = new InstaPreviewView(context);
-                        previewView.setEmptyDrawable(R.drawable.ic_action_person);
-                        previewView.setBgColor(getResources().getColor(R.color.grey_holo_h));
-                        previewView.setShape(BaseView.SHAPE.SHAPE_CIRCLE);
-//                        previewView.setBackgroundColor(getResources().getColor(R.color.grey_holo));
+                        ImageView previewView = new ImageView(context);
 
                         FrameLayout.LayoutParams photoParams = new FrameLayout.LayoutParams(getPx(48), getPx(48));
                         photoParams.setMargins(getPx(4), getPx(4), getPx(4), getPx(4));
@@ -229,8 +225,14 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
 
                     InstaUser user = getItem(position);
 
-                    InstaPreviewView previewView = (InstaPreviewView) ((ViewGroup) convertView).getChildAt(0);
-                    previewView.requestUserAvatar(user);
+
+                    ImageView previewView = (ImageView) ((ViewGroup) convertView).getChildAt(0);
+
+                    mImageFetcher.setImageSize(100);
+                    mImageFetcher.setShape(ImageShape.SHAPE_CIRCLE);
+                    mImageFetcher.setImageFadeIn(false);
+                    mImageFetcher.loadImage(user.getProfile_picture_url(), previewView);
+
 
                     TextView size = (TextView) ((ViewGroup) convertView).getChildAt(1);
                     size.setText(user.getDisplayName());
@@ -260,13 +262,6 @@ public class FragmentUserList extends CollageFragment implements View.OnClickLis
             }
         };
         list.setAdapter(adapter);
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        }
 
     }
 

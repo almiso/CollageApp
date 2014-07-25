@@ -24,7 +24,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp">
 
-                <org.almiso.collageapp.android.preview.InstaPreviewView
+
+                <ImageView
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
@@ -160,8 +161,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/st_feed"/>
-
-
 
 
     </LinearLayout>

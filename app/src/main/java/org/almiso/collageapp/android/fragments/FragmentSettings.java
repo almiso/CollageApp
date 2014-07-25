@@ -1,6 +1,5 @@
 package org.almiso.collageapp.android.fragments;
 
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import org.almiso.collageapp.android.base.CollageFragment;
 public class FragmentSettings extends CollageFragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_settings, null);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
         setUpView(view);
         return view;
     }
@@ -40,27 +39,16 @@ public class FragmentSettings extends CollageFragment implements View.OnClickLis
     }
 
     private String getVersionString() {
-        String result = "";
-        String versionName = "";
-        int versionCode = 1;
+        String versionName;
 
         PackageManager manager = application.getPackageManager();
-        PackageInfo info = null;
-
-
         try {
-            info = manager.getPackageInfo(application.getPackageName(), 0);
-            versionName = info.versionName;
-            versionCode = info.versionCode;
+            versionName = manager.getPackageInfo(application.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             versionName = "1.0.0";
-            versionCode = 1;
             e.printStackTrace();
         }
-//        result = getString(R.string.st_version_name) + " " + versionName + " (" + getString(R.string.st_vercion_code)
-//                + " " + versionCode + ")";
-        result = versionName;
-        return result;
+        return versionName;
     }
 
     @Override

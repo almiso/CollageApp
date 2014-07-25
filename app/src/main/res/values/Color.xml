@@ -17,14 +17,13 @@
 
     <color name="st_btn_main_normal">#8bc34a</color>
     <color name="st_btn_main_pressed">#7cb342</color>
+    <color name="st_btn_main_disable">#dcedc8</color>
 
     <color name="st_edit_hint">#b2b2b2</color>
 
     <color name="st_category">#91a7ff</color>
 
-
     <color name="st_transparent">#88000000</color>
-
 
     <color name="st_grid_state_pressed">#1Affffff</color>
     <color name="st_grid_state_focused">#80000000</color>

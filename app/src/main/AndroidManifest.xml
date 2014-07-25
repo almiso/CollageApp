@@ -15,10 +15,10 @@
         android:theme="@style/AppTheme">
 
 
-        <!--android:screenOrientation="portrait"-->
         <activity
             android:theme="@style/AppTheme"
             android:name=".activity.StartActivity"
+            android:screenOrientation="portrait"
             android:label="@string/st_app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -26,16 +26,6 @@
             </intent-filter>
         </activity>
 
-        <!--<activity-->
-        <!--android:name=".activity.ActivityAvatarPreview"-->
-        <!--android:parentActivityName=".activity.StartActivity"-->
-        <!--android:theme="@style/AvatarActivity"-->
-        <!--android:screenOrientation="portrait"-->
-        <!--android:label="@string/st_photo">-->
-        <!--<meta-data-->
-        <!--android:name="android.support.PARENT_ACTIVITY"-->
-        <!--android:value=".activity.StartActivity"/>-->
-        <!--</activity>-->
         <activity
             android:name=".activity.ActivityAvatarPreview"
             android:theme="@style/AvatarActivity"
@@ -46,6 +36,7 @@
         <activity
             android:name=".activity.ActivityPhotoPreview"
             android:theme="@style/AvatarActivity"
+            android:screenOrientation="portrait"
             android:label="@string/st_photo">
         </activity>
 
