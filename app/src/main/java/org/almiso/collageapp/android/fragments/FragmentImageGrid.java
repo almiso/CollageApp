@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,7 +42,6 @@ import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -69,7 +69,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
 
     private boolean isInEditMode = false;
 
-    private LinkedHashMap<Integer, InstaSearchResult> selectedPhotos;
+    private ArrayList<InstaSearchResult> mSelectedPhotos;
 
     /*
      *    UI Controls
@@ -81,6 +81,8 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     private TextView tvEmpty;
     private ViewGroup mContainerView;
     private Button buttonMakeCollage;
+
+    private long start;
 
     @Override
     public void onResume() {
@@ -123,7 +125,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("user", user);
-        outState.putSerializable("selectedPhotos", selectedPhotos);
+        outState.putSerializable("mSelectedPhotos", mSelectedPhotos);
         outState.putInt("action", ACTION);
         outState.putBoolean("canOpenProf", canOpenProf);
         outState.putBoolean("isInEditMode", isInEditMode);
@@ -136,7 +138,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
             user = (InstaUser) savedInstanceState.getSerializable("user");
             ACTION = savedInstanceState.getInt("action");
             canOpenProf = savedInstanceState.getBoolean("canOpenProf");
-            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) savedInstanceState.getSerializable("selectedPhotos");
+            mSelectedPhotos = (ArrayList<InstaSearchResult>) savedInstanceState.getSerializable("mSelectedPhotos");
             isInEditMode = savedInstanceState.getBoolean("isInEditMode");
         }
 
@@ -150,13 +152,14 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        start = SystemClock.uptimeMillis();
         if (savedInstanceState != null) {
             user = (InstaUser) savedInstanceState.getSerializable("user");
             ACTION = savedInstanceState.getInt("action");
-            selectedPhotos = (LinkedHashMap<Integer, InstaSearchResult>) savedInstanceState.getSerializable("selectedPhotos");
+            mSelectedPhotos = (ArrayList<InstaSearchResult>) savedInstanceState.getSerializable("mSelectedPhotos");
             isInEditMode = savedInstanceState.getBoolean("isInEditMode");
         } else {
-            selectedPhotos = new LinkedHashMap<Integer, InstaSearchResult>();
+            mSelectedPhotos = new ArrayList<>();
         }
         if (getArguments() != null) {
             user = (InstaUser) getArguments().getSerializable("user");
@@ -190,13 +193,14 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     }
 
     private void setUpView(View view) {
-
+        mSelectedPhotos = new ArrayList<>();
         instaSearchSource = application.getDataSourceKernel().getInstaSearchSource(user.getId() + ACTION);
 
         mBottom = (FrameLayout) view.findViewById(R.id.mBottom);
         tvEmpty = (TextView) view.findViewById(android.R.id.empty);
         mContainerView = (ViewGroup) view.findViewById(R.id.container);
         buttonMakeCollage = (Button) view.findViewById(R.id.buttonMakeCollage);
+        buttonMakeCollage.setOnClickListener(this);
 
         gridView = (GridView) view.findViewById(R.id.gridView);
         final GridView mGridView = (GridView) view.findViewById(R.id.gridView);
@@ -425,6 +429,9 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                     getRootController().openFragmentUserProfile(user);
                 }
                 break;
+            case R.id.buttonMakeCollage:
+                getRootController().openFragmentCollage(mSelectedPhotos);
+                break;
         }
     }
 
@@ -437,6 +444,8 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
         activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setSubtitle(null);
+
         if (user != null) {
             activity.getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
             MenuItem avatarItem = menu.findItem(R.id.userAvatar);
@@ -472,8 +481,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     private void updateBottom() {
         if (isInEditMode) {
             showView(mBottom);
-            Logger.d(TAG, "size = " + selectedPhotos.size());
-            if (selectedPhotos.isEmpty() || selectedPhotos.size() == 0) {
+            if (mSelectedPhotos.isEmpty() || mSelectedPhotos.size() == 0) {
                 showView(tvEmpty);
                 buttonMakeCollage.setEnabled(false);
             } else {
@@ -488,11 +496,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (isInEditMode) {
-            menu.findItem(R.id.editMode).setTitle(R.string.st_close_edit_mode);
-        } else {
-            menu.findItem(R.id.editMode).setTitle(R.string.st_open_edit_mode);
-        }
     }
 
     @Override
@@ -512,7 +515,8 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         } else {
             // Select photo and add it to list
             final InstaSearchResult result = (InstaSearchResult) adapterView.getItemAtPosition(position);
-            selectedPhotos.put(selectedPhotos.size() + 1, result);
+//            selectedPhotos.put(selectedPhotos.size() + 1, result);
+            mSelectedPhotos.add(result);
             addItem(result);
             updateBottom();
         }
@@ -529,7 +533,8 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
             @Override
             public void onClick(View view) {
                 mContainerView.removeView(newView);
-                selectedPhotos.remove(getKeyByValue(selectedPhotos, result));
+//                selectedPhotos.remove(getKeyByValue(selectedPhotos, result));
+                mSelectedPhotos.remove(result);
                 updateBottom();
             }
         });
@@ -575,9 +580,15 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                 goneView(progress);
             }
         } else {
-            goneView(gridView);
-            goneView(progress);
-            showView(empty);
+            if ((SystemClock.uptimeMillis() - start) < 200) {
+                goneView(gridView);
+                goneView(empty, false);
+                showView(progress);
+            } else {
+                goneView(gridView);
+                goneView(progress);
+                showView(empty);
+            }
         }
     }
 

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/layoutRoot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/layoutContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:paddingBottom="12dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/headerTitleNew"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:singleLine="true"
+            android:text="@string/st_edit_size"
+            android:textColor="@color/st_dialog_text"
+            android:textSize="24sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/st_div_bg"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:singleLine="true"
+            android:text="@string/st_size"
+            android:textSize="20sp"
+            android:textColor="@color/st_dialog_text"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <SeekBar
+                android:id="@+id/seekBarSize"
+                style="@android:style/Widget.Holo.SeekBar"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center|left"
+            android:singleLine="true"
+            android:text="@string/st_place"
+            android:textSize="20sp"
+            android:textColor="@color/st_dialog_text"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8sp"
+            android:paddingBottom="8sp"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <SeekBar
+                android:id="@+id/seekBarSizePhoto"
+                style="@android:style/Widget.Holo.SeekBar"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

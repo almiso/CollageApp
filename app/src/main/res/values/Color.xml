@@ -28,8 +28,8 @@
     <color name="st_grid_state_pressed">#1Affffff</color>
     <color name="st_grid_state_focused">#80000000</color>
 
-
-
+    <color name="st_div_bg">#ffe3e3e3</color>
+    <color name="st_dialog_text">#282828</color>
 
 
 </resources>

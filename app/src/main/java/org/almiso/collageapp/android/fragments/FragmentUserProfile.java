@@ -148,7 +148,7 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonMedia:
-                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_USER_PHOTOS, user, false);
+                getRootController().openFragmentImageGrid(FragmentImageGrid.ACTION_SEARCH_USER_PHOTOS, user, false);
                 break;
             case R.id.buttonFollows:
                 getRootController().openFragmentFriendList(FragmentUserList.ACTION_FOLLOWS, user);

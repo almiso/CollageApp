@@ -56,6 +56,7 @@
     <string name="st_user_name_default">User</string>
     <string name="st_photo">Photo</string>
     <string name="st_collage">Collage</string>
+    <string name="st_save">Save</string>
     <string name="st_save_to_gall">Save to gallery</string>
     <string name="st_share">Share</string>
     <string name="st_nothing_found">Noting found</string>
@@ -74,7 +75,21 @@
     <string name="st_follows">Follows</string>
     <string name="st_followed_by">Followed by</string>
 
+    <string name="st_edit_mode">Edit mode</string>
     <string name="st_open_edit_mode">Open edit mode</string>
     <string name="st_close_edit_mode">Close edit mode</string>
+
+    <string name="st_edit_bg">Edit background</string>
+    <string name="st_background">Background</string>
+    <string name="st_shape">Shape</string>
+    <string name="st_shape_square">Square</string>
+    <string name="st_shape_circle">Circle</string>
+    <string name="st_outlines">Outlines</string>
+    <string name="st_color">Color</string>
+    <string name="st_content">Content</string>
+    <string name="st_edit_size">Edit size</string>
+    <string name="st_size">Size</string>
+    <string name="st_place">Place</string>
+
 
 </resources>

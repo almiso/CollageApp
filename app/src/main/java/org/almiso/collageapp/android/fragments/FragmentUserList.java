@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +54,8 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
 
     private InstaUser user;
 
+    private long start;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,7 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        start = SystemClock.uptimeMillis();
         if (savedInstanceState != null) {
             user = (InstaUser) savedInstanceState.getSerializable("user");
             ACTION = savedInstanceState.getInt("action");
@@ -324,9 +328,15 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
                 goneView(progress);
             }
         } else {
-            goneView(list);
-            goneView(progress);
-            showView(layoutError);
+            if ((SystemClock.uptimeMillis() - start) < 200) {
+                goneView(list);
+                goneView(layoutError);
+                showView(progress);
+            } else {
+                goneView(list);
+                goneView(progress);
+                showView(layoutError);
+            }
         }
 
 

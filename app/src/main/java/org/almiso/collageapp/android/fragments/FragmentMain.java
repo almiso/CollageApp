@@ -105,7 +105,7 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.buttonMyPhotos:
-                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_MY_PHOTOS,
+                getRootController().openFragmentImageGrid(FragmentImageGrid.ACTION_SEARCH_MY_PHOTOS,
                         application.getAccount().getMe(), false);
                 break;
             case R.id.buttonMyFollows:
@@ -117,7 +117,7 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
                         application.getAccount().getMe());
                 break;
             case R.id.buttonSearchFeed:
-                getRootController().openFragmentSearch(FragmentImageGrid.ACTION_SEARCH_FEED,
+                getRootController().openFragmentImageGrid(FragmentImageGrid.ACTION_SEARCH_FEED,
                         application.getAccount().getMe(), false);
                 break;
             case R.id.avatarTouchLayer:
@@ -141,8 +141,9 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         inflater.inflate(R.menu.menu_frag_main, menu);
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(false);
+
 
         activity.getSupportActionBar().setTitle(R.string.st_app_name);
         activity.getSupportActionBar().setSubtitle(R.string.st_main_subtitle);

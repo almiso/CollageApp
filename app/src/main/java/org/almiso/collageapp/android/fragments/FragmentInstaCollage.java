@@ -48,6 +48,7 @@ import java.util.LinkedHashMap;
 /**
  * Created by almiso on 13.06.2014.
  */
+@Deprecated
 public class FragmentInstaCollage extends CollageFragment implements View.OnClickListener {
     protected static String TAG = "FragmentInstaCollage";
 

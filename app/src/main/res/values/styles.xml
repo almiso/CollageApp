@@ -59,8 +59,15 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textAllCaps">true</item>
+    </style>
 
+    <style name="PickDialog.Theme" parent="android:Theme.Dialog">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
 
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowBackground">@drawable/transparent</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 

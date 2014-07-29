@@ -63,4 +63,8 @@ public class InstaSearchResult implements Serializable {
     }
 
 
+    @Override
+    public String toString() {
+        return "InstaSearchResult: id=" + id + ",author=" + author.getDisplayName() + ",thumbnailUrl=" + thumbnailUrl;
+    }
 }

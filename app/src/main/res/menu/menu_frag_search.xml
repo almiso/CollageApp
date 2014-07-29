@@ -4,18 +4,11 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:title="@string/st_more"
-        android:icon="@drawable/ic_action_overflow"
+        android:id="@+id/editMode"
+        android:title="@string/st_edit_mode"
+        android:icon="@drawable/ic_action_edit"
         app:showAsAction="always">
-        <menu>
-            <item
-                android:id="@+id/editMode"
-                android:title="enable"
-                app:showAsAction="never"/>
-
-        </menu>
     </item>
-
 
     <item
         android:id="@+id/userAvatar"

@@ -12,6 +12,7 @@ import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentAuthorize;
+import org.almiso.collageapp.android.fragments.FragmentCollage;
 import org.almiso.collageapp.android.fragments.FragmentImageGrid;
 import org.almiso.collageapp.android.fragments.FragmentInstaCollage;
 import org.almiso.collageapp.android.fragments.FragmentLaunch;
@@ -199,8 +200,7 @@ public class FragmentScreenController implements RootController {
     }
 
     @Override
-    public void openFragmentSearch(int action, InstaUser user, boolean canOpenProf) {
-
+    public void openFragmentImageGrid(int action, InstaUser user, boolean canOpenProf) {
         Bundle args = new Bundle();
         args.putInt("action", action);
         args.putBoolean("canOpenProf", canOpenProf);
@@ -217,6 +217,14 @@ public class FragmentScreenController implements RootController {
         Bundle args = new Bundle();
         args.putSerializable("photos", photos);
         FragmentInstaCollage frag = new FragmentInstaCollage();
+        frag.setArguments(args);
+        openScreen(frag);
+    }
+    @Override
+    public void openFragmentCollage(ArrayList<InstaSearchResult> photos) {
+        Bundle args = new Bundle();
+        args.putSerializable("mSelectedPhotos", photos);
+        FragmentCollage frag = new FragmentCollage();
         frag.setArguments(args);
         openScreen(frag);
     }

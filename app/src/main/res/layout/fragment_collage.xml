@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/st_frag_bg_def">
+
+
+    <org.almiso.collageapp.android.ui.views.BaseCollageView
+        android:id="@+id/collageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:padding="8dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+
+        <Button
+            style="@style/ButtonMain"
+            android:id="@+id/buttonBackground"
+            android:layout_width="0dip"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginRight="2dp"
+            android:text="@string/st_background"/>
+
+
+        <Button
+            style="@style/ButtonMain"
+            android:id="@+id/buttonSize"
+            android:layout_width="0dip"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:text="@string/st_size"/>
+    </LinearLayout>
+
+</RelativeLayout>

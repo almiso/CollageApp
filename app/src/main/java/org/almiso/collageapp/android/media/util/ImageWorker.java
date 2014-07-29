@@ -54,6 +54,7 @@ public abstract class ImageWorker {
     private final Object mPauseWorkLock = new Object();
 
     protected Resources mResources;
+    protected Context context;
 
     private static final int MESSAGE_CLEAR = 0;
     private static final int MESSAGE_INIT_DISK_CACHE = 1;
@@ -64,10 +65,19 @@ public abstract class ImageWorker {
 
     protected ImageWorker(Context context) {
         mResources = context.getResources();
+        this.context = context;
     }
 
     public void setShape(int shape) {
         this.shape = shape;
+    }
+
+    public void loadImage(Object data, ImageView imageView) {
+        loadImage(data, imageView, null);
+    }
+
+    public void loadImage(Object data, ImageReceiver receiver) {
+        loadImage(data, new ImageView(context), receiver);
     }
 
     /**
@@ -81,7 +91,7 @@ public abstract class ImageWorker {
      * @param data      The URL of the image to download.
      * @param imageView The ImageView to bind the downloaded image to.
      */
-    public void loadImage(Object data, ImageView imageView) {
+    public void loadImage(Object data, ImageView imageView, ImageReceiver receiver) {
         if (data == null) {
             return;
         }
@@ -93,6 +103,8 @@ public abstract class ImageWorker {
         }
 
         if (value != null) {
+
+//            if (imageView != null) {
             // Bitmap found in memory cache
             if (shape == ImageShape.SHAPE_RECTANGLE) {
                 imageView.setImageDrawable(value);
@@ -101,9 +113,13 @@ public abstract class ImageWorker {
             } else {
                 imageView.setImageDrawable(value);
             }
+//            }
+            if (receiver != null) {
+                receiver.onImageReceived(value.getBitmap());
+            }
         } else if (cancelPotentialWork(data, imageView)) {
             //BEGIN_INCLUDE(execute_background_task)
-            final BitmapWorkerTask task = new BitmapWorkerTask(data, imageView);
+            final BitmapWorkerTask task = new BitmapWorkerTask(data, imageView, receiver);
             final AsyncDrawable asyncDrawable =
                     new AsyncDrawable(mResources, mLoadingBitmap, task);
             imageView.setImageDrawable(asyncDrawable);
@@ -256,10 +272,12 @@ public abstract class ImageWorker {
     private class BitmapWorkerTask extends AsyncTask<Void, Void, BitmapDrawable> {
         private Object mData;
         private final WeakReference<ImageView> imageViewReference;
+        private ImageReceiver receiver;
 
-        public BitmapWorkerTask(Object data, ImageView imageView) {
+        public BitmapWorkerTask(Object data, ImageView imageView, ImageReceiver receiver) {
             mData = data;
             imageViewReference = new WeakReference<ImageView>(imageView);
+            this.receiver = receiver;
         }
 
         /**
@@ -347,9 +365,7 @@ public abstract class ImageWorker {
                 if (BuildConfig.DEBUG) {
 //                    Log.d(TAG, "onPostExecute - setting bitmap");
                 }
-
-
-                setImageDrawable(imageView, value);
+                setImageDrawable(imageView, value, receiver);
             }
             //END_INCLUDE(complete_background_work)
         }
@@ -405,7 +421,7 @@ public abstract class ImageWorker {
      * @param imageView
      * @param drawable
      */
-    private void setImageDrawable(ImageView imageView, BitmapDrawable drawable) {
+    private void setImageDrawable(ImageView imageView, BitmapDrawable drawable, ImageReceiver receiver) {
         if (mFadeInBitmap) {
             // Transition drawable with a transparent drawable and the final drawable
             final TransitionDrawable td =
@@ -437,9 +453,11 @@ public abstract class ImageWorker {
             } else {
                 imageView.setImageDrawable(drawable);
             }
-
-
 //            imageView.setImageDrawable(drawable);
+        }
+
+        if (receiver != null) {
+            receiver.onImageReceived(drawable.getBitmap());
         }
     }
 
