@@ -14,7 +14,6 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentAuthorize;
 import org.almiso.collageapp.android.fragments.FragmentCollage;
 import org.almiso.collageapp.android.fragments.FragmentImageGrid;
-import org.almiso.collageapp.android.fragments.FragmentInstaCollage;
 import org.almiso.collageapp.android.fragments.FragmentLaunch;
 import org.almiso.collageapp.android.fragments.FragmentMain;
 import org.almiso.collageapp.android.fragments.FragmentSearchUserByNick;
@@ -23,7 +22,6 @@ import org.almiso.collageapp.android.fragments.FragmentUserList;
 import org.almiso.collageapp.android.fragments.FragmentUserProfile;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 /**
  * Created by almiso on 07.06.2014.
@@ -212,14 +210,6 @@ public class FragmentScreenController implements RootController {
     }
 
 
-    @Override
-    public void openCollagePreview(LinkedHashMap<Integer, InstaSearchResult> photos) {
-        Bundle args = new Bundle();
-        args.putSerializable("photos", photos);
-        FragmentInstaCollage frag = new FragmentInstaCollage();
-        frag.setArguments(args);
-        openScreen(frag);
-    }
     @Override
     public void openFragmentCollage(ArrayList<InstaSearchResult> photos) {
         Bundle args = new Bundle();

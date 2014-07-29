@@ -1,9 +1,8 @@
 CollageApp
 ==========
 
-The test application 
 
-It allows you to make a simple collage of four photos taken their instagram
+Application allows you to make a simple collage of few photos taken their instagram
 
 ## Changelog
 
@@ -24,7 +23,7 @@ It allows you to make a simple collage of four photos taken their instagram
 
 
 ## Libraries used
-* Some features from Telegram S Edition Android App <https://github.com/ex3ndr/telegram>
+* ColorPicker <https://github.com/yskang/ColorPicker>
 
 ## License
 

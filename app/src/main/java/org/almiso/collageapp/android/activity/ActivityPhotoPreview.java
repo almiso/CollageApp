@@ -1,12 +1,17 @@
 package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,12 +23,16 @@ import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentPhotoPreview;
+import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.VersionUtils;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 
+import java.io.File;
 import java.util.ArrayList;
+
+//import android.widget.ShareActionProvider;
 
 /**
  * Created by Alexandr Sosorev on 24.07.2014.
@@ -46,6 +55,8 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     private int currentId;
     private ArrayList<InstaSearchResult> searchResults = new ArrayList<InstaSearchResult>();
     private InstaSearchSource instaSearchSource;
+
+    private ShareActionProvider mShareActionProvider;
 
     @Override
     public void onResume() {
@@ -224,5 +235,25 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Logger.d(TAG, "onCreateOptionsMenu");
+
+        getMenuInflater().inflate(R.menu.menu_avatar_preview, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        if (mShareActionProvider != null) {
+            Uri uri = Uri.fromFile(new File(""));
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/jpeg");
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+        return true;
+
     }
 }

@@ -6,4 +6,12 @@ package org.almiso.collageapp.android.dialogs.util;
 public interface BackgroundChooserListener {
 
     public void onShapeSelected(int shape);
+
+    public void onContentColorSelected(int colorId);
+
+    public void onStrokeWidthSelected(int width);
+
+    public void onStrokeColorSelected(int colorId);
+
+    public void onFrameSelected(int frameId);
 }

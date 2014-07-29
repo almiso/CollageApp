@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+
+    <TextView
+        android:id="@+id/previewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/pickerLayout"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/previewTitle"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@+id/previewTitle"
+        android:id="@+id/previewBoxLayout"
+        android:layout_alignBottom="@+id/previewTitle"
+        android:layout_alignTop="@+id/previewTitle"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp">
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/previewBox"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_weight="1" />
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/oldColorBox"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/previewTitle"
+        android:layout_above="@+id/presetColorsTitle"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/pickerLayout">
+
+        <com.yskang.colorpicker.SVPicker
+            android:id="@+id/SVBox"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1" />
+
+        <com.yskang.colorpicker.HuePicker
+            android:id="@+id/HueBar"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@id/presetColorsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/pickerLayout"
+        android:layout_alignRight="@id/pickerLayout"
+        android:layout_above="@+id/presetButtons"
+        android:text="@string/presetColorsTitle"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+    <LinearLayout
+        android:id="@id/presetButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/pickerLayout"
+        android:layout_alignRight="@id/pickerLayout"
+        android:layout_above="@+id/alphaTitle"
+        android:layout_marginTop="2dp">
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/presetButton_1"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/presetButton_2"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/presetButton_3"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/presetButton_4"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <com.yskang.colorpicker.GWLatticeBackgroundImageView
+            android:id="@+id/presetButton_5"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:text=""
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/alpha_title"
+        android:id="@id/alphaTitle"
+        android:layout_above="@+id/alphaSeekBar"
+        android:layout_alignLeft="@id/pickerLayout"
+        android:layout_marginTop="10dp" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@id/alphaSeekBar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/pickerLayout"
+        android:layout_alignRight="@id/pickerLayout"/>
+
+</RelativeLayout>

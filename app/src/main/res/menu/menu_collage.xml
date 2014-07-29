@@ -4,7 +4,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/editMode"
+        android:id="@+id/savePhoto"
         android:title="@string/st_save"
         android:icon="@drawable/ic_action_save"
         app:showAsAction="always">

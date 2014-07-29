@@ -27,6 +27,8 @@ public class BaseCollageView extends BaseView {
 
     protected static final String TAG = "BaseCollageView";
 
+    private static final int FRAME_DEFAULT = 0;
+
     //common
     private ArrayList<InstaSearchResult> photos;
     private Bitmap[] images;
@@ -44,13 +46,14 @@ public class BaseCollageView extends BaseView {
 
     // Content
     private int shape;
+    private int frameId;
     protected RectF contentArea = new RectF();
     private float indentContentArea;
     private float indentContentAreaFactor;
     private float indentPhoto;
 
     // Help fields
-    private static boolean isLoaded = false;
+    private boolean isLoaded = false;
 
     //Interfaces
     BackgroundChooserListener backgroundChooserListener;
@@ -85,7 +88,7 @@ public class BaseCollageView extends BaseView {
             updateIndentContentArea();
             contentArea = new RectF(indentContentArea, indentContentArea, metrics.widthPixels - indentContentArea,
                     metrics.widthPixels - indentContentArea);
-
+            frameId = FRAME_DEFAULT;
             isLoaded = true;
         }
     }
@@ -98,6 +101,26 @@ public class BaseCollageView extends BaseView {
             @Override
             public void onShapeSelected(int shape) {
                 setShape(shape);
+            }
+
+            @Override
+            public void onContentColorSelected(int colorId) {
+                setBackgroundColor(colorId);
+            }
+
+            @Override
+            public void onStrokeWidthSelected(int width) {
+                setStrokeWidth(width);
+            }
+
+            @Override
+            public void onStrokeColorSelected(int colorId) {
+                setStrokeColor(colorId);
+            }
+
+            @Override
+            public void onFrameSelected(int frameId) {
+                setFrameId(frameId);
             }
         };
         sizeChooserListener = new SizeChooserListener() {
@@ -122,6 +145,9 @@ public class BaseCollageView extends BaseView {
         invalidate();
     }
 
+    public ArrayList<InstaSearchResult> getPhotos() {
+        return photos;
+    }
 
     public void setImageFetcher(ImageFetcher mImageFetcher) {
         this.mImageFetcher = mImageFetcher;
@@ -135,6 +161,7 @@ public class BaseCollageView extends BaseView {
                 @Override
                 public void onImageReceived(Bitmap bitmap) {
                     images[k] = bitmap;
+                    invalidate();
                 }
             });
         }
@@ -183,12 +210,25 @@ public class BaseCollageView extends BaseView {
 
         switch (photos.size()) {
             case 1:
+                draw1v1(canvas);
                 break;
             case 2:
+                if (frameId == FRAME_DEFAULT) {
+                    draw2v1(canvas);
+                } else if (frameId == 1) {
+                    draw2v2(canvas);
+                } else if (frameId == 2) {
+                    draw2v3(canvas);
+                } else if (frameId == 3) {
+                    draw2v4(canvas);
+                }
                 break;
             case 3:
                 break;
             case 4:
+                draw4v1(canvas);
+                break;
+            default:
                 draw4v1(canvas);
                 break;
 
@@ -196,13 +236,16 @@ public class BaseCollageView extends BaseView {
     }
 
     private void updateIndentContentArea() {
-        indentContentArea = (getPx(8) + strokeWidth) * indentContentAreaFactor;
+//        indentContentArea = (getPx(8) + strokeWidth) * indentContentAreaFactor;
+
+        float tmp = (strokeWidth == 0) ? 1 : strokeWidth;
+        indentContentArea = tmp * indentContentAreaFactor;
+
         if (shape == ImageShape.SHAPE_RECTANGLE) {
             contentArea.set(indentContentArea, indentContentArea, metrics.widthPixels - indentContentArea,
                     metrics.widthPixels - indentContentArea);
         } else {
             float A = metrics.widthPixels;
-
             contentArea.set(indentContentArea + 0.15f * A, indentContentArea + 0.15f * A,
                     0.85f * A - indentContentArea, 0.85f * A - indentContentArea);
         }
@@ -251,14 +294,163 @@ public class BaseCollageView extends BaseView {
     public int getShape() {
         return shape;
     }
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    // ----------------------------------------------------------------------------------------------
 
+    public void setBackgroundColor(int colorId) {
+        this.colorBgId = colorId;
+        invalidate();
+    }
+
+    public void setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
+        updateIndentContentArea();
+        invalidate();
+    }
+
+    public int getStrokeWidth() {
+        return (int) strokeWidth;
+    }
+
+    public void setStrokeColor(int strokeColorId) {
+        this.strokeColorId = strokeColorId;
+        invalidate();
+    }
+
+    public void setFrameId(int frameId) {
+        this.frameId = frameId;
+        invalidate();
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
     /*
      * Drawing different variants
      */
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
+
+    //----------------------------------------------------------------------------------------------
+    // DRAW PHOTO -------------     1
+    // ---------------------------------------------------------------------------------------------
+    private void draw1v1(Canvas canvas) {
+        Paint photoPaint = new Paint();
+        RectF rectF1 = new RectF();
+        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
+
+        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
+                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height()
+                        - indentPhoto);
+        if (images[0] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // DRAW PHOTO -------------     2
+    // ---------------------------------------------------------------------------------------------
+    private void draw2v1(Canvas canvas) {
+        Paint photoPaint = new Paint();
+        RectF rectF1 = new RectF();
+        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
+
+        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
+                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
+                        - indentPhoto);
+        if (images[0] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
+        }
+
+        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + contentArea.height() / 2
+                        + indentPhoto, contentArea.left + contentArea.width() - indentPhoto,
+                contentArea.top + contentArea.height() - indentPhoto);
+        if (images[1] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
+        }
+    }
+
+    private void draw2v2(Canvas canvas) {
+        Paint photoPaint = new Paint();
+        RectF rectF1 = new RectF();
+        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
+
+        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + indentPhoto,
+                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height() / 2
+                        - indentPhoto);
+        if (images[0] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
+        }
+
+        rectF1.set(contentArea.left + indentPhoto, contentArea.top + contentArea.height() / 2 + indentPhoto,
+                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height()
+                        - indentPhoto);
+        if (images[1] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
+        }
+    }
+
+    private void draw2v3(Canvas canvas) {
+        Paint photoPaint = new Paint();
+        RectF rectF1 = new RectF();
+        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
+
+        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
+                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
+                        - indentPhoto);
+        if (images[0] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
+        }
+
+        rectF1.set(contentArea.left + indentPhoto, contentArea.top + contentArea.height() / 2 + indentPhoto,
+                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height()
+                        - indentPhoto);
+        if (images[1] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
+        }
+    }
+
+    private void draw2v4(Canvas canvas) {
+        Paint photoPaint = new Paint();
+        RectF rectF1 = new RectF();
+        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
+
+        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + indentPhoto,
+                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height() / 2
+                        - indentPhoto);
+        if (images[0] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
+        }
+
+        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + contentArea.height() / 2
+                        + indentPhoto, contentArea.left + contentArea.width() - indentPhoto,
+                contentArea.top + contentArea.height() - indentPhoto);
+        if (images[1] == null) {
+            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
+        } else {
+            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
+        }
+    }
+
+    //----------------------------------------------------------------------------------------------
+    // DRAW PHOTO -------------     4
+    // ---------------------------------------------------------------------------------------------
     private void draw4v1(Canvas canvas) {
         Paint photoPaint = new Paint();
         RectF rectF1 = new RectF();

@@ -1,7 +1,6 @@
 package org.almiso.collageapp.android.dialogs.pickers;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,17 +8,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
+import com.yskang.colorpicker.ColorPicker;
+import com.yskang.colorpicker.OnColorSelectedListener;
+
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.media.util.ImageShape;
+import org.almiso.collageapp.android.media.util.VersionUtils;
 import org.almiso.collageapp.android.ui.views.BaseCollageView;
 
 import java.util.ArrayList;
@@ -31,12 +32,9 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
 
     protected static final String TAG = "PickBackgroundDialog";
     private static final int ANIMATION_APPEAR_DURATION = 400;
-
     private boolean isCanceling = false;
-
     private Context context;
-    View rootView;
-
+    private View rootView;
     private BaseCollageView collageView;
 
     public PickBackgroundDialog(Context context, BaseCollageView collageView) {
@@ -46,13 +44,11 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
         init();
     }
 
-    @SuppressLint("NewApi")
     private void init() {
-
         WindowManager manager = (WindowManager) getContext().getSystemService(Activity.WINDOW_SERVICE);
         int width, height;
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR2) {
+        if (VersionUtils.hasHoneycombMR2()) {
             width = manager.getDefaultDisplay().getWidth();
             height = manager.getDefaultDisplay().getHeight() - getStatusBarHeight();
         } else {
@@ -72,10 +68,13 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
 
         rootView.findViewById(R.id.layoutRoot).setOnClickListener(this);
         rootView.findViewById(R.id.layoutContainer).setOnClickListener(this);
+        rootView.findViewById(R.id.buttonRect).setOnClickListener(this);
+        rootView.findViewById(R.id.buttonCircle).setOnClickListener(this);
+        rootView.findViewById(R.id.buttonFrame).setOnClickListener(this);
 
         // Color picker
-//        ColorPicker colorPicker_2;
-//        ColorPicker colorPicker_1;
+        ColorPicker colorPicker_2;
+        ColorPicker colorPicker_1;
         {
             int color_2 = Color.argb(128, 128, 128, 255);
             ArrayList<Integer> presetColors = new ArrayList<Integer>();
@@ -84,63 +83,31 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
             presetColors.add(Color.argb(255, 222, 100, 18));
             presetColors.add(Color.argb(128, 222, 100, 18));
             presetColors.add(Color.argb(10, 128, 128, 128));
-//            OnColorSelectedListener button2ColorSelectedListener = new OnColorSelectedListener() {
-//                @Override
-//                public void onSelected(int selectedColor) {
-//                    listener.onContentColorChosed(selectedColor);
-//                }
-//            };
-//            colorPicker_2 = new ColorPicker(context, color_2, button2ColorSelectedListener, presetColors);
 
-
-//            OnColorSelectedListener button2ColorSelectedListener1 = new OnColorSelectedListener() {
-//                @Override
-//                public void onSelected(int selectedColor) {
-//                    listener.onStrokeColorChosed(selectedColor);
-//                }
-//            };
-
-//			onStrokeColorChosed
-//            colorPicker_1 = new ColorPicker(context, color_2, button2ColorSelectedListener1, presetColors);
-
+            OnColorSelectedListener button2ColorSelectedListener = new OnColorSelectedListener() {
+                @Override
+                public void onSelected(int selectedColor) {
+                    collageView.getBackgroundChooserListener().onContentColorSelected(selectedColor);
+                }
+            };
+            colorPicker_2 = new ColorPicker(context, color_2, button2ColorSelectedListener, presetColors);
+            OnColorSelectedListener button2ColorSelectedListener1 = new OnColorSelectedListener() {
+                @Override
+                public void onSelected(int selectedColor) {
+                    collageView.getBackgroundChooserListener().onStrokeColorSelected(selectedColor);
+                }
+            };
+            colorPicker_1 = new ColorPicker(context, color_2, button2ColorSelectedListener1, presetColors);
         }
 
-//        rootView.findViewById(R.id.buttonColor).setOnClickListener(new OnStartButton(colorPicker_2.getDialog()));
+        rootView.findViewById(R.id.buttonBgColor).setOnClickListener(new OnStartButton(colorPicker_2.getDialog()));
+        rootView.findViewById(R.id.buttonStrokeColor).setOnClickListener(new OnStartButton(colorPicker_1.getDialog()));
+        // Color picker
 
-//        rootView.findViewById(R.id.buttonStrokeColor).setOnClickListener(new OnStartButton(colorPicker_1.getDialog()));
 
-
-        rootView.findViewById(R.id.buttonRect).setOnClickListener(this);
-        rootView.findViewById(R.id.buttonCircle).setOnClickListener(this);
-
-//        layoutShapeAngle = (LinearLayout) rootView.findViewById(R.id.layoutShapeAngle);
-//        if (collageView.getShape() == BaseCollageView.SHAPE_RECT) {
-//            showView(layoutShapeAngle);
-//        } else {
-//            goneView(layoutShapeAngle);
-//        }
-
-//        SeekBar seekBarShapeAngle = (SeekBar) rootView.findViewById(R.id.seekBarShapeAngle);
-//        seekBarShapeAngle.setProgress(collageView.getBgAngle());
-//        seekBarShapeAngle.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-////                listener.onShapeAngleChosed(progress);
-//            }
-//        });
-
-        SeekBar seekBarStrokeSize = (SeekBar) rootView.findViewById(R.id.seekBarStrokeSize);
-//        seekBarStrokeSize.setProgress(collageView.getStrokeWidth());
-        seekBarStrokeSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        SeekBar seekBarStrokeWidth = (SeekBar) rootView.findViewById(R.id.seekBarStrokeSize);
+        seekBarStrokeWidth.setProgress(collageView.getStrokeWidth() * 2);
+        seekBarStrokeWidth.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -152,9 +119,11 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                listener.onStrokeSizeChosed(progress / 2);
+                collageView.getBackgroundChooserListener().onStrokeWidthSelected(progress / 2);
             }
         });
+
+        initItems(context);
 
         FrameLayout container = new FrameLayout(getContext());
         rootView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
@@ -221,11 +190,8 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
                 break;
             case R.id.layoutContainer:
                 break;
-            case R.id.buttonColor:
+            case R.id.buttonFrame:
                 openColorPicker(context);
-                break;
-            case R.id.buttonStrokeColor:
-                openStrokeColorPicker(context);
                 break;
             case R.id.buttonRect:
                 if (collageView.getShape() != ImageShape.SHAPE_RECTANGLE) {
@@ -244,139 +210,61 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
     }
 
     private void openColorPicker(Context context) {
-
-        // AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        // builder.setTitle("Select color");
-        // builder.setItems(items, new DialogInterface.OnClickListener() {
-        // public void onClick(DialogInterface dialog, int item) {
-        // listener.onContentChosed(String.valueOf(items[item]));
-        // switch (item) {
-        // case 0:
-        // listener.onContentColorChosed(Color.RED);
-        // break;
-        // case 1:
-        // listener.onContentColorChosed(Color.GREEN);
-        // break;
-        // case 2:
-        // listener.onContentColorChosed(Color.YELLOW);
-        // break;
-        // case 3:
-        // listener.onContentColorChosed(Color.CYAN);
-        // case 4:
-        // listener.onContentColorChosed(Color.BLUE);
-        // break;
-        // case 5:
-        // listener.onContentColorChosed(Color.WHITE);
-        // break;
-        // case 6:
-        // listener.onContentColorChosed(Color.TRANSPARENT);
-        // break;
-        // default:
-        // break;
-        // }
-        // }
-        // });
-        // AlertDialog alert = builder.create();
-        // alert.show();
-    }
-
-    private void openStrokeColorPicker(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Select color");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.st_select_frame);
+        builder.setItems(getItems(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-//                listener.onContentChosed(String.valueOf(items[item]));
-//                switch (item) {
-//                    case 0:
-//                        listener.onStrokeColorChosed(Color.RED);
-//                        break;
-//                    case 1:
-//                        listener.onStrokeColorChosed(Color.GREEN);
-//                        break;
-//                    case 2:
-//                        listener.onStrokeColorChosed(Color.YELLOW);
-//                        break;
-//                    case 3:
-//                        listener.onStrokeColorChosed(Color.CYAN);
-//                    case 4:
-//                        listener.onStrokeColorChosed(Color.BLUE);
-//                        break;
-//                    case 5:
-//                        listener.onStrokeColorChosed(Color.WHITE);
-//                        break;
-//                    case 6:
-//                        listener.onStrokeColorChosed(Color.TRANSPARENT);
-//                        break;
-//                    default:
-//                        break;
-//                }
+                collageView.getBackgroundChooserListener().onFrameSelected(item);
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
     }
 
-    final CharSequence[] items = {"Red", "Green", "Yellow", "CYAN", "BLUE", "WHITE", "TRANSPARENT"};
+    CharSequence[] itemsDefault;
+    CharSequence[] items2;
+    CharSequence[] items4;
 
-    protected void showView(View view) {
-        showView(view, true);
+    private void initItems(Context context) {
+        itemsDefault = new CharSequence[]{context.getResources().getString(R.string.st_default)};
+        items2 = new String[]{context.getResources().getString(R.string.st_default),
+                "Variation 1"};
+        items4 = new String[]{context.getResources().getString(R.string.st_default),
+                context.getResources().getString(R.string.st_variation) + "1",
+                context.getResources().getString(R.string.st_variation) + "2",
+                context.getResources().getString(R.string.st_variation) + "3",
+        };
     }
 
-    protected void showView(View view, boolean isAnimating) {
-        if (view == null) {
-            return;
+    private CharSequence[] getItems() {
+        switch (collageView.getPhotos().size()) {
+            case 1:
+                return itemsDefault;
+            case 2:
+                return items4;
+            case 3:
+                return itemsDefault;
+            case 4:
+                return itemsDefault;
+            default:
+                return itemsDefault;
         }
-        if (view.getVisibility() == View.VISIBLE) {
-            return;
-        }
-
-        if (isAnimating) {
-            AlphaAnimation alpha = new AlphaAnimation(0.0F, 1.0f);
-            alpha.setDuration(250);
-            alpha.setFillAfter(false);
-            view.startAnimation(alpha);
-        }
-        view.setVisibility(View.VISIBLE);
     }
 
-    protected void hideView(View view) {
-        hideView(view, true);
-    }
 
-    protected void hideView(View view, boolean isAnimating) {
-        if (view == null) {
-            return;
-        }
-        if (view.getVisibility() != View.VISIBLE) {
-            return;
-        }
-        if (isAnimating) {
-            AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0f);
-            alpha.setDuration(250);
-            alpha.setFillAfter(false);
-            view.startAnimation(alpha);
-        }
-        view.setVisibility(View.INVISIBLE);
-    }
+    public class OnStartButton implements View.OnClickListener {
 
-    protected void goneView(View view) {
-        goneView(view, true);
-    }
+        private Dialog dialog;
 
-    protected void goneView(View view, boolean isAnimating) {
-        if (view == null) {
-            return;
+        public OnStartButton(Dialog dialog) {
+            this.dialog = dialog;
         }
-        if (view.getVisibility() != View.VISIBLE) {
-            return;
+
+        @Override
+        public void onClick(View v) {
+            dialog.show();
         }
-        if (isAnimating) {
-            AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.0f);
-            alpha.setDuration(250);
-            alpha.setFillAfter(false);
-            view.startAnimation(alpha);
-        }
-        view.setVisibility(View.GONE);
+
     }
 
 }

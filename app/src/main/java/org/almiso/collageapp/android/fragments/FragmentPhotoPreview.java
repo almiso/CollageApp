@@ -54,6 +54,7 @@ public class FragmentPhotoPreview extends CollageFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_photo_preview, container, false);
         mImageView = (ImageView) v.findViewById(R.id.imageView);
+        getActivity().invalidateOptionsMenu();
         return v;
     }
 

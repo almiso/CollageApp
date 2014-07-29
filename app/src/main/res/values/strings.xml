@@ -46,6 +46,8 @@
     <string name="st_error_get_location">An error occurred when determining your location</string>
     <string name="st_error_load_avatar">Error on loading avatar</string>
     <string name="st_error_no_connection">No network connection found</string>
+    <string name="st_error_download_image">Error on loading photo</string>
+    <string name="st_error_on_saving">Error on saving photo</string>
 
 
     <string name="st_close">Close</string>
@@ -59,9 +61,9 @@
     <string name="st_save">Save</string>
     <string name="st_save_to_gall">Save to gallery</string>
     <string name="st_share">Share</string>
+    <string name="st_offer_to_share">Would you like to share the resulting photo?</string>
     <string name="st_nothing_found">Noting found</string>
     <string name="st_touch_photos">Touch up to four photos</string>
-    <string name="st_error_download_image">Error on loading photo</string>
     <string name="st_photo_not_loaded">The photo is not loaded yet</string>
     <string name="st_photo_saved">The photo was saved to gallery</string>
     <string name="st_share_using">Share photo using</string>
@@ -90,6 +92,17 @@
     <string name="st_edit_size">Edit size</string>
     <string name="st_size">Size</string>
     <string name="st_place">Place</string>
+    <string name="st_frame">Frame</string>
+    <string name="st_select_frame">Select frame</string>
+    <string name="st_default">Default</string>
+    <string name="st_variation">Variation</string>
 
+    <!--Strings from color picker library-->
+    <string name="positive">OK</string>
+    <string name="negative">Cancel</string>
+    <string name="previewTitle">Color Preview (New|Old)</string>
+    <string name="presetColorsTitle">Preset Colors</string>
+    <string name="alpha_title">Alpha</string>
+    <!--Strings from color picker library-->
 
 </resources>

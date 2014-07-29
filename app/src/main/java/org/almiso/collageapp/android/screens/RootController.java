@@ -4,7 +4,6 @@ import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 /**
  * Created by almiso on 07.06.2014.
@@ -25,7 +24,6 @@ public interface RootController {
 
     public void openFragmentFriendList(int action, InstaUser user);
 
-    public void openCollagePreview(LinkedHashMap<Integer, InstaSearchResult> photos);
 
     public void openFragmentCollage(ArrayList<InstaSearchResult> photos);
 
