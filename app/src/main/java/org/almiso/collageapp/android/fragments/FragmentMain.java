@@ -18,7 +18,7 @@ import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.media.util.VersionUtils;
-import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
+import org.almiso.collageapp.android.network.dependence.UserDependenceReceiver;
 
 /**
  * Created by almiso on 13.06.2014.

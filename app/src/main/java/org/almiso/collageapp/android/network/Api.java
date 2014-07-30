@@ -8,9 +8,8 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.fragments.FragmentUserList;
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.tasks.CollageException;
-import org.almiso.collageapp.android.util.ApiUtils;
-import org.almiso.collageapp.android.util.IOUtils;
+import org.almiso.collageapp.android.network.tasks.CollageException;
+import org.almiso.collageapp.android.network.util.ApiUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -140,7 +139,7 @@ public class Api {
                     + "&code=" + request_token);
             outputStreamWriter.flush();
 
-            String response = IOUtils.streamToString(httpsURLConnection.getInputStream());
+            String response = ApiUtils.streamToString(httpsURLConnection.getInputStream());
             JSONObject jsonObject = (JSONObject) new JSONTokener(response).nextValue();
 
             String access_token = jsonObject.getString("access_token");

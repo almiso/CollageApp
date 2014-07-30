@@ -6,7 +6,6 @@ import android.os.Message;
 import android.os.SystemClock;
 
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.ui.UiResponsibility;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,8 +47,6 @@ public abstract class ViewSource<T, V> {
 
     private boolean isDestroyed = false;
 
-    private UiResponsibility responsibility;
-
     private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -79,15 +76,9 @@ public abstract class ViewSource<T, V> {
         this(false);
     }
 
-    public ViewSource(boolean preload) {
-        this(null, preload);
-    }
 
-    public ViewSource(UiResponsibility responsibility, boolean preload) {
+    public ViewSource(boolean preload) {
         TAG = "ViewSource:" + getClass().getSimpleName() + "#" + hashCode();
-        // if(responsibility == null)
-        // responsibility = new UiResponsibility();
-        this.responsibility = responsibility;
         items = new HashMap<Long, T>();
         comparator = new Comparator<T>() {
             @Override
@@ -152,9 +143,6 @@ public abstract class ViewSource<T, V> {
     public synchronized void invalidateData() {
         Logger.d(TAG, "invalidateData");
         nextWorkingSet = buildNewWorkingSet();
-        if (responsibility != null) {
-            responsibility.waitForResume();
-        }
         handler.removeMessages(1);
         handler.sendEmptyMessage(1);
     }
@@ -163,9 +151,6 @@ public abstract class ViewSource<T, V> {
         Logger.d(TAG, "invalidateDataAndState");
         this.state = state;
         nextWorkingSet = buildNewWorkingSet();
-        if (responsibility != null) {
-            responsibility.waitForResume();
-        }
         handler.removeMessages(0);
         handler.removeMessages(1);
         handler.removeMessages(2);

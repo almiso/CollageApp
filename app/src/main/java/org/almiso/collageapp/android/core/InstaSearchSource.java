@@ -9,7 +9,7 @@ import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.ui.source.ViewSource;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
-import org.almiso.collageapp.android.util.ApiUtils;
+import org.almiso.collageapp.android.network.util.ApiUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;

@@ -26,8 +26,8 @@ import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.dialogs.DialogFactory;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.ImageShape;
-import org.almiso.collageapp.android.tasks.AsyncAction;
-import org.almiso.collageapp.android.tasks.AsyncException;
+import org.almiso.collageapp.android.network.tasks.AsyncAction;
+import org.almiso.collageapp.android.network.tasks.AsyncException;
 import org.almiso.collageapp.android.ui.views.BaseCollageView;
 
 import java.io.File;

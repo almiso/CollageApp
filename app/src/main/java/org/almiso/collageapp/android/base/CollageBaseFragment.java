@@ -14,13 +14,13 @@ import android.util.TypedValue;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
-import org.almiso.collageapp.android.screens.RootController;
-import org.almiso.collageapp.android.tasks.AsyncAction;
-import org.almiso.collageapp.android.tasks.AsyncException;
-import org.almiso.collageapp.android.tasks.CallBarrier;
-import org.almiso.collageapp.android.tasks.CallbackHandler;
-import org.almiso.collageapp.android.tasks.ProgressInterface;
-import org.almiso.collageapp.android.tasks.RecoverCallback;
+import org.almiso.collageapp.android.fragments.screens.RootController;
+import org.almiso.collageapp.android.network.tasks.AsyncAction;
+import org.almiso.collageapp.android.network.tasks.AsyncException;
+import org.almiso.collageapp.android.network.tasks.CallBarrier;
+import org.almiso.collageapp.android.network.tasks.CallbackHandler;
+import org.almiso.collageapp.android.network.tasks.ProgressInterface;
+import org.almiso.collageapp.android.network.tasks.RecoverCallback;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

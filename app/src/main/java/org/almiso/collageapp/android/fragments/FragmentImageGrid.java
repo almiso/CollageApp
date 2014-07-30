@@ -37,7 +37,6 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.RecyclingImageView;
 import org.almiso.collageapp.android.media.util.VersionUtils;
-import org.almiso.collageapp.android.preview.PreviewConfig;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
 
@@ -51,7 +50,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     public static final int ACTION_SEARCH_USER_PHOTOS = 3;
     public static final int ACTION_SEARCH_FEED = 4;
     private static final String TAG = "ImageGridFragment";
-    private static final String IMAGE_CACHE_DIR = "thumbs";
 
     private int mImageThumbSize;
     private int mImageThumbSpacing;
@@ -108,18 +106,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         application.getDataSourceKernel().removeInstaSearchSource(user.getId() + ACTION);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-//        if (selectedPhotos.size() > 0) {
-//            for (int i = 1; i < selectedPhotos.size() + 1; i++) {
-//                selectedPhotos.get(i).setChecked(false);
-//            }
-//        }
-    }
-
-    public FragmentImageGrid() {
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -320,9 +306,10 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
 
                 if (convertView == null) {
                     FrameLayout res = new FrameLayout(context);
-                    GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
-                            PreviewConfig.MEDIA_PREVIEW);
-                    res.setLayoutParams(params);
+                    //TODO check this
+//                    GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
+//                            PreviewConfig.MEDIA_PREVIEW);
+//                    res.setLayoutParams(params);
 
 
                     //Photo
@@ -365,9 +352,11 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                 return convertView;
             } else {
                 ProgressBar progressBar = new ProgressBar(context);
-                GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
-                        PreviewConfig.MEDIA_PREVIEW);
-                progressBar.setLayoutParams(params);
+
+                //TODO check this
+//                GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
+//                        PreviewConfig.MEDIA_PREVIEW);
+//                progressBar.setLayoutParams(params);
                 progressBar.setFocusable(false);
 
                 progressBar.setVisibility(View.INVISIBLE);

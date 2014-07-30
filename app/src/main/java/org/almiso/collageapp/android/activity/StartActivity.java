@@ -6,9 +6,9 @@ import android.os.SystemClock;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageActivity;
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.screens.FragmentScreenController;
-import org.almiso.collageapp.android.screens.RootController;
-import org.almiso.collageapp.android.screens.RootControllerHolder;
+import org.almiso.collageapp.android.fragments.screens.FragmentScreenController;
+import org.almiso.collageapp.android.fragments.screens.RootController;
+import org.almiso.collageapp.android.fragments.screens.RootControllerHolder;
 
 public class StartActivity extends CollageActivity implements RootControllerHolder {
 

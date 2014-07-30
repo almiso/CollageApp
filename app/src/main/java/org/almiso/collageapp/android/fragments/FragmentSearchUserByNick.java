@@ -16,9 +16,9 @@ import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.log.Logger;
-import org.almiso.collageapp.android.tasks.AsyncAction;
-import org.almiso.collageapp.android.tasks.AsyncException;
-import org.almiso.collageapp.android.tasks.CollageException;
+import org.almiso.collageapp.android.network.tasks.AsyncAction;
+import org.almiso.collageapp.android.network.tasks.AsyncException;
+import org.almiso.collageapp.android.network.tasks.CollageException;
 
 
 /**

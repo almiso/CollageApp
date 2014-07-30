@@ -16,10 +16,10 @@ import android.widget.ProgressBar;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.StartActivity;
 import org.almiso.collageapp.android.base.CollageFragment;
-import org.almiso.collageapp.android.tasks.AsyncAction;
-import org.almiso.collageapp.android.tasks.AsyncException;
-import org.almiso.collageapp.android.tasks.CollageException;
-import org.almiso.collageapp.android.util.ApiUtils;
+import org.almiso.collageapp.android.network.tasks.AsyncAction;
+import org.almiso.collageapp.android.network.tasks.AsyncException;
+import org.almiso.collageapp.android.network.tasks.CollageException;
+import org.almiso.collageapp.android.network.util.ApiUtils;
 
 /**
  * Created by almiso on 13.06.2014.
