@@ -1,9 +1,19 @@
 package org.almiso.collageapp.android.kernel;
 
+import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.widget.Toast;
+
+import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.core.ExceptionSource;
 import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.InstaUserSource;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -58,6 +68,43 @@ public class DataSourceKernel {
 
     public ExceptionSource getExceptionSource() {
         return exceptionSource;
+    }
+
+
+    public void saveToGallery(Bitmap bitmap) {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp");
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        final Calendar c = Calendar.getInstance();
+        String nowDate = c.get(Calendar.DAY_OF_MONTH) + "-" + ((c.get(Calendar.MONTH)) + 1) + "-"
+                + c.get(Calendar.YEAR) + " " + c.get(Calendar.HOUR) + "-" + c.get(Calendar.MINUTE) + "-"
+                + c.get(Calendar.SECOND);
+        String photoName = "Img(" + nowDate + ").jpg";
+
+        File file = new File(folder, photoName);
+        if (file.exists())
+            file.delete();
+
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
+
+        kernel.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Toast.makeText(kernel.getApplication(), R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
     }
 
 }

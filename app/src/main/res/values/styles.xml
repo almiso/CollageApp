@@ -70,5 +70,10 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="PhotoGridLayout" parent="Widget">
+        <item name="android:drawSelectorOnTop">true</item>
+        <item name="android:listSelector">@drawable/st_photo_grid_list_selector</item>
+    </style>
+
 
 </resources>

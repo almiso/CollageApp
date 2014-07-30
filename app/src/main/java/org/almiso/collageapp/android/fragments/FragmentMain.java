@@ -1,5 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +16,8 @@ import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
 import org.almiso.collageapp.android.base.CollageImageFragment;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
-import org.almiso.collageapp.android.media.util.Constants;
-import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageShape;
+import org.almiso.collageapp.android.media.util.VersionUtils;
 import org.almiso.collageapp.android.preview.user.dependence.UserDependenceReceiver;
 
 /**
@@ -41,16 +41,6 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         updateDataLayout();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -69,10 +59,6 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
-        ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(application, Constants.IMAGE_CACHE_DIR);
-        cacheParams.setMemCacheSizePercent(0.25f);
-
-
         initFields(view);
     }
 
@@ -80,11 +66,11 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
     private void initFields(View view) {
         ((TextView) view.findViewById(R.id.name)).setText(application.getAccount().getUsername().toUpperCase());
 
-        ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
+        ImageView avatarImage = (ImageView) view.findViewById(R.id.avatar);
         mImageFetcher.setImageSize(100);
         mImageFetcher.setShape(ImageShape.SHAPE_CIRCLE);
         mImageFetcher.setImageFadeIn(false);
-        mImageFetcher.loadImage(application.getAccount().getMe().getProfile_picture_url(), avatar);
+        mImageFetcher.loadImage(application.getAccount().getMe().getProfile_picture_url(), avatarImage);
     }
 
     private void updateDataLayout() {
@@ -123,7 +109,13 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
             case R.id.avatarTouchLayer:
                 Intent intent = new Intent(application, ActivityAvatarPreview.class);
                 intent.putExtra("EXTRA_USER", application.getAccount().getMe());
-                startActivity(intent);
+
+                if (VersionUtils.hasJellyBean()) {
+                    ActivityOptions options = ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
+                    getActivity().startActivity(intent, options.toBundle());
+                } else {
+                    startActivity(intent);
+                }
                 break;
         }
 
@@ -162,6 +154,5 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 }

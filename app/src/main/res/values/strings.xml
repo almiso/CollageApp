@@ -48,6 +48,7 @@
     <string name="st_error_no_connection">No network connection found</string>
     <string name="st_error_download_image">Error on loading photo</string>
     <string name="st_error_on_saving">Error on saving photo</string>
+    <string name="st_error_photo_loading">Photo not yet loaded</string>
 
 
     <string name="st_close">Close</string>
@@ -80,6 +81,8 @@
     <string name="st_edit_mode">Edit mode</string>
     <string name="st_open_edit_mode">Open edit mode</string>
     <string name="st_close_edit_mode">Close edit mode</string>
+    <string name="st_show_likes_count">Show likes count</string>
+    <string name="st_hide_likes_count">Hide likes count</string>
 
     <string name="st_edit_bg">Edit background</string>
     <string name="st_background">Background</string>

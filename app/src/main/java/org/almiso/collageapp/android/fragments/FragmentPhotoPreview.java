@@ -1,16 +1,19 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityPhotoPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
+import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.ImageWorker;
 import org.almiso.collageapp.android.media.util.VersionUtils;
 
@@ -18,10 +21,14 @@ import org.almiso.collageapp.android.media.util.VersionUtils;
  * Created by Alexandr Sosorev on 24.07.2014.
  */
 public class FragmentPhotoPreview extends CollageFragment {
+
+    protected static String TAG = "FragmentPhotoPreview";
+
     private static final String IMAGE_DATA_EXTRA = "extra_image_data";
     private String mImageUrl;
     private ImageView mImageView;
-    private ImageFetcher mImageFetcher;
+
+    private Bitmap bitmapToSave = null;
 
 
     @Override
@@ -63,8 +70,13 @@ public class FragmentPhotoPreview extends CollageFragment {
         super.onActivityCreated(savedInstanceState);
 
         if (ActivityPhotoPreview.class.isInstance(getActivity())) {
-            mImageFetcher = ((ActivityPhotoPreview) getActivity()).getImageFetcher();
-            mImageFetcher.loadImage(mImageUrl, mImageView);
+            ImageFetcher mImageFetcher = ((ActivityPhotoPreview) getActivity()).getImageFetcher();
+            mImageFetcher.loadImage(mImageUrl, mImageView, new ImageReceiver() {
+                @Override
+                public void onImageReceived(Bitmap bitmap) {
+                    bitmapToSave = bitmap;
+                }
+            });
         }
         if (View.OnClickListener.class.isInstance(getActivity()) && VersionUtils.hasHoneycomb()) {
             mImageView.setOnClickListener((View.OnClickListener) getActivity());
@@ -77,9 +89,19 @@ public class FragmentPhotoPreview extends CollageFragment {
             case android.R.id.home:
                 getActivity().finish();
                 return true;
+            case R.id.ic_save:
+
+                if (bitmapToSave != null) {
+                    application.getDataSourceKernel().saveToGallery(bitmapToSave);
+                } else {
+                    Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

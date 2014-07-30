@@ -1,8 +1,14 @@
 package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.DisplayMetrics;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,7 +20,10 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.media.util.Constants;
 import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
+import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.RecyclingImageView;
+
+import java.io.File;
 
 /**
  * Created by almiso on 09.07.2014.
@@ -24,6 +33,9 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
     private InstaUser user;
     private ImageFetcher mImageFetcher;
     private RecyclingImageView imageView;
+
+    private ShareActionProvider mShareActionProvider;
+    private Bitmap bitmapToSave = null;
 
     @Override
     public void onResume() {
@@ -76,7 +88,12 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
 
 
         if (user != null) {
-            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView);
+            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView, new ImageReceiver() {
+                @Override
+                public void onImageReceived(Bitmap bitmap) {
+                    bitmapToSave = bitmap;
+                }
+            });
         } else {
             Toast.makeText(application, R.string.st_error_load_avatar, Toast.LENGTH_SHORT).show();
         }
@@ -85,6 +102,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         final ActionBar actionBar = getActionBar();
+        assert actionBar != null;
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -113,6 +131,23 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photo_preview, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+
+        if (mShareActionProvider != null) {
+            Uri uri = Uri.fromFile(new File(""));
+            Intent shareIntent = new Intent();
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            shareIntent.setType("image/jpeg");
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+        return true;
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -121,8 +156,14 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
                 onBackPressed();
                 return true;
             case R.id.ic_save:
+                if (bitmapToSave != null) {
+                    application.getDataSourceKernel().saveToGallery(bitmapToSave);
+                } else {
+                    Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
+                }
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 }

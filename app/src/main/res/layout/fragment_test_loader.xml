@@ -20,17 +20,16 @@
         android:layout_marginTop="22dp"/>
 
     <GridView
+        style="@style/PhotoGridLayout"
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/mBottom"
-        android:background="@color/white"
         android:stretchMode="columnWidth"
         android:columnWidth="@dimen/image_thumbnail_size"
         android:horizontalSpacing="@dimen/image_thumbnail_spacing"
         android:verticalSpacing="@dimen/image_thumbnail_spacing"
-        android:numColumns="auto_fit"
-        android:listSelector="@drawable/photogrid_list_selector"/>
+        android:numColumns="auto_fit"/>
 
     <ProgressBar
         android:id="@+id/loading"

@@ -42,7 +42,6 @@ import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 import org.almiso.collageapp.android.ui.source.ViewSourceState;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by Alexandr Sosorev on 24.07.2014.
@@ -68,6 +67,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     private InstaSearchSource instaSearchSource;
 
     private boolean isInEditMode = false;
+    private boolean isShowLikesCount = false;
 
     private ArrayList<InstaSearchResult> mSelectedPhotos;
 
@@ -78,7 +78,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     private TextView empty;
     private GridView gridView;
     private FrameLayout mBottom;
-    private TextView tvEmpty;
+    private TextView tvEmptySelectedPhotos;
     private ViewGroup mContainerView;
     private Button buttonMakeCollage;
 
@@ -197,7 +197,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         instaSearchSource = application.getDataSourceKernel().getInstaSearchSource(user.getId() + ACTION);
 
         mBottom = (FrameLayout) view.findViewById(R.id.mBottom);
-        tvEmpty = (TextView) view.findViewById(android.R.id.empty);
+        tvEmptySelectedPhotos = (TextView) view.findViewById(android.R.id.empty);
         mContainerView = (ViewGroup) view.findViewById(R.id.container);
         buttonMakeCollage = (Button) view.findViewById(R.id.buttonMakeCollage);
         buttonMakeCollage.setOnClickListener(this);
@@ -325,35 +325,27 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                     res.setLayoutParams(params);
 
 
+                    //Photo
                     imageView = new RecyclingImageView(context);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageView.setLayoutParams(mImageViewLayoutParams);
-//                    imageView.setLayoutParams(new FrameLayout.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
-//                            PreviewConfig.MEDIA_PREVIEW));
+                    imageView.setFocusable(false);
                     res.addView(imageView);
 
-                    TextView size = new TextView(context);
-                    size.setBackgroundColor(Color.TRANSPARENT);
-                    size.setTextColor(Color.BLACK);
-                    size.setTextSize(18);
+                    //Text of likes count
+                    TextView tvSize = new TextView(context);
+                    tvSize.setBackgroundColor(Color.TRANSPARENT);
+                    tvSize.setTextColor(Color.BLACK);
+                    tvSize.setTextSize(18);
                     FrameLayout.LayoutParams sizeParams = new FrameLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
                             Gravity.BOTTOM | Gravity.LEFT);
-                    size.setLayoutParams(sizeParams);
-                    size.setBackgroundColor(Color.WHITE);
-                    size.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite, 0, 0, 0);
-                    size.setPadding(getSp(4), 0, getSp(16), 0);
-                    res.addView(size);
-
-                    ImageView checkState = new ImageView(context);
-                    checkState.setImageResource(R.drawable.ic_action_new);
-                    FrameLayout.LayoutParams checkSizeParams = new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP
-                            | Gravity.RIGHT
-                    );
-                    checkState.setBackgroundColor(Color.GREEN);
-                    checkState.setLayoutParams(checkSizeParams);
-                    res.addView(checkState);
+                    tvSize.setLayoutParams(sizeParams);
+                    tvSize.setBackgroundColor(Color.WHITE);
+                    tvSize.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_action_favorite, 0, 0, 0);
+                    tvSize.setPadding(getSp(4), 0, getSp(16), 0);
+                    tvSize.setFocusable(false);
+                    res.addView(tvSize);
 
                     convertView = res;
                 }
@@ -361,31 +353,30 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                 InstaSearchResult searchResult = getItem(position);
                 mImageFetcher.loadImage(searchResult.getThumbnailUrl(), (ImageView) ((ViewGroup) convertView).getChildAt(0));
 
-                TextView size = (TextView) ((ViewGroup) convertView).getChildAt(1);
-                size.setText(searchResult.getLikesCount());
+                TextView tvSize = (TextView) ((ViewGroup) convertView).getChildAt(1);
+                tvSize.setText(searchResult.getLikesCount());
 
-                ImageView checkState = (ImageView) ((ViewGroup) convertView).getChildAt(2);
-                if (searchResult.isChecked()) {
-                    showView(checkState);
+                if (isShowLikesCount) {
+                    showView(tvSize);
                 } else {
-                    hideView(checkState, false);
+                    goneView(tvSize);
                 }
-
 
                 return convertView;
             } else {
-                ProgressBar res = new ProgressBar(context);
+                ProgressBar progressBar = new ProgressBar(context);
                 GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
                         PreviewConfig.MEDIA_PREVIEW);
-                res.setLayoutParams(params);
+                progressBar.setLayoutParams(params);
+                progressBar.setFocusable(false);
 
-                res.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 if (instaSearchSource.getViewSource() != null) {
                     if (instaSearchSource.getViewSource().getState() == ViewSourceState.IN_PROGRESS) {
-                        res.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
                     }
                 }
-                return res;
+                return progressBar;
             }
         }
 
@@ -436,56 +427,14 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
     }
 
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_frag_search, menu);
-
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
-        activity.getSupportActionBar().setHomeButtonEnabled(true);
-        activity.getSupportActionBar().setSubtitle(null);
-
-        if (user != null) {
-            activity.getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
-            MenuItem avatarItem = menu.findItem(R.id.userAvatar);
-
-            RecyclingImageView imageView = (RecyclingImageView) avatarItem.getActionView().findViewById(R.id.image);
-            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView);
-
-            View touchLayer = avatarItem.getActionView().findViewById(R.id.avatarTouchLayer);
-            touchLayer.setOnClickListener(this);
-        } else {
-            activity.getSupportActionBar().setTitle(R.string.st_user_name_default);
-        }
-
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                activity.onBackPressed();
-                return true;
-            case R.id.editMode:
-                isInEditMode = !isInEditMode;
-                activity.invalidateOptionsMenu();
-                updateBottom();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     private void updateBottom() {
         if (isInEditMode) {
             showView(mBottom);
             if (mSelectedPhotos.isEmpty() || mSelectedPhotos.size() == 0) {
-                showView(tvEmpty);
+                showView(tvEmptySelectedPhotos);
                 buttonMakeCollage.setEnabled(false);
             } else {
-                hideView(tvEmpty);
+                hideView(tvEmptySelectedPhotos);
                 buttonMakeCollage.setEnabled(true);
             }
         } else {
@@ -515,7 +464,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         } else {
             // Select photo and add it to list
             final InstaSearchResult result = (InstaSearchResult) adapterView.getItemAtPosition(position);
-//            selectedPhotos.put(selectedPhotos.size() + 1, result);
             mSelectedPhotos.add(result);
             addItem(result);
             updateBottom();
@@ -533,7 +481,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
             @Override
             public void onClick(View view) {
                 mContainerView.removeView(newView);
-//                selectedPhotos.remove(getKeyByValue(selectedPhotos, result));
                 mSelectedPhotos.remove(result);
                 updateBottom();
             }
@@ -541,15 +488,6 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
 
         mContainerView.addView(newView, 0);
 
-    }
-
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (value.equals(entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
     @Override
@@ -600,6 +538,63 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
             searchResults.clear();
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_frag_grid, menu);
+
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setSubtitle(null);
+
+        if (user != null) {
+            activity.getSupportActionBar().setTitle(user.getDisplayName().toUpperCase());
+            MenuItem avatarItem = menu.findItem(R.id.userAvatar);
+
+            RecyclingImageView imageView = (RecyclingImageView) avatarItem.getActionView().findViewById(R.id.image);
+            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView);
+
+            View touchLayer = avatarItem.getActionView().findViewById(R.id.avatarTouchLayer);
+            touchLayer.setOnClickListener(this);
+        } else {
+            activity.getSupportActionBar().setTitle(R.string.st_user_name_default);
+        }
+
+        MenuItem mEditMode = menu.findItem(R.id.editMode);
+        String titleEdit = isShowLikesCount ? getResources().getString(R.string.st_close_edit_mode)
+                : getResources().getString(R.string.st_open_edit_mode);
+        mEditMode.setTitle(titleEdit);
+
+        MenuItem mLikesCount = menu.findItem(R.id.likesCount);
+        String titleLikes = isShowLikesCount ? getResources().getString(R.string.st_hide_likes_count)
+                : getResources().getString(R.string.st_show_likes_count);
+        mLikesCount.setTitle(titleLikes);
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                activity.onBackPressed();
+                return true;
+            case R.id.editMode:
+                isInEditMode = !isInEditMode;
+                activity.invalidateOptionsMenu();
+                updateBottom();
+                return true;
+            case R.id.likesCount:
+                isShowLikesCount = !isShowLikesCount;
+                activity.invalidateOptionsMenu();
+                mAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

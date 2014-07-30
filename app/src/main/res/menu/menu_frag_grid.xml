@@ -3,14 +3,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:title="@string/st_more"
         android:icon="@drawable/ic_action_overflow"
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/ic_save"
-                android:title="@string/st_save_to_gall"
+                android:id="@+id/editMode"
+                android:title="@string/st_edit_mode"
+                android:icon="@drawable/ic_action_edit_dark"
+                app:showAsAction="always">
+            </item>
+
+            <item
+                android:id="@+id/likesCount"
+                android:title="@string/st_show_likes_count"
+                android:icon="@drawable/ic_action_favorite"
                 app:showAsAction="never"/>
 
         </menu>
@@ -21,5 +30,6 @@
         android:title="@string/st_user_name_default"
         app:actionLayout="@layout/user_avatar_small"
         app:showAsAction="always"/>
+
 
 </menu>

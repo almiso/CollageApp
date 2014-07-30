@@ -8,7 +8,6 @@
         app:showAsAction="always"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
 
-    <!--android:actionProviderClass="android.widget.ShareActionProvider"-->
     <item
         android:id="@+id/ic_save"
         android:title="@string/st_save_to_gall"
