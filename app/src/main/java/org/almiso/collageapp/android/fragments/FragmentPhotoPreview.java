@@ -25,11 +25,12 @@ public class FragmentPhotoPreview extends CollageFragment {
     protected static String TAG = "FragmentPhotoPreview";
 
     private static final String IMAGE_DATA_EXTRA = "extra_image_data";
+    private static final String IMAGE_FRAG_POS = "extra_fragment_position";
     private String mImageUrl;
+    private int position;
     private ImageView mImageView;
 
     private Bitmap bitmapToSave = null;
-
 
     @Override
     public void onDestroy() {
@@ -40,10 +41,11 @@ public class FragmentPhotoPreview extends CollageFragment {
         }
     }
 
-    public static FragmentPhotoPreview newInstance(String imageUrl) {
+    public static FragmentPhotoPreview newInstance(String imageUrl, int position) {
         FragmentPhotoPreview f = new FragmentPhotoPreview();
         Bundle args = new Bundle();
         args.putString(IMAGE_DATA_EXTRA, imageUrl);
+        args.putInt(IMAGE_FRAG_POS, position);
         f.setArguments(args);
         return f;
     }
@@ -55,6 +57,7 @@ public class FragmentPhotoPreview extends CollageFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mImageUrl = getArguments() != null ? getArguments().getString(IMAGE_DATA_EXTRA) : null;
+        position = getArguments() != null ? getArguments().getInt(IMAGE_FRAG_POS) : 0;
     }
 
     @Override
@@ -75,6 +78,8 @@ public class FragmentPhotoPreview extends CollageFragment {
                 @Override
                 public void onImageReceived(Bitmap bitmap) {
                     bitmapToSave = bitmap;
+                    application.getDataSourceKernel().saveTempPhoto(bitmap, position);
+
                 }
             });
         }
@@ -90,7 +95,6 @@ public class FragmentPhotoPreview extends CollageFragment {
                 getActivity().finish();
                 return true;
             case R.id.ic_save:
-
                 if (bitmapToSave != null) {
                     application.getDataSourceKernel().saveToGallery(bitmapToSave);
                 } else {

@@ -11,7 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
@@ -20,6 +25,8 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.network.dependence.UserDependenceReceiver;
+import org.almiso.collageapp.android.network.util.ApiUtils;
+import org.almiso.collageapp.android.util.TextUtils;
 
 /**
  * Created by almiso on 21.06.2014.
@@ -43,6 +50,30 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
     private TextView followsCount;
     private TextView followedByCount;
 
+    //Ad
+    private AdView adView;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adView.resume();
+        if (userDependence == null) {
+            loadData();
+        }
+        updateDataLayout();
+    }
+
+    @Override
+    public void onPause() {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,15 +81,6 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
         if (savedInstanceState != null) {
             user = (InstaUser) savedInstanceState.getSerializable("user");
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (userDependence == null) {
-            loadData();
-        }
-        updateDataLayout();
     }
 
     @Override
@@ -119,6 +141,34 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
             mImageFetcher.setImageFadeIn(false);
             mImageFetcher.loadImage(user.getProfile_picture_url(), avatar);
         }
+
+        loadAd(view);
+    }
+
+    private void loadAd(View view) {
+        //Init ad
+        adView = new AdView(application);
+        adView.setAdUnitId(ApiUtils.AD_UNIT_ID_USER_PROFILE);
+        adView.setAdSize(AdSize.BANNER);
+
+        //Init params
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.setMargins(0, 0, 0, 24);
+        adView.setLayoutParams(params);
+
+        //Add to container
+        RelativeLayout rootContainer = (RelativeLayout) view.findViewById(R.id.rootContainer);
+        rootContainer.addView(adView);
+
+        //Add request
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
+
+
+        adView.loadAd(adRequest);
     }
 
     private void updateDataLayout() {
@@ -137,9 +187,10 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
             goneView(progress);
             showView(layoutData);
 
-            mediaCount.setText(String.valueOf(userDependence.getMediaCount()));
-            followsCount.setText(String.valueOf(userDependence.getFollowsCount()));
-            followedByCount.setText(String.valueOf(userDependence.getFollowedByCount()));
+
+            mediaCount.setText(TextUtils.getMediaCount(userDependence.getMediaCount()));
+            followsCount.setText(TextUtils.getMediaCount(userDependence.getFollowsCount()));
+            followedByCount.setText(TextUtils.getMediaCount(userDependence.getFollowedByCount()));
         }
 
     }

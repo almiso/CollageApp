@@ -23,8 +23,6 @@ import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.RecyclingImageView;
 
-import java.io.File;
-
 /**
  * Created by almiso on 09.07.2014.
  */
@@ -36,6 +34,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
 
     private ShareActionProvider mShareActionProvider;
     private Bitmap bitmapToSave = null;
+    private Uri uri;
 
     @Override
     public void onResume() {
@@ -92,6 +91,8 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
                 @Override
                 public void onImageReceived(Bitmap bitmap) {
                     bitmapToSave = bitmap;
+                    uri = application.getDataSourceKernel().saveTempPhoto(bitmap, -1);
+                    invalidateOptionsMenu();
                 }
             });
         } else {
@@ -138,7 +139,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         if (mShareActionProvider != null) {
-            Uri uri = Uri.fromFile(new File(""));
+//            Uri uri = Uri.fromFile(new File(""));
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);

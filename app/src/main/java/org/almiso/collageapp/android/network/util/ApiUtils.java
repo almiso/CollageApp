@@ -15,9 +15,15 @@ public class ApiUtils {
     private static CollageApplication application;
 
     //Base URLs. Need to be change.
-    public static String PATTERN_CLIENT_ID = "PLEASE USE YOUR OWN CLIENT_ID";
-    public static String PATTERN_CLIENT_SECRET = "PLEASE USE YOUR OWN CLIENT_SECRET";
-    public static String CALLBACK_URL = "PLEASE USE YOUR OWN CALLBACK_URL";
+    public static String PATTERN_CLIENT_ID = "PLEASE_USE_YOUR_OWN_CLIENT_ID";
+    public static String PATTERN_CLIENT_SECRET = "PLEASE_USE_YOUR_OWN_CLIENT_SECRET";
+    public static String CALLBACK_URL = "PLEASE_USE_YOUR_OWN_CALLBACK_URL";
+
+    //Ad utils
+    public static String AD_TEST_DEVICE = "PLEASE_USE_YOUR_OWN_AD_UTILS";
+    public static String AD_UNIT_ID_MAIN = "PLEASE_USE_YOUR_OWN_AD_UTILS";
+    public static String AD_UNIT_ID_SEARCH_USER = "PLEASE_USE_YOUR_OWN_AD_UTILS";
+    public static String AD_UNIT_ID_USER_PROFILE = "PLEASE_USE_YOUR_OWN_AD_UTILS";
 
 
     //Private Instagram URLs

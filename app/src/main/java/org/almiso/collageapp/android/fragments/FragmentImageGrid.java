@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -306,12 +307,8 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
 
                 if (convertView == null) {
                     FrameLayout res = new FrameLayout(context);
-                    //TODO check this
-//                    GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
-//                            PreviewConfig.MEDIA_PREVIEW);
-//                    res.setLayoutParams(params);
-
-
+                    res.setLayoutParams(mImageViewLayoutParams);
+//
                     //Photo
                     imageView = new RecyclingImageView(context);
                     imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -352,11 +349,15 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                 return convertView;
             } else {
                 ProgressBar progressBar = new ProgressBar(context);
+                DisplayMetrics metrics = getResources().getDisplayMetrics();
+                int edge = 1;
+                if (getNumColumns() == 0) {
+                    edge = 200;
+                } else {
+                    edge = metrics.widthPixels / getNumColumns();
+                }
 
-                //TODO check this
-//                GridView.LayoutParams params = new GridView.LayoutParams(PreviewConfig.MEDIA_PREVIEW,
-//                        PreviewConfig.MEDIA_PREVIEW);
-//                progressBar.setLayoutParams(params);
+                progressBar.setLayoutParams(new GridView.LayoutParams(edge, edge));
                 progressBar.setFocusable(false);
 
                 progressBar.setVisibility(View.INVISIBLE);
@@ -553,7 +554,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         }
 
         MenuItem mEditMode = menu.findItem(R.id.editMode);
-        String titleEdit = isShowLikesCount ? getResources().getString(R.string.st_close_edit_mode)
+        String titleEdit = isInEditMode ? getResources().getString(R.string.st_close_edit_mode)
                 : getResources().getString(R.string.st_open_edit_mode);
         mEditMode.setTitle(titleEdit);
 

@@ -10,7 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
@@ -19,6 +24,8 @@ import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.media.util.VersionUtils;
 import org.almiso.collageapp.android.network.dependence.UserDependenceReceiver;
+import org.almiso.collageapp.android.network.util.ApiUtils;
+import org.almiso.collageapp.android.util.TextUtils;
 
 /**
  * Created by almiso on 13.06.2014.
@@ -32,6 +39,9 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
     private TextView followsCount;
     private TextView followedByCount;
 
+    //Ad
+    private AdView adView;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -39,8 +49,20 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
             loadDependence();
         }
         updateDataLayout();
+        adView.resume();
     }
 
+    @Override
+    public void onPause() {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -60,6 +82,7 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
 
         initFields(view);
+        loadAd(view);
     }
 
 
@@ -77,14 +100,41 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         if (mDependence == null) {
             return;
         }
-        mediaCount.setText(String.valueOf(mDependence.getMediaCount()));
-        followsCount.setText(String.valueOf(mDependence.getFollowsCount()));
-        followedByCount.setText(String.valueOf(mDependence.getFollowedByCount()));
+
+        mediaCount.setText(TextUtils.getMediaCount(mDependence.getMediaCount()));
+        followsCount.setText(TextUtils.getMediaCount(mDependence.getFollowsCount()));
+        followedByCount.setText(TextUtils.getMediaCount(mDependence.getFollowedByCount()));
+
     }
 
     private void loadDependence() {
         InstaUserDependence dep = new InstaUserDependence(application.getMyId(), 0, 0, 0, true);
         application.getUiKernel().getInstaUserDependenceLoader().requestSearchUser(dep, this);
+    }
+
+    private void loadAd(View view) {
+        //Init ad
+        adView = new AdView(application);
+        adView.setAdUnitId(ApiUtils.AD_UNIT_ID_MAIN);
+        adView.setAdSize(AdSize.BANNER);
+
+        //Init params
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.setMargins(0, 0, 0, 24);
+        adView.setLayoutParams(params);
+
+        //Add to
+        RelativeLayout rootContainer = (RelativeLayout) view.findViewById(R.id.rootContainer);
+        rootContainer.addView(adView);
+
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
+
+
+        adView.loadAd(adRequest);
     }
 
     @Override
@@ -154,5 +204,6 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
 }

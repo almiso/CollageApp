@@ -2,6 +2,7 @@ package org.almiso.collageapp.android.kernel;
 
 import android.content.ContentValues;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.Toast;
@@ -105,6 +106,47 @@ public class DataSourceKernel {
 
         kernel.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Toast.makeText(kernel.getApplication(), R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
+    }
+
+    public Uri saveTempPhoto(Bitmap bitmap, int position) {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp/tmp");
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        String photoName = "TempPhoto" + position + ".jpg";
+
+        File file = new File(folder, photoName);
+        if (file.exists())
+            file.delete();
+
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Uri.fromFile(file);
+    }
+
+    public Uri getTempPhoto(int position) {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp/tmp");
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+
+        String photoName = "TempPhoto" + position + ".jpg";
+
+        File file = new File(folder, photoName);
+        if (file.exists()) {
+            return Uri.fromFile(file);
+        }
+
+        return null;
     }
 
 }

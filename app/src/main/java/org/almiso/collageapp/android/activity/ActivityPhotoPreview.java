@@ -2,10 +2,8 @@ package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -25,15 +23,13 @@ import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.fragments.FragmentPhotoPreview;
+import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.VersionUtils;
 import org.almiso.collageapp.android.ui.source.ViewSourceListener;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 //import android.widget.ShareActionProvider;
 
@@ -59,6 +55,7 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     private ArrayList<InstaSearchResult> searchResults = new ArrayList<InstaSearchResult>();
     private InstaSearchSource instaSearchSource;
 
+    private Uri uri;
     private ShareActionProvider mShareActionProvider;
 
     @Override
@@ -137,6 +134,22 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);
         mPager.setOffscreenPageLimit(2);
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Logger.d(TAG, "onPageSelected = " + position);
+                uri = application.getDataSourceKernel().getTempPhoto(position);
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
         new Handler().post(new Runnable() {
             @Override
@@ -144,7 +157,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
                 mPager.setCurrentItem(currentId, false);
             }
         });
-
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -193,14 +205,15 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
 
         }
 
+
         @Override
         public CollageFragment getItem(int position) {
             if (instaSearchSource.getViewSource() != null) {
                 instaSearchSource.getViewSource().onItemsShown(position);
                 InstaSearchResult searchResult = searchResults.get(position);
-                return FragmentPhotoPreview.newInstance(searchResult.getStandardResolutionUrl());
+                return FragmentPhotoPreview.newInstance(searchResult.getStandardResolutionUrl(), position);
             } else {
-                return FragmentPhotoPreview.newInstance("");
+                return FragmentPhotoPreview.newInstance("", 0);
             }
 
         }
@@ -242,14 +255,11 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        Logger.d(TAG, "onCreateOptionsMenu");
-
         getMenuInflater().inflate(R.menu.menu_photo_preview, menu);
         MenuItem item = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         if (mShareActionProvider != null) {
-            Uri uri = Uri.fromFile(new File(""));
             Intent shareIntent = new Intent();
             shareIntent.setAction(Intent.ACTION_SEND);
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -258,40 +268,5 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
         }
         return true;
 
-    }
-
-
-    private void saveTempFile(Bitmap bitmap) {
-        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp/tmp");
-
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
-        final Calendar c = Calendar.getInstance();
-        String nowDate = c.get(Calendar.DAY_OF_MONTH) + "-" + ((c.get(Calendar.MONTH)) + 1) + "-"
-                + c.get(Calendar.YEAR) + " " + c.get(Calendar.HOUR) + "-" + c.get(Calendar.MINUTE) + "-"
-                + c.get(Calendar.SECOND);
-        String photoName = "Img(" + nowDate + ").jpg";
-
-        File file = new File(folder, photoName);
-        if (file.exists())
-            file.delete();
-
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void removeTempFile(String photoName) {
-        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp/tmp");
-        File file = new File(folder, photoName);
-        if (file.exists())
-            file.delete();
     }
 }

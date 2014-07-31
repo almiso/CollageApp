@@ -24,6 +24,42 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
+            android:text="@string/st_settings"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/st_category"/>
+
+        <RelativeLayout
+            android:id="@+id/buttonClearCache"
+            android:layout_width="fill_parent"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_settings_layout"
+            android:clickable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingBottom="12sp"
+                android:paddingTop="12sp"
+                android:text="@string/st_clear_cache"
+                android:gravity="center"
+                android:textColor="#333333"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"/>
+        </RelativeLayout>
+
+        <TextView
+            style="@style/Widget.TextSettingsCategory"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/st_about_app"/>
 
         <View

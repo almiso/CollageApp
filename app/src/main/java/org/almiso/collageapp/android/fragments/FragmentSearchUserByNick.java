@@ -10,7 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
@@ -19,6 +24,7 @@ import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.network.tasks.AsyncAction;
 import org.almiso.collageapp.android.network.tasks.AsyncException;
 import org.almiso.collageapp.android.network.tasks.CollageException;
+import org.almiso.collageapp.android.network.util.ApiUtils;
 
 
 /**
@@ -28,6 +34,27 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
 
     protected static String TAG = "FragmentSearchUserByNick";
     private EditText edNickname;
+
+    //Ad
+    private AdView adView;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    public void onPause() {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_serch_user_by_nick, null);
@@ -58,7 +85,37 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
             public void afterTextChanged(Editable arg0) {
             }
         });
+
+
+        loadAd(view);
     }
+
+    private void loadAd(View view) {
+        //Init ad
+        adView = new AdView(application);
+        adView.setAdUnitId(ApiUtils.AD_UNIT_ID_SEARCH_USER);
+        adView.setAdSize(AdSize.BANNER);
+
+        //Init params
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        params.setMargins(0, 0, 0, 24);
+        adView.setLayoutParams(params);
+
+        //Add to container
+        RelativeLayout rootContainer = (RelativeLayout) view.findViewById(R.id.rootContainer);
+        rootContainer.addView(adView);
+
+        //Add request
+        AdRequest adRequest = new AdRequest.Builder().
+                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
+
+
+        adView.loadAd(adRequest);
+    }
+
 
     @Override
     public void onClick(View v) {

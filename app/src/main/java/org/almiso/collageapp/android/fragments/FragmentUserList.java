@@ -215,6 +215,7 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
                         size.setTextColor(Color.BLACK);
                         size.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
                         size.setTextSize(22);
+                        size.setSingleLine(true);
 
                         FrameLayout.LayoutParams sizeParams = new FrameLayout.LayoutParams(
                                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,

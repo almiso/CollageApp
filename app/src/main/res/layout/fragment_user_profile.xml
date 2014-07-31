@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/st_frag_bg_def"
-    tools:context="${packageName}.${activityClass}">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rootContainer"
+                android:background="@color/st_frag_bg_def"
+                tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,18 +27,18 @@
                 <ImageView
                     android:id="@+id/avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"/>
 
                 <ImageView
                     android:id="@+id/avatarTouchLayer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/st_selector_avatar_circle" />
+                    android:src="@drawable/st_selector_avatar_circle"/>
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -49,19 +50,19 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:padding="4sp"
-                    android:fontFamily="sans-serif" />
+                    android:fontFamily="sans-serif"/>
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="4dp">
 
 
                     <LinearLayout
                         android:id="@+id/layoutData"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="72dp"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -82,7 +83,7 @@
                                 android:textSize="24sp"
                                 android:textStyle="bold"
                                 android:layout_height="match_parent"
-                                android:fontFamily="sans-serif-light" />
+                                android:fontFamily="sans-serif-light"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -91,7 +92,7 @@
                                 android:singleLine="true"
                                 android:gravity="center"
                                 android:text="@string/st_media"
-                                android:fontFamily="sans-serif-light" />
+                                android:fontFamily="sans-serif-light"/>
 
                         </LinearLayout>
 
@@ -112,7 +113,7 @@
                                 android:textSize="24sp"
                                 android:textStyle="bold"
                                 android:layout_height="match_parent"
-                                android:fontFamily="sans-serif-light" />
+                                android:fontFamily="sans-serif-light"/>
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -121,7 +122,7 @@
                                 android:singleLine="true"
                                 android:gravity="center"
                                 android:text="@string/st_follows"
-                                android:fontFamily="sans-serif-light" />
+                                android:fontFamily="sans-serif-light"/>
 
                         </LinearLayout>
 
@@ -159,7 +160,7 @@
                     <LinearLayout
                         android:id="@+id/layoutError"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <TextView
@@ -176,7 +177,7 @@
                         android:id="@+id/progress"
                         android:layout_width="wrap_content"
                         android:layout_centerInParent="true"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"/>
 
                 </RelativeLayout>
             </LinearLayout>
