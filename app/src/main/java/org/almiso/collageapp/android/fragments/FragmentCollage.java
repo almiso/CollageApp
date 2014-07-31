@@ -1,7 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,8 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +27,7 @@ import org.almiso.collageapp.android.network.tasks.AsyncAction;
 import org.almiso.collageapp.android.network.tasks.AsyncException;
 import org.almiso.collageapp.android.ui.views.BaseCollageView;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Alexandr Sosorev on 28.07.2014.
@@ -80,6 +74,9 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
 
         view.findViewById(R.id.buttonBackground).setOnClickListener(this);
         view.findViewById(R.id.buttonSize).setOnClickListener(this);
+        view.findViewById(R.id.buttonFrames).setOnClickListener(this);
+
+        initItems(getActivity());
     }
 
     @Override
@@ -118,6 +115,9 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
             case R.id.buttonSize:
                 requestSizeChooser();
                 break;
+            case R.id.buttonFrames:
+                requestFrameChooser();
+                break;
         }
 
     }
@@ -136,9 +136,52 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
         factory.requestSizeChooser(collageView);
     }
 
+    private void requestFrameChooser() {
+        final Context context = getActivity();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.st_select_frame);
+        builder.setItems(getItems(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                collageView.getBackgroundChooserListener().onFrameSelected(item);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    CharSequence[] itemsDefault;
+    CharSequence[] items2;
+    CharSequence[] items4;
+
+    private void initItems(Context context) {
+        itemsDefault = new CharSequence[]{context.getResources().getString(R.string.st_default)};
+        items2 = new String[]{context.getResources().getString(R.string.st_default),
+                "Variation 1"};
+        items4 = new String[]{context.getResources().getString(R.string.st_default),
+                context.getResources().getString(R.string.st_variation) + "1",
+                context.getResources().getString(R.string.st_variation) + "2",
+                context.getResources().getString(R.string.st_variation) + "3",
+        };
+    }
+
+    private CharSequence[] getItems() {
+        switch (collageView.getPhotos().size()) {
+            case 1:
+                return itemsDefault;
+            case 2:
+                return items4;
+            case 3:
+                return itemsDefault;
+            case 4:
+                return itemsDefault;
+            case 7:
+                return items2;
+            default:
+                return itemsDefault;
+        }
+    }
+
     private void savePhoto() {
-
-
         runUiTask(new AsyncAction() {
             private Uri uri;
 
@@ -149,38 +192,8 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
                         Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(bitmap);
                 collageView.draw(canvas);
+                uri = application.getDataSourceKernel().saveToGallery(bitmap);
 
-                File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp");
-
-                if (!folder.exists()) {
-                    folder.mkdir();
-                }
-
-                final Calendar c = Calendar.getInstance();
-                String nowDate = c.get(Calendar.DAY_OF_MONTH) + "-" + ((c.get(Calendar.MONTH)) + 1) + "-"
-                        + c.get(Calendar.YEAR) + " " + c.get(Calendar.HOUR) + "-" + c.get(Calendar.MINUTE) + "-"
-                        + c.get(Calendar.SECOND);
-                String photoName = "Img(" + nowDate + ").jpg";
-
-                File file = new File(folder, photoName);
-                if (file.exists())
-                    file.delete();
-
-                try {
-                    FileOutputStream out = new FileOutputStream(file);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                    out.flush();
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
-                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-                values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
-                uri = application.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
             }
 
             @Override

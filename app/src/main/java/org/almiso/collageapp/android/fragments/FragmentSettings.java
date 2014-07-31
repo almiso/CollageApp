@@ -17,6 +17,8 @@ import android.widget.Toast;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageImageFragment;
 
+import java.io.IOException;
+
 /**
  * Created by almiso on 13.06.2014.
  */
@@ -41,8 +43,7 @@ public class FragmentSettings extends CollageImageFragment implements View.OnCli
                 onLogOut();
                 break;
             case R.id.buttonClearCache:
-                mImageFetcher.clearCache();
-                Toast.makeText(getActivity(), R.string.st_clear_cache_complete, Toast.LENGTH_SHORT).show();
+                onClearCache();
                 break;
         }
     }
@@ -81,6 +82,16 @@ public class FragmentSettings extends CollageImageFragment implements View.OnCli
         alert.show();
     }
 
+    private void onClearCache() {
+        mImageFetcher.clearCache();
+        try {
+            application.getDataSourceKernel().clearTmp();
+            Toast.makeText(getActivity(), R.string.st_clear_cache_complete, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), R.string.st_error_clear_tmp, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

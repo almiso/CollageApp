@@ -159,6 +159,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
             case R.id.ic_save:
                 if (bitmapToSave != null) {
                     application.getDataSourceKernel().saveToGallery(bitmapToSave);
+                    Toast.makeText(application, R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
                 }

@@ -2,10 +2,8 @@ package org.almiso.collageapp.android.dialogs.pickers;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.support.v4.view.ViewCompat;
@@ -70,7 +68,6 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
         rootView.findViewById(R.id.layoutContainer).setOnClickListener(this);
         rootView.findViewById(R.id.buttonRect).setOnClickListener(this);
         rootView.findViewById(R.id.buttonCircle).setOnClickListener(this);
-        rootView.findViewById(R.id.buttonFrame).setOnClickListener(this);
 
         // Color picker
         ColorPicker colorPicker_2;
@@ -123,7 +120,6 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
             }
         });
 
-        initItems(context);
 
         FrameLayout container = new FrameLayout(getContext());
         rootView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
@@ -190,9 +186,6 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
                 break;
             case R.id.layoutContainer:
                 break;
-            case R.id.buttonFrame:
-                openColorPicker(context);
-                break;
             case R.id.buttonRect:
                 if (collageView.getShape() != ImageShape.SHAPE_RECTANGLE) {
                     collageView.getBackgroundChooserListener().onShapeSelected(ImageShape.SHAPE_RECTANGLE);
@@ -206,48 +199,6 @@ public class PickBackgroundDialog extends Dialog implements android.view.View.On
 
             default:
                 break;
-        }
-    }
-
-    private void openColorPicker(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.st_select_frame);
-        builder.setItems(getItems(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                collageView.getBackgroundChooserListener().onFrameSelected(item);
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    CharSequence[] itemsDefault;
-    CharSequence[] items2;
-    CharSequence[] items4;
-
-    private void initItems(Context context) {
-        itemsDefault = new CharSequence[]{context.getResources().getString(R.string.st_default)};
-        items2 = new String[]{context.getResources().getString(R.string.st_default),
-                "Variation 1"};
-        items4 = new String[]{context.getResources().getString(R.string.st_default),
-                context.getResources().getString(R.string.st_variation) + "1",
-                context.getResources().getString(R.string.st_variation) + "2",
-                context.getResources().getString(R.string.st_variation) + "3",
-        };
-    }
-
-    private CharSequence[] getItems() {
-        switch (collageView.getPhotos().size()) {
-            case 1:
-                return itemsDefault;
-            case 2:
-                return items4;
-            case 3:
-                return itemsDefault;
-            case 4:
-                return itemsDefault;
-            default:
-                return itemsDefault;
         }
     }
 

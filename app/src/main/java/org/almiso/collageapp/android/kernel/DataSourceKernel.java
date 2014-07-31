@@ -5,15 +5,15 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
-import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.core.ExceptionSource;
 import org.almiso.collageapp.android.core.InstaSearchSource;
 import org.almiso.collageapp.android.core.InstaUserSource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -72,7 +72,7 @@ public class DataSourceKernel {
     }
 
 
-    public void saveToGallery(Bitmap bitmap) {
+    public Uri saveToGallery(Bitmap bitmap) {
         File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp");
 
         if (!folder.exists()) {
@@ -83,7 +83,7 @@ public class DataSourceKernel {
         String nowDate = c.get(Calendar.DAY_OF_MONTH) + "-" + ((c.get(Calendar.MONTH)) + 1) + "-"
                 + c.get(Calendar.YEAR) + " " + c.get(Calendar.HOUR) + "-" + c.get(Calendar.MINUTE) + "-"
                 + c.get(Calendar.SECOND);
-        String photoName = "Img(" + nowDate + ").jpg";
+        String photoName = "CollageApp img(" + nowDate + ").jpg";
 
         File file = new File(folder, photoName);
         if (file.exists())
@@ -104,8 +104,7 @@ public class DataSourceKernel {
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
         values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
 
-        kernel.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        Toast.makeText(kernel.getApplication(), R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
+        return kernel.getApplication().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     public Uri saveTempPhoto(Bitmap bitmap, int position) {
@@ -147,6 +146,23 @@ public class DataSourceKernel {
         }
 
         return null;
+    }
+
+    public void clearTmp() throws IOException {
+        File folder = new File(Environment.getExternalStorageDirectory() + "/CollageApp/tmp");
+        delete(folder);
+    }
+
+    private void delete(File f) throws IOException {
+        if (!f.exists()) {
+            return;
+        }
+        if (f.isDirectory()) {
+            for (File c : f.listFiles())
+                delete(c);
+        }
+        if (!f.delete())
+            throw new FileNotFoundException("Failed to delete file: " + f);
     }
 
 }

@@ -52,6 +52,7 @@
     <string name="st_error_download_image">Error on loading photo</string>
     <string name="st_error_on_saving">Error on saving photo</string>
     <string name="st_error_photo_loading">Photo not yet loaded</string>
+    <string name="st_error_clear_tmp">An error occurred while clearing cache</string>
 
 
     <string name="st_close">Close</string>
