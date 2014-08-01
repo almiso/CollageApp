@@ -5,12 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 
-import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.core.model.InstaSearchResult;
 import org.almiso.collageapp.android.dialogs.util.BackgroundChooserListener;
 import org.almiso.collageapp.android.dialogs.util.SizeChooserListener;
@@ -18,6 +15,7 @@ import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.ui.collage.CollageBaseDrawer;
+import org.almiso.collageapp.android.ui.collage.CollageObject;
 
 import java.util.ArrayList;
 
@@ -34,9 +32,12 @@ public class BaseCollageView extends BaseView {
     private ArrayList<InstaSearchResult> photos;
     private Bitmap[] images;
     private ImageFetcher mImageFetcher;
+    private Context context;
+
+    //Drawer of photos
+    private CollageBaseDrawer drawer;
 
     // Background
-    private Rect rect = new Rect();
     private RectF rectF = new RectF();
     private static Paint backgroundPaint;
     private int colorBgId;
@@ -53,15 +54,9 @@ public class BaseCollageView extends BaseView {
     private float indentContentAreaFactor;
     private float indentPhoto;
 
-    // Help fields
-    private boolean isLoaded = false;
-
     //Interfaces
     BackgroundChooserListener backgroundChooserListener;
     SizeChooserListener sizeChooserListener;
-
-    //Drawer of photos
-    private CollageBaseDrawer drawer;
 
 
     public BaseCollageView(Context context) {
@@ -79,29 +74,30 @@ public class BaseCollageView extends BaseView {
         init(context);
     }
 
-    private void checkResources(Context context) {
-        if (!isLoaded) {
-            backgroundPaint = new Paint();
-            backgroundPaint.setAntiAlias(true);
-
-            strokeWidth = 0f;
-            strokeColorId = Color.BLACK;
-            shape = ImageShape.SHAPE_RECTANGLE;
-            indentContentAreaFactor = 1;
-            indentPhoto = 0f;
-            updateIndentContentArea();
-            contentArea = new RectF(indentContentArea, indentContentArea, metrics.widthPixels - indentContentArea,
-                    metrics.widthPixels - indentContentArea);
-            frameId = FRAME_DEFAULT;
-            isLoaded = true;
-        }
-    }
 
     private void init(Context context) {
-        checkResources(context);
-        colorBgId = Color.TRANSPARENT;
 
-        drawer = new CollageBaseDrawer();
+        backgroundPaint = new Paint();
+        backgroundPaint.setAntiAlias(true);
+
+        strokeWidth = 0f;
+        strokeColorId = Color.BLACK;
+
+        shape = ImageShape.SHAPE_RECTANGLE;
+        indentContentAreaFactor = 1;
+        indentPhoto = 0f;
+
+        updateIndentContentArea();
+
+        contentArea = new RectF(indentContentArea, indentContentArea, metrics.widthPixels - indentContentArea,
+                metrics.widthPixels - indentContentArea);
+        frameId = FRAME_DEFAULT;
+
+
+        colorBgId = Color.TRANSPARENT;
+        this.context = context;
+
+        drawer = new CollageBaseDrawer(context);
         photos = new ArrayList<>();
         backgroundChooserListener = new BackgroundChooserListener() {
 
@@ -144,36 +140,6 @@ public class BaseCollageView extends BaseView {
     }
 
 
-    public void setPhotos(ArrayList<InstaSearchResult> photos) {
-        this.photos = photos;
-        images = new Bitmap[photos.size()];
-        loadImages();
-        invalidate();
-    }
-
-    public ArrayList<InstaSearchResult> getPhotos() {
-        return photos;
-    }
-
-    public void setImageFetcher(ImageFetcher mImageFetcher) {
-        this.mImageFetcher = mImageFetcher;
-    }
-
-
-    private void loadImages() {
-        for (int i = 0; i < photos.size(); i++) {
-            final int k = i;
-            mImageFetcher.loadImage(photos.get(i).getThumbnailUrl(), new ImageReceiver() {
-                @Override
-                public void onImageReceived(Bitmap bitmap) {
-                    images[k] = bitmap;
-                    invalidate();
-                }
-            });
-        }
-    }
-
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -213,52 +179,10 @@ public class BaseCollageView extends BaseView {
     private void drawPhotos(Canvas canvas) {
         if (photos.isEmpty() || photos == null)
             return;
-
-        switch (photos.size()) {
-            case 1:
-                draw1v1(canvas);
-                break;
-            case 2:
-                if (frameId == FRAME_DEFAULT) {
-                    draw2v1(canvas);
-                } else if (frameId == 1) {
-                    draw2v2(canvas);
-                } else if (frameId == 2) {
-                    draw2v3(canvas);
-                } else if (frameId == 3) {
-                    draw2v4(canvas);
-                }
-                break;
-            case 3:
-                draw3v1(canvas);
-                break;
-            case 4:
-                draw4v1(canvas);
-                break;
-            case 5:
-                draw5v1(canvas);
-                break;
-            case 6:
-                draw6v1(canvas);
-                break;
-            case 7:
-                if (frameId == FRAME_DEFAULT) {
-                    draw7v1(canvas);
-                } else if (frameId == 1) {
-                    draw7v2(canvas);
-                }
-                break;
-//
-            default:
-                draw4v1(canvas);
-                break;
-
-        }
+        drawer.draw(new CollageObject(canvas, context, contentArea, indentPhoto, images, frameId));
     }
 
     private void updateIndentContentArea() {
-//        indentContentArea = (getPx(8) + strokeWidth) * indentContentAreaFactor;
-
         float tmp = (strokeWidth == 0) ? 1 : strokeWidth;
         indentContentArea = tmp * indentContentAreaFactor;
 
@@ -273,19 +197,42 @@ public class BaseCollageView extends BaseView {
 
     }
 
+    private void loadImages() {
+        for (int i = 0; i < photos.size(); i++) {
+            final int k = i;
+            mImageFetcher.loadImage(photos.get(i).getThumbnailUrl(), new ImageReceiver() {
+                @Override
+                public void onImageReceived(Bitmap bitmap) {
+                    images[k] = bitmap;
+                    invalidate();
+                }
+            });
+        }
+    }
+
     //Public methods
+    public void setPhotos(ArrayList<InstaSearchResult> photos) {
+        this.photos = photos;
+        images = new Bitmap[photos.size()];
+        loadImages();
+        invalidate();
+    }
+
+    public ArrayList<InstaSearchResult> getPhotos() {
+        return photos;
+    }
+
     public BackgroundChooserListener getBackgroundChooserListener() {
         return backgroundChooserListener;
+    }
+
+    public void setImageFetcher(ImageFetcher mImageFetcher) {
+        this.mImageFetcher = mImageFetcher;
     }
 
     public SizeChooserListener getSizeChooserListener() {
         return sizeChooserListener;
     }
-
-
-    /*
-     * Getters and Setters for interfaces
-     */
 
     public float getIndentContentAreaFactor() {
         return indentContentAreaFactor;
@@ -341,536 +288,9 @@ public class BaseCollageView extends BaseView {
         invalidate();
     }
 
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    /*
-     * Drawing different variants
-     */
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
-
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     1
-    // ---------------------------------------------------------------------------------------------
-    private void draw1v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height()
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
+    public CharSequence[] getFramesTitles() {
+        return drawer.getFramesTitles(photos.size());
     }
 
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     2
-    // ---------------------------------------------------------------------------------------------
-    private void draw2v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + contentArea.height() / 2
-                        + indentPhoto, contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-    }
-
-    private void draw2v2(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height()
-                        - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-    }
-
-    private void draw2v3(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height()
-                        - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-    }
-
-    private void draw2v4(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + contentArea.height() / 2
-                        + indentPhoto, contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     3
-    // ---------------------------------------------------------------------------------------------
-    private void draw3v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     4
-    // ---------------------------------------------------------------------------------------------
-    private void draw4v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + indentPhoto, contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height()
-                        - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(contentArea.left + contentArea.width() / 2 + indentPhoto, contentArea.top + contentArea.height() / 2
-                        + indentPhoto, contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[3] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[3], null, rectF1, photoPaint);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     5
-    // ---------------------------------------------------------------------------------------------
-    private void draw5v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[3] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[3], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() - contentArea.height() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() - contentArea.height() / 4 - indentPhoto);
-        if (images[4] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[4], null, rectF1, photoPaint);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     6
-    // ---------------------------------------------------------------------------------------------
-    private void draw6v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[3] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[3], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() / 4 - indentPhoto);
-        if (images[4] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[4], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[5] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[5], null, rectF1, photoPaint);
-        }
-    }
-
-    //----------------------------------------------------------------------------------------------
-    // DRAW PHOTO -------------     7
-    // ---------------------------------------------------------------------------------------------
-    private void draw7v1(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto, contentArea.top + contentArea.height() / 2
-                        - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() / 2 + contentArea.height() / 4 - indentPhoto);
-        if (images[3] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[3], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[4] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[4], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 + contentArea.height() / 4 - indentPhoto);
-        if (images[5] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[5], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[6] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[6], null, rectF1, photoPaint);
-        }
-
-    }
-
-    private void draw7v2(Canvas canvas) {
-        Paint photoPaint = new Paint();
-        RectF rectF1 = new RectF();
-        Bitmap emptyBitmap = ((BitmapDrawable) getResources().getDrawable(R.drawable.ic_action_picture_dark)).getBitmap();
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[0] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[0], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[1] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[1], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + contentArea.height() / 2 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() - indentPhoto);
-        if (images[2] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[2], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() / 4 - indentPhoto);
-        if (images[3] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[3], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 4 - indentPhoto);
-        if (images[4] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[4], null, rectF1, photoPaint);
-        }
-
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + indentPhoto,
-                contentArea.top + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[5] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[5], null, rectF1, photoPaint);
-        }
-        rectF1.set(
-                contentArea.left + contentArea.width() / 2 + contentArea.width() / 4 + indentPhoto,
-                contentArea.top + contentArea.height() / 4 + indentPhoto,
-                contentArea.left + contentArea.width() - indentPhoto,
-                contentArea.top + contentArea.height() / 2 - indentPhoto);
-        if (images[6] == null) {
-            canvas.drawBitmap(emptyBitmap, null, rectF1, photoPaint);
-        } else {
-            canvas.drawBitmap(images[6], null, rectF1, photoPaint);
-        }
-
-    }
 
 }

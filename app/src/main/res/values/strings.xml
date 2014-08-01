@@ -101,6 +101,7 @@
     <string name="st_place">Place</string>
     <string name="st_frame">Frame</string>
     <string name="st_select_frame">Select frame</string>
+    <string name="st_not_supported_frames_count">This frames count is not supported yet</string>
     <string name="st_default">Default</string>
     <string name="st_variation">Variation</string>
 

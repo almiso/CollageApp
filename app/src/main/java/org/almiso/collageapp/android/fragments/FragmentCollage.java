@@ -75,8 +75,6 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
         view.findViewById(R.id.buttonBackground).setOnClickListener(this);
         view.findViewById(R.id.buttonSize).setOnClickListener(this);
         view.findViewById(R.id.buttonFrames).setOnClickListener(this);
-
-        initItems(getActivity());
     }
 
     @Override
@@ -140,7 +138,7 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
         final Context context = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.st_select_frame);
-        builder.setItems(getItems(), new DialogInterface.OnClickListener() {
+        builder.setItems(collageView.getFramesTitles(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 collageView.getBackgroundChooserListener().onFrameSelected(item);
             }
@@ -149,37 +147,6 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
         alert.show();
     }
 
-    CharSequence[] itemsDefault;
-    CharSequence[] items2;
-    CharSequence[] items4;
-
-    private void initItems(Context context) {
-        itemsDefault = new CharSequence[]{context.getResources().getString(R.string.st_default)};
-        items2 = new String[]{context.getResources().getString(R.string.st_default),
-                "Variation 1"};
-        items4 = new String[]{context.getResources().getString(R.string.st_default),
-                context.getResources().getString(R.string.st_variation) + "1",
-                context.getResources().getString(R.string.st_variation) + "2",
-                context.getResources().getString(R.string.st_variation) + "3",
-        };
-    }
-
-    private CharSequence[] getItems() {
-        switch (collageView.getPhotos().size()) {
-            case 1:
-                return itemsDefault;
-            case 2:
-                return items4;
-            case 3:
-                return itemsDefault;
-            case 4:
-                return itemsDefault;
-            case 7:
-                return items2;
-            default:
-                return itemsDefault;
-        }
-    }
 
     private void savePhoto() {
         runUiTask(new AsyncAction() {

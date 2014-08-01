@@ -80,7 +80,6 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         view.findViewById(R.id.buttonMyFollowedBy).setOnClickListener(this);
         view.findViewById(R.id.buttonSearchFeed).setOnClickListener(this);
         view.findViewById(R.id.avatarTouchLayer).setOnClickListener(this);
-
         initFields(view);
         loadAd(view);
     }

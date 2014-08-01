@@ -115,6 +115,7 @@ public class DataSourceKernel {
         }
 
         String photoName = "TempPhoto" + position + ".jpg";
+//        String photoName = "TempPhoto" + position;
 
         File file = new File(folder, photoName);
         if (file.exists())
@@ -139,6 +140,7 @@ public class DataSourceKernel {
         }
 
         String photoName = "TempPhoto" + position + ".jpg";
+//        String photoName = "TempPhoto" + position;
 
         File file = new File(folder, photoName);
         if (file.exists()) {
