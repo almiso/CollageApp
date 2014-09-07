@@ -9,7 +9,7 @@ import org.almiso.collageapp.android.base.CollageApplication;
 public class AsyncException extends Exception {
 
     public static enum ExceptionType {
-        CONNECTION_ERROR, UNKNOWN_ERROR, NO_USER_FOUND, LOAD_ERROR
+        CONNECTION_ERROR, UNKNOWN_ERROR, NO_USER_FOUND, LOAD_ERROR, CUSTOM_ERROR
     }
 
     private static CollageApplication application;
@@ -64,6 +64,12 @@ public class AsyncException extends Exception {
     }
 
     public AsyncException(ExceptionType type, boolean repeatable) {
+        this.type = type;
+        this.repeatable = repeatable;
+    }
+
+    public AsyncException(ExceptionType type, String message, boolean repeatable) {
+        super(message);
         this.type = type;
         this.repeatable = repeatable;
     }

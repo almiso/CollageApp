@@ -129,11 +129,11 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         RelativeLayout rootContainer = (RelativeLayout) view.findViewById(R.id.rootContainer);
         rootContainer.addView(adView);
 
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
+//                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
 
 
-        adView.loadAd(adRequest);
+//        adView.loadAd(adRequest);
     }
 
     @Override

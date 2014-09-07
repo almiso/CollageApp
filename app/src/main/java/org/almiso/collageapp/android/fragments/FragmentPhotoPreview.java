@@ -1,7 +1,15 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,10 +20,17 @@ import android.widget.Toast;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityPhotoPreview;
 import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.log.Logger;
+import org.almiso.collageapp.android.media.util.Constants;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
 import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.ImageWorker;
 import org.almiso.collageapp.android.media.util.VersionUtils;
+import org.almiso.collageapp.android.network.tasks.AsyncAction;
+import org.almiso.collageapp.android.network.tasks.AsyncException;
+import org.almiso.collageapp.android.network.tasks.RecoverCallback;
+
+import java.util.Random;
 
 /**
  * Created by Alexandr Sosorev on 24.07.2014.
@@ -78,8 +93,6 @@ public class FragmentPhotoPreview extends CollageFragment {
                 @Override
                 public void onImageReceived(Bitmap bitmap) {
                     bitmapToSave = bitmap;
-                    application.getDataSourceKernel().saveTempPhoto(bitmap, position);
-
                 }
             });
         }
@@ -94,17 +107,164 @@ public class FragmentPhotoPreview extends CollageFragment {
             case android.R.id.home:
                 getActivity().finish();
                 return true;
-            case R.id.ic_save:
-                if (bitmapToSave != null) {
-                    application.getDataSourceKernel().saveToGallery(bitmapToSave);
-                    Toast.makeText(application, R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
-                }
+            case R.id.item_save:
+                savePhotoToGallery();
                 return true;
-
+            case R.id.item_retweet:
+                retweetPhoto();
+                return true;
+            case R.id.item_share:
+                sharePhoto();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void sharePhoto() {
+        runUiTask(new AsyncAction() {
+            private int tmpPosition = 20000;
+
+            @Override
+            public void execute() throws AsyncException {
+                if (bitmapToSave != null) {
+                    application.getDataSourceKernel().saveTempPhoto(bitmapToSave, tmpPosition);
+                } else {
+                    throw new AsyncException(
+                            AsyncException.ExceptionType.CUSTOM_ERROR, getResources().getString(R.string.st_error_photo_loading), true);
+                }
+            }
+
+            @Override
+            public void afterExecute() {
+                if (application.getDataSourceKernel().getTempPhoto(tmpPosition) == null) {
+                    Toast.makeText(application, R.string.st_error_on_saving, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                final Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, application.getDataSourceKernel().getTempPhoto(tmpPosition));
+                shareIntent.setType("image/*");
+                Intent chooser = Intent.createChooser(shareIntent, getResources().getString(R.string.st_share_using));
+                if (chooser.resolveActivity(activity.getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+            }
+        });
+    }
+
+
+    private void savePhotoToGallery() {
+        runUiTask(new AsyncAction() {
+
+            @Override
+            public void execute() throws AsyncException {
+                if (bitmapToSave != null) {
+                    application.getDataSourceKernel().saveToGallery(bitmapToSave);
+                } else {
+                    throw new AsyncException(
+                            AsyncException.ExceptionType.CONNECTION_ERROR, true);
+                }
+            }
+
+
+            @Override
+            public void afterExecute() {
+                Toast.makeText(application, R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
+            }
+        }, new RecoverCallback() {
+            @Override
+            public void onError(AsyncException e, Runnable onRepeat, Runnable onCancel) {
+                Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private boolean isInstagramInstalled() {
+        boolean isInstalled = false;
+
+        try {
+            ApplicationInfo info = application.getPackageManager().getApplicationInfo(Constants.INSTAGRAM_PACKAGE, 0);
+            isInstalled = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            isInstalled = false;
+        }
+
+        return isInstalled;
+    }
+
+    private void retweetPhoto() {
+        runUiTask(new AsyncAction() {
+//            private Bitmap bitmap;
+
+            Random rnd = new Random();
+            private int tmpPosition = rnd.nextInt();
+
+            @Override
+            public void execute() throws AsyncException {
+
+                if (!isInstagramInstalled()) {
+                    throw new AsyncException(
+                            AsyncException.ExceptionType.CUSTOM_ERROR, getResources().getString(R.string.st_no_instagram), false);
+                }
+
+                if (bitmapToSave != null) {
+                    application.getDataSourceKernel().saveTempPhoto(getRetweetBitmap(bitmapToSave), tmpPosition);
+                } else {
+                    throw new AsyncException(
+                            AsyncException.ExceptionType.CUSTOM_ERROR, getResources().getString(R.string.st_error_photo_loading), true);
+                }
+            }
+
+
+            @Override
+            public void afterExecute() {
+                if (application.getDataSourceKernel().getTempPhoto(tmpPosition) == null) {
+                    Toast.makeText(application, R.string.st_error_on_saving, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_STREAM, application.getDataSourceKernel().getTempPhoto(tmpPosition));
+                String retweetRetweet = getString(R.string.st_repost_subtext);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, retweetRetweet);
+                shareIntent.setType("image/*");
+                shareIntent.setPackage(Constants.INSTAGRAM_PACKAGE);
+                startActivity(shareIntent);
+            }
+        });
+    }
+
+    private Bitmap getRetweetBitmap(Bitmap inBitmap) {
+
+
+        Bitmap bitmap = Bitmap.createBitmap(inBitmap);
+        String text = getString(R.string.st_repost_text);
+        try {
+            Canvas canvas = new Canvas(bitmap);
+
+            Paint paintRect = new Paint();
+            paintRect.setColor(Color.parseColor("#b3696969"));
+
+
+            RectF rect = new RectF(0, bitmap.getHeight() - getSp(32), bitmap.getWidth(), bitmap.getHeight());
+            canvas.drawRect(rect, paintRect);
+
+            TextPaint textPaint = new TextPaint();
+            textPaint.setTextSize(getSp(18));
+            textPaint.setStyle(Paint.Style.FILL);
+            textPaint.setColor(Color.WHITE);
+            textPaint.setStrokeWidth(2.0f);
+            textPaint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
+            canvas.drawText(text, rect.left + getSp(4), rect.bottom - getSp(9), textPaint);
+
+
+            return bitmap;
+        } catch (Exception e) {
+            Logger.e(TAG, "Error on getRetweetBitmap()", e);
+            return null;
         }
     }
 

@@ -147,7 +147,6 @@ public class CollageBaseFragment extends Fragment {
             String errorMessage = e.getMessage();
             if (e.getType() != null) {
                 switch (e.getType()) {
-                    default:
                     case UNKNOWN_ERROR:
                         errorMessage = getString(R.string.st_error_unknown);
                         break;
@@ -160,6 +159,11 @@ public class CollageBaseFragment extends Fragment {
                     case LOAD_ERROR:
                         errorMessage = getString(R.string.st_error_loading);
                         break;
+                    case CUSTOM_ERROR:
+                        errorMessage = e.getMessage();
+                        break;
+                    default:
+                        errorMessage = e.getMessage();
                 }
             }
 

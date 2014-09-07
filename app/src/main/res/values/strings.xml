@@ -35,7 +35,7 @@
     <string name="st_enter_nick">Enter user nick</string>
     <string name="st_start_search">Search photos</string>
     <string name="st_welcome">Welcome to Collage App!</string>
-    <string name="st_welcome_sub">Here you can make collage of 4 photos, taken from users Instagram</string>
+    <string name="st_welcome_sub">Here you can make collage of some photos, taken from users Instagram</string>
     <string name="st_empty_collage">Tap on photos to add to collage</string>
     <string name="st_make_collage">Make collage!</string>
 
@@ -53,6 +53,7 @@
     <string name="st_error_on_saving">Error on saving photo</string>
     <string name="st_error_photo_loading">Photo not yet loaded</string>
     <string name="st_error_clear_tmp">An error occurred while clearing cache</string>
+    <string name="st_no_instagram">Instagram is not installed</string>
 
 
     <string name="st_close">Close</string>
@@ -66,6 +67,7 @@
     <string name="st_save">Save</string>
     <string name="st_save_to_gall">Save to gallery</string>
     <string name="st_share">Share</string>
+    <string name="st_repost">Repost</string>
     <string name="st_offer_to_share">Would you like to share the resulting photo?</string>
     <string name="st_nothing_found">Noting found</string>
     <string name="st_touch_photos">Touch up to four photos</string>
@@ -104,6 +106,8 @@
     <string name="st_not_supported_frames_count">This frames count is not supported yet</string>
     <string name="st_default">Default</string>
     <string name="st_variation">Variation</string>
+    <string name="st_repost_text">Repost by CollageApp</string>
+    <string name="st_repost_subtext">Repost by #CollageApp</string>
 
     <!--Strings from color picker library-->
     <string name="positive">OK</string>

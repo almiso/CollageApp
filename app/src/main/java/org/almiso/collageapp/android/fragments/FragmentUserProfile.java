@@ -164,11 +164,11 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
         rootContainer.addView(adView);
 
         //Add request
-        AdRequest adRequest = new AdRequest.Builder().
-                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
+        AdRequest adRequest = new AdRequest.Builder().build();
+//                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
 
 
-        adView.loadAd(adRequest);
+//        adView.loadAd(adRequest);
     }
 
     private void updateDataLayout() {

@@ -1,12 +1,9 @@
 package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +29,6 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
     private ImageFetcher mImageFetcher;
     private RecyclingImageView imageView;
 
-    private ShareActionProvider mShareActionProvider;
     private Bitmap bitmapToSave = null;
     private Uri uri;
 
@@ -135,17 +131,6 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_photo_preview, menu);
-        MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-        if (mShareActionProvider != null) {
-//            Uri uri = Uri.fromFile(new File(""));
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            shareIntent.setType("image/jpeg");
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
         return true;
 
     }
@@ -156,7 +141,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
             case android.R.id.home:
                 onBackPressed();
                 return true;
-            case R.id.ic_save:
+            case R.id.item_save:
                 if (bitmapToSave != null) {
                     application.getDataSourceKernel().saveToGallery(bitmapToSave);
                     Toast.makeText(application, R.string.st_photo_saved, Toast.LENGTH_SHORT).show();

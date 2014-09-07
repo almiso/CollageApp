@@ -1,15 +1,12 @@
 package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.ShareActionProvider;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +53,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     private InstaSearchSource instaSearchSource;
 
     private Uri uri;
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     public void onResume() {
@@ -247,16 +243,6 @@ public class ActivityPhotoPreview extends CollageActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_photo_preview, menu);
-        MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
-        if (mShareActionProvider != null) {
-            Intent shareIntent = new Intent();
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            shareIntent.setType("image/jpeg");
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
         return true;
 
     }
