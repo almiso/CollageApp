@@ -6,7 +6,12 @@ Application allows you to make a simple collage of few photos taken their instag
 
 ## Changelog
 
-### Version 1.4
+### Version 1.3.5
+* Added russian localisation
+* Added function "repost"
+* Added suppotr Android 4.0.+
+
+### Version 1.3.1
 * Update users profile view
 * Fixed loading user`s dependencies
 
