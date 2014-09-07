@@ -1,17 +1,17 @@
 CollageApp
 ==========
 
+Application allows you to make a collage using Instagram photos 
+Application on Google Play Market:
 
-Application allows you to make a simple collage of few photos taken their instagram
-
-![Alt text](https://github.com/almiso/CollageApp/screenshots/GooglePlayLogo.png "Optional title")
+[![CollageApp](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=org.almiso.collageapp.android "CollageApp on Google Play Market")
 
 ## Changelog
 
 ### Version 1.3.5
 * Added russian localisation
 * Added function "repost"
-* Added suppotr Android 4.0.+
+* Added support Android 4.0.+
 
 ### Version 1.3.1
 * Update users profile view
