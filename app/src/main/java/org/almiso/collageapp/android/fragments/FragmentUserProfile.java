@@ -21,6 +21,7 @@ import com.google.android.gms.ads.AdView;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
 import org.almiso.collageapp.android.base.CollageImageFragment;
+import org.almiso.collageapp.android.core.config.DebugConfig;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.media.util.ImageShape;
@@ -99,7 +100,7 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
         } else {
             user = null;
         }
-        View view = inflater.inflate(R.layout.fragment_user_profile, null);
+        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
         if (user == null) {
             view.post(new Runnable() {
                 @Override
@@ -165,10 +166,9 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
 
         //Add request
         AdRequest adRequest = new AdRequest.Builder().build();
-//                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
 
-
-//        adView.loadAd(adRequest);
+        if (!DebugConfig.isDebug)
+            adView.loadAd(adRequest);
     }
 
     private void updateDataLayout() {

@@ -19,13 +19,13 @@
     <!--Title-->
     <style name="AppTheme.Theme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/st_actionbar_title</item>
-        <item name="android:fontFamily">sans-serif</item>
+        <!--<item name="android:fontFamily">sans-serif</item>-->
     </style>
 
     <!--Subtitle-->
     <style name="AppTheme.Theme.ActionBar.Subtitle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
         <item name="android:textColor">@color/st_actionbar_subtitle</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <!--<item name="android:fontFamily">sans-serif-light</item>-->
     </style>
 
     <style name="AvatarActivity" parent="@style/Theme.AppCompat.Light.DarkActionBar">
@@ -43,22 +43,27 @@
 
     <!--Widgets-->
 
-    <style name="Widget"/>
+    <style name="Widget" />
 
-    <style name="ButtonMain" parent="Widget">
+    <style name="TextWidget" parent="@style/Widget">
+        <!--<item name="android:fontFamily">sans-serif</item>-->
+    </style>
+
+    <style name="TextWidgetLight" parent="@style/Widget">
+        <!--<item name="android:fontFamily">sans-serif-light</item>-->
+    </style>
+
+    <style name="ButtonMain" parent="@style/TextWidget">
         <item name="android:background">@drawable/st_button_main</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
         <item name="android:ellipsize">marquee</item>
-        <item name="android:fontFamily">sans-serif</item>
     </style>
 
-    <style name="Widget.TextSettingsCategory" parent="Widget">
+    <style name="Widget.TextSettingsCategory" parent="@style/TextWidget">
         <item name="android:textColor">@color/st_category</item>
         <item name="android:textSize">16sp</item>
         <item name="android:ellipsize">marquee</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="PickDialog.Theme" parent="android:Theme.Dialog">

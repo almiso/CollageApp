@@ -14,10 +14,11 @@ public class ApiUtils {
 
     private static CollageApplication application;
 
-    //Base URLs. Need to be change.
-    public static String PATTERN_CLIENT_ID = "7c3fa5e4f18b41f4aac621e8c0f35f3f";
-    public static String PATTERN_CLIENT_SECRET = "7b618023458f4378b7ee51ab42d9792a";
-    public static String CALLBACK_URL = "https://github.com/almiso/CollageApp";
+
+    //    Base URLs. Need to  be change .
+    public static String PATTERN_CLIENT_ID = "PLEASE_USE_YOUR_OWN_CLIENT_ID";
+    public static String PATTERN_CLIENT_SECRET = "PLEASE_USE_YOUR_OWN_CLIENT_SECRET";
+    public static String CALLBACK_URL = "PLEASE_USE_YOUR_OWN_CALLBACK_URL";
 
     //Ad utils
     public static String AD_TEST_DEVICE = "PLEASE_USE_YOUR_OWN_AD_UTILS";

@@ -44,11 +44,11 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/TextWidgetLight"
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Name"
-                    android:fontFamily="sans-serif"
                     android:layout_marginLeft="8sp"
                     android:textColor="@color/black"
                     android:textSize="18sp"
@@ -69,11 +69,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            style="@style/TextWidgetLight"
                             android:id="@+id/mediaCount"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
                             android:text="--"
-                            android:fontFamily="sans-serif-light"
                             android:gravity="center"
                             android:textSize="24sp"
                             android:textStyle="bold"

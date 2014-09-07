@@ -1,5 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -157,7 +158,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
             ACTION = ACTION_SEARCH_MY_PHOTOS;
             canOpenProf = false;
         }
-        View view = inflater.inflate(R.layout.fragment_test_loader, container, false);
+        View view = inflater.inflate(R.layout.fragment_image_grid, container, false);
         if (user == null) {
             view.post(new Runnable() {
                 @Override
@@ -224,7 +225,14 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
                         if (BuildConfig.DEBUG) {
                             Logger.d(TAG, "onCreateView - numColumns set to " + numColumns);
                         }
-                        mGridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//                        mGridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        if (VersionUtils.hasJellyBean()) {
+                            mGridView.getViewTreeObserver()
+                                    .removeOnGlobalLayoutListener(this);
+                        } else {
+                            mGridView.getViewTreeObserver()
+                                    .removeGlobalOnLayoutListener(this);
+                        }
                     }
                 }
             }
@@ -437,6 +445,7 @@ public class FragmentImageGrid extends CollageImageFragment implements AdapterVi
         super.onPrepareOptionsMenu(menu);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         if (!isInEditMode) {

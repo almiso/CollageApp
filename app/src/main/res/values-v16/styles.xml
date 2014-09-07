@@ -1,0 +1,28 @@
+<!-- Styles for api 14 -->
+
+<resources>
+
+
+    <!--Title-->
+    <style name="AppTheme.Theme.ActionBar.TitleTextStyle"
+        parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/st_actionbar_title</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!--Subtitle-->
+    <style name="AppTheme.Theme.ActionBar.Subtitle"
+        parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
+        <item name="android:textColor">@color/st_actionbar_subtitle</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="TextWidget" parent="@style/Widget">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextWidgetLight" parent="@style/Widget">
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_medium">16dp</dimen>
+
+    <dimen name="horizontal_page_margin">@dimen/margin_medium</dimen>
+    <dimen name="image_thumbnail_size">150dp</dimen>
+    <dimen name="image_thumbnail_spacing">2dp</dimen>
+
+</resources>

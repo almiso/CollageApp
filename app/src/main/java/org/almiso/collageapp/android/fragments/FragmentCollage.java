@@ -137,7 +137,7 @@ public class FragmentCollage extends CollageImageFragment implements View.OnClic
     private void requestFrameChooser() {
         final Context context = getActivity();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.st_select_frame);
+        builder.setTitle(R.string.st_select_layout);
         builder.setItems(collageView.getFramesTitles(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 collageView.getBackgroundChooserListener().onFrameSelected(item);

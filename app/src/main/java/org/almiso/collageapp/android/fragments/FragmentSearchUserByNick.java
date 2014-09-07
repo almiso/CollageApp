@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdView;
 
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.base.CollageFragment;
+import org.almiso.collageapp.android.core.config.DebugConfig;
 import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.log.Logger;
 import org.almiso.collageapp.android.network.tasks.AsyncAction;
@@ -57,7 +58,7 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_serch_user_by_nick, null);
+        View view = inflater.inflate(R.layout.fragment_serch_user_by_nick, container, false);
         setUpView(view);
         return view;
     }
@@ -110,10 +111,9 @@ public class FragmentSearchUserByNick extends CollageFragment implements View.On
 
         //Add request
         AdRequest adRequest = new AdRequest.Builder().build();
-//                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
 
-
-//        adView.loadAd(adRequest);
+        if (!DebugConfig.isDebug)
+            adView.loadAd(adRequest);
     }
 
 

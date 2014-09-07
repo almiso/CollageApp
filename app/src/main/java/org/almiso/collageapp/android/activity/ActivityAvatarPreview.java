@@ -1,8 +1,6 @@
 package org.almiso.collageapp.android.activity;
 
 import android.app.ActionBar;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -17,7 +15,6 @@ import org.almiso.collageapp.android.core.model.InstaUser;
 import org.almiso.collageapp.android.media.util.Constants;
 import org.almiso.collageapp.android.media.util.ImageCache;
 import org.almiso.collageapp.android.media.util.ImageFetcher;
-import org.almiso.collageapp.android.media.util.ImageReceiver;
 import org.almiso.collageapp.android.media.util.RecyclingImageView;
 
 /**
@@ -28,9 +25,6 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
     private InstaUser user;
     private ImageFetcher mImageFetcher;
     private RecyclingImageView imageView;
-
-    private Bitmap bitmapToSave = null;
-    private Uri uri;
 
     @Override
     public void onResume() {
@@ -83,14 +77,7 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
 
 
         if (user != null) {
-            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView, new ImageReceiver() {
-                @Override
-                public void onImageReceived(Bitmap bitmap) {
-                    bitmapToSave = bitmap;
-                    uri = application.getDataSourceKernel().saveTempPhoto(bitmap, -1);
-                    invalidateOptionsMenu();
-                }
-            });
+            mImageFetcher.loadImage(user.getProfile_picture_url(), imageView);
         } else {
             Toast.makeText(application, R.string.st_error_load_avatar, Toast.LENGTH_SHORT).show();
         }
@@ -130,7 +117,6 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_photo_preview, menu);
         return true;
 
     }
@@ -140,14 +126,6 @@ public class ActivityAvatarPreview extends CollageActivity implements View.OnCli
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
-                return true;
-            case R.id.item_save:
-                if (bitmapToSave != null) {
-                    application.getDataSourceKernel().saveToGallery(bitmapToSave);
-                    Toast.makeText(application, R.string.st_photo_saved, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(application, R.string.st_error_photo_loading, Toast.LENGTH_SHORT).show();
-                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

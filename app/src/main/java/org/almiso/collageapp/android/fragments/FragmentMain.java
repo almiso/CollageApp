@@ -1,5 +1,6 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.android.gms.ads.AdView;
 import org.almiso.collageapp.android.R;
 import org.almiso.collageapp.android.activity.ActivityAvatarPreview;
 import org.almiso.collageapp.android.base.CollageImageFragment;
+import org.almiso.collageapp.android.core.config.DebugConfig;
 import org.almiso.collageapp.android.core.model.InstaUserDependence;
 import org.almiso.collageapp.android.media.util.ImageShape;
 import org.almiso.collageapp.android.media.util.VersionUtils;
@@ -130,12 +132,12 @@ public class FragmentMain extends CollageImageFragment implements View.OnClickLi
         rootContainer.addView(adView);
 
         AdRequest adRequest = new AdRequest.Builder().build();
-//                addTestDevice(ApiUtils.AD_TEST_DEVICE).build();
 
-
-//        adView.loadAd(adRequest);
+        if (!DebugConfig.isDebug)
+            adView.loadAd(adRequest);
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

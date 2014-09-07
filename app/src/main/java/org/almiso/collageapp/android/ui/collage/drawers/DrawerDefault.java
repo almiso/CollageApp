@@ -21,7 +21,7 @@ public class DrawerDefault extends BaseDrawer {
     }
 
     public void draw() {
-        String text = context.getResources().getString(R.string.st_not_supported_frames_count);
+        String text = context.getResources().getString(R.string.st_not_supported_layout_count);
         TextPaint mTextPaint = new TextPaint();
         mTextPaint.setColor(Color.BLACK);
         mTextPaint.setTextSize(50);

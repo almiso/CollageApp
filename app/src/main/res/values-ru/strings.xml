@@ -1,0 +1,110 @@
+<resources>
+
+    <string name="st_app_name">CollageApp</string>
+    <string name="st_main_subtitle">Создавайте прекрасные коллажи!</string>
+
+    <string name="st_yes">Да</string>
+    <string name="st_no">Нет</string>
+
+    <string name="st_repeat">Повторить</string>
+    <string name="st_cancel">Отмена</string>
+    <string name="st_add">Добавить</string>
+    <string name="st_more">Ещё</string>
+
+    <string name="st_sing_in">Вход</string>
+
+    <string name="st_content_description">Картинка</string>
+
+    <string name="st_feed">Лента</string>
+
+    <string name="st_settings">Настройки</string>
+    <string name="st_account">Аккаунт</string>
+    <string name="st_exit">Выйти</string>
+    <string name="st_exit_question">Вы уверены, что хотите выйти?</string>
+    <string name="st_about_app">О приложении</string>
+    <string name="st_version">Версия</string>
+    <string name="st_clear_cache">Очистить кэш</string>
+    <string name="st_clear_cache_complete">Кэш очищен</string>
+
+    <string name="st_search">Поиск</string>
+    <string name="st_search_user">Поиск пользователя</string>
+    <string name="st_enter_nick">Введите ник пользователя</string>
+    <string name="st_start_search">Поиск фото</string>
+    <string name="st_welcome">Добро пожаловать в  CollageApp!</string>
+    <string name="st_welcome_sub">Приложение позволяет собирать разнообразные фотоколлажи из фотографий, взятых из Instagram. Вы можете брать не только свои фотографии, но и фото друзей и любых пользователей.</string>
+    <string name="st_empty_collage">Нажмите на фотографию, чтобы добавить в коллаж</string>
+    <string name="st_make_collage">Сделать коллаж!</string>
+
+    <string name="st_error_title">Ошибка</string>
+    <string name="st_error_unknown">Произошла неизвестная ошибка</string>
+    <string name="st_error_connection">Ошибка соединения. Проверьте Ваше подключение к сети и повторите попытку</string>
+    <string name="st_error_no_user_found">Не удалось найти польщователя с таким ником</string>
+    <string name="st_error_loading">Произошла ошибка во время загрузки данных</string>
+    <string name="st_user_private_acc">Пользователь установил настройки конфидециальности</string>
+    <string name="st_no_photos">Пользователь ещё не добавил фотографий</string>
+    <string name="st_error_load_avatar">Произошла ошибка при загрузке аватара</string>
+    <string name="st_error_no_connection">Ошибка соединения</string>
+    <string name="st_error_download_image">Произошла ошибка при загрузке фото</string>
+    <string name="st_error_on_saving">Произошла ошибка при сохранении фото</string>
+    <string name="st_error_photo_loading">Фото ещё не загружено</string>
+    <string name="st_error_clear_tmp">Произошла ошибка при очистке кэша</string>
+    <string name="st_no_instagram">У Вас не установлено приложение Instagram</string>
+
+
+    <string name="st_close">Закрыть</string>
+    <string name="st_progress_title">Пожалуйста, подождите</string>
+    <string name="st_progress_message">Загрузка &#8230;</string>
+
+    <string name="st_null_query">Имя пользователя должно быть не пустым</string>
+    <string name="st_user_name_default">Пользователь</string>
+    <string name="st_photo">Фото</string>
+    <string name="st_collage">Коллаж</string>
+    <string name="st_save">Сохранить</string>
+    <string name="st_save_to_gall">Сохранить в галерею</string>
+    <string name="st_share">Поделиться</string>
+    <string name="st_repost">Репост</string>
+    <string name="st_offer_to_share">Хотите поделиться получившимся фото?</string>
+    <string name="st_nothing_found">Ничего не найдено</string>
+    <string name="st_photo_saved">Фото сохранено в галерею</string>
+    <string name="st_share_using">Поделиться с помощью</string>
+    <string name="st_enter_text_hint">Введите текст</string>
+
+    <string name="st_user_profile">Профиль</string>
+    <string name="st_media">Медиа</string>
+    <string name="st_follows">Подписки</string>
+    <string name="st_followed_by">Подписчики</string>
+
+    <string name="st_edit_mode">Режим редактирования</string>
+    <string name="st_open_edit_mode">Открыть режим редактирования</string>
+    <string name="st_close_edit_mode">Закрыть режим редактирования</string>
+    <string name="st_show_likes_count">Показать количество лайков</string>
+    <string name="st_hide_likes_count">Скрыть количество лайков</string>
+
+    <string name="st_edit_bg">Редактировать фон</string>
+    <string name="st_background">Фон</string>
+    <string name="st_shape">Форма</string>
+    <string name="st_shape_square">Квадрат</string>
+    <string name="st_shape_circle">Круг</string>
+    <string name="st_outlines">Контуры</string>
+    <string name="st_color">Цвет</string>
+    <string name="st_content">Контент</string>
+    <string name="st_edit_size">Изменить размер</string>
+    <string name="st_size">Размер</string>
+    <string name="st_place">Место</string>
+    <string name="st_photo_layout">Компоновка</string>
+    <string name="st_select_layout">Выберите компоновку</string>
+    <string name="st_not_supported_layout_count">К сожалению, пока нету компоновки для данного количества фотографий</string>
+    <string name="st_default">По умолчанию</string>
+    <string name="st_variation">Вариант</string>
+    <string name="st_repost_text">Repost by CollageApp</string>
+    <string name="st_repost_subtext">Repost by #CollageApp</string>
+
+    <!--Strings from color picker library-->
+    <string name="positive">ОК</string>
+    <string name="negative">Отмена</string>
+    <string name="previewTitle">Предпросмотр цвета (Новый|Старый)</string>
+    <string name="presetColorsTitle">Предыдущие цвета</string>
+    <string name="alpha_title">Альфа</string>
+    <!--Strings from color picker library-->
+
+</resources>

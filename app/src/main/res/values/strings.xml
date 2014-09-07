@@ -15,12 +15,7 @@
     <string name="st_sing_in">Sing in</string>
 
     <string name="st_content_description">Img</string>
-
-    <string name="st_search_my_photos">Search my photos</string>
-    <string name="st_search_my_liked_photos">Search my liked photos</string>
-    <string name="st_search_user_photos">Search for someone photos</string>
     <string name="st_feed">Feed</string>
-    <string name="st_search_near">Search near</string>
 
     <string name="st_settings">Settings</string>
     <string name="st_account">Account</string>
@@ -31,10 +26,11 @@
     <string name="st_clear_cache">Clear cache</string>
     <string name="st_clear_cache_complete">Caches have been cleared</string>
 
+    <string name="st_search">Search</string>
     <string name="st_search_user">Search user</string>
     <string name="st_enter_nick">Enter user nick</string>
     <string name="st_start_search">Search photos</string>
-    <string name="st_welcome">Welcome to Collage App!</string>
+    <string name="st_welcome">Welcome to CollageApp!</string>
     <string name="st_welcome_sub">Here you can make collage of some photos, taken from users Instagram</string>
     <string name="st_empty_collage">Tap on photos to add to collage</string>
     <string name="st_make_collage">Make collage!</string>
@@ -46,7 +42,6 @@
     <string name="st_error_loading">An error occurred while loading data</string>
     <string name="st_user_private_acc">You cannot view this resource</string>
     <string name="st_no_photos">This user has not added any photos yet</string>
-    <string name="st_error_get_location">An error occurred when determining your location</string>
     <string name="st_error_load_avatar">Error on loading avatar</string>
     <string name="st_error_no_connection">No network connection found</string>
     <string name="st_error_download_image">Error on loading photo</string>
@@ -60,7 +55,7 @@
     <string name="st_progress_title">Please wait</string>
     <string name="st_progress_message">Loading &#8230;</string>
 
-    <string name="st_null_query">User nickname must be not null!</string>
+    <string name="st_null_query">User nickname must be not null</string>
     <string name="st_user_name_default">User</string>
     <string name="st_photo">Photo</string>
     <string name="st_collage">Collage</string>
@@ -70,13 +65,9 @@
     <string name="st_repost">Repost</string>
     <string name="st_offer_to_share">Would you like to share the resulting photo?</string>
     <string name="st_nothing_found">Noting found</string>
-    <string name="st_touch_photos">Touch up to four photos</string>
     <string name="st_photo_not_loaded">The photo is not loaded yet</string>
     <string name="st_photo_saved">The photo was saved to gallery</string>
-    <string name="st_share_using">Share photo using</string>
-    <string name="st_not_enough_photos">Must be 4 photos</string>
-    <string name="st_photo_was_saved">You have already saved this photo</string>
-    <string name="st_add_photo_text">Would you like to add some text on photo?</string>
+    <string name="st_share_using">Share using</string>
     <string name="st_enter_text_hint">Enter text</string>
 
     <string name="st_user_profile">Profile</string>
@@ -101,9 +92,9 @@
     <string name="st_edit_size">Edit size</string>
     <string name="st_size">Size</string>
     <string name="st_place">Place</string>
-    <string name="st_frame">Frame</string>
-    <string name="st_select_frame">Select frame</string>
-    <string name="st_not_supported_frames_count">This frames count is not supported yet</string>
+    <string name="st_photo_layout">Layout</string>
+    <string name="st_select_layout">Select frame</string>
+    <string name="st_not_supported_layout_count">This photos count is not supported yet</string>
     <string name="st_default">Default</string>
     <string name="st_variation">Variation</string>
     <string name="st_repost_text">Repost by CollageApp</string>
