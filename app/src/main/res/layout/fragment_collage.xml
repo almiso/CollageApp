@@ -22,10 +22,12 @@
         <Button
             style="@style/ButtonMain"
             android:id="@+id/buttonFrames"
+            android:padding="4sp"
             android:layout_width="0dip"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:singleLine="true"
             android:layout_marginRight="2dp"
             android:text="@string/st_photo_layout"/>
 
@@ -33,10 +35,12 @@
             style="@style/ButtonMain"
             android:id="@+id/buttonBackground"
             android:layout_width="0dip"
+            android:padding="4sp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginRight="2dp"
+            android:singleLine="true"
             android:text="@string/st_background"/>
 
 
@@ -44,10 +48,12 @@
             style="@style/ButtonMain"
             android:id="@+id/buttonSize"
             android:layout_width="0dip"
+            android:padding="4sp"
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginLeft="2dp"
+            android:singleLine="true"
             android:text="@string/st_size"/>
     </LinearLayout>
 

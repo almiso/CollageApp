@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/st_frag_bg_def"
-            tools:context="${packageName}.${activityClass}">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/st_frag_bg_def"
+    tools:context="${packageName}.${activityClass}">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -24,12 +24,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/st_settings"/>
+            android:text="@string/st_settings" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/st_category"/>
+            android:background="@color/st_category" />
 
         <RelativeLayout
             android:id="@+id/buttonClearCache"
@@ -49,7 +49,7 @@
                 android:gravity="center"
                 android:textColor="#333333"
                 android:textSize="18sp"
-                android:fontFamily="sans-serif-light"/>
+                android:fontFamily="sans-serif-light" />
         </RelativeLayout>
 
         <TextView
@@ -60,12 +60,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/st_about_app"/>
+            android:text="@string/st_about_app" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/st_category"/>
+            android:background="@color/st_category" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -86,7 +86,7 @@
                 android:layout_weight="2"
                 android:textColor="#333333"
                 android:fontFamily="sans-serif-light"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tvVersion"
@@ -97,9 +97,92 @@
                 android:text="@string/st_version"
                 android:textColor="#9e9e9e"
                 android:textSize="14sp"
-                android:fontFamily="sans-serif-light"/>
+                android:fontFamily="sans-serif-light" />
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/st_divider_height"
+            android:background="@color/st_divider" />
+
+        <LinearLayout
+            android:id="@+id/layoutGooglePlay"
+            android:layout_width="fill_parent"
+            android:layout_height="64dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="@drawable/bg_settings_layout">
+
+            <TextView
+                android:id="@+id/tvGooglePlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/st_google_play"
+                android:layout_weight="2"
+                android:textColor="#333333"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvGooglePlaySub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/st_please_rate"
+                android:textColor="#9e9e9e"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/st_divider_height"
+            android:background="@color/st_divider" />
+
+        <LinearLayout
+            android:id="@+id/layoutShare"
+            android:layout_width="fill_parent"
+            android:layout_height="64dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:background="@drawable/bg_settings_layout">
+
+            <TextView
+                android:id="@+id/tvShareApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/st_share_app"
+                android:layout_weight="2"
+                android:textColor="#333333"
+                android:fontFamily="sans-serif-light"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvShareAppSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/st_share_app_sub"
+                android:textColor="#9e9e9e"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-light" />
+
+        </LinearLayout>
+
 
         <TextView
             style="@style/Widget.TextSettingsCategory"
@@ -109,12 +192,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="16dp"
-            android:text="@string/st_account"/>
+            android:text="@string/st_account" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@color/st_category"/>
+            android:background="@color/st_category" />
 
         <RelativeLayout
             android:id="@+id/buttonExit"
@@ -134,7 +217,7 @@
                 android:gravity="center"
                 android:textColor="#333333"
                 android:textSize="18sp"
-                android:fontFamily="sans-serif-light"/>
+                android:fontFamily="sans-serif-light" />
         </RelativeLayout>
     </LinearLayout>
 

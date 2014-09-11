@@ -1,9 +1,12 @@
 package org.almiso.collageapp.android.fragments;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +37,8 @@ public class FragmentSettings extends CollageImageFragment implements View.OnCli
         ((TextView) view.findViewById(R.id.tvVersion)).setText(getVersionString());
         view.findViewById(R.id.buttonExit).setOnClickListener(this);
         view.findViewById(R.id.buttonClearCache).setOnClickListener(this);
+        view.findViewById(R.id.layoutGooglePlay).setOnClickListener(this);
+        view.findViewById(R.id.layoutShare).setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +49,14 @@ public class FragmentSettings extends CollageImageFragment implements View.OnCli
                 break;
             case R.id.buttonClearCache:
                 onClearCache();
+                break;
+            case R.id.layoutGooglePlay:
+                rateApp();
+                break;
+            case R.id.layoutShare:
+                shareApp();
+                break;
+            default:
                 break;
         }
     }
@@ -90,6 +103,39 @@ public class FragmentSettings extends CollageImageFragment implements View.OnCli
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getActivity(), R.string.st_error_clear_tmp, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void rateApp() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + application.getPackageName()));
+        if (!mStartActivity(intent)) {
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + application.getPackageName()));
+            if (!mStartActivity(intent)) {
+                Toast.makeText(application, getString(R.string.st_error_do_action), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean mStartActivity(Intent aIntent) {
+        try {
+            startActivity(aIntent);
+            return true;
+        } catch (ActivityNotFoundException e) {
+            return false;
+        }
+    }
+
+    private void shareApp() {
+        final Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.st_share_app_text));
+        shareIntent.setType("text/plain");
+        Intent chooser = Intent.createChooser(shareIntent, getResources().getString(R.string.st_share_using));
+        if (chooser.resolveActivity(activity.getPackageManager()) != null) {
+            startActivity(chooser);
+        } else {
+            Toast.makeText(application, getString(R.string.st_error_do_action), Toast.LENGTH_SHORT).show();
         }
     }
 

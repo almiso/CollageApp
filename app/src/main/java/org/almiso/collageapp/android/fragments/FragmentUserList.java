@@ -56,6 +56,7 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
 
     private long start;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -239,8 +240,8 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
                     mImageFetcher.loadImage(user.getProfile_picture_url(), previewView);
 
 
-                    TextView size = (TextView) ((ViewGroup) convertView).getChildAt(1);
-                    size.setText(user.getDisplayName());
+                    TextView tvName = (TextView) ((ViewGroup) convertView).getChildAt(1);
+                    tvName.setText(user.getUsername());
 
                     return convertView;
                 } else {
@@ -277,6 +278,7 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
         onSourceStateChanged();
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -290,6 +292,8 @@ public class FragmentUserList extends CollageImageFragment implements ViewSource
             activity.getSupportActionBar().setTitle(R.string.st_follows);
         }
         activity.getSupportActionBar().setSubtitle(null);
+
+
     }
 
     @Override

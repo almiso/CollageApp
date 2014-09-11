@@ -30,10 +30,10 @@ public class InstaUser implements Serializable {
     }
 
     public String getDisplayName() {
-        if (username != null && !username.equals(""))
-            return username;
-        else if (full_name != null && !full_name.equals(""))
+        if (full_name != null && !full_name.equals(""))
             return full_name;
+        else if (username != null && !username.equals(""))
+            return username;
         else return "User";
     }
 

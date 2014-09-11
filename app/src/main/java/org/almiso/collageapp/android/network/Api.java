@@ -39,7 +39,8 @@ public class Api {
     private static final String PATTERN_SEARCH = PATTERN_API + "users/search?q=";
     public static final String PATTERN_SEARCH_USER = PATTERN_API + "users/";
     private static final String PATTERN_COUNT = "&count=";
-    private static final String PATTERN_ACCESS_TOKEN = "&access_token=";//46461385.f59def8.42df3b82464943218291370ab65eba76";
+    private static final String PATTERN_ACCESS_TOKEN = "&access_token=";
+
 
 
     public Api(CollageApplication application) {
@@ -99,7 +100,7 @@ public class Api {
 
             JSONObject jObject = jArray.getJSONObject(0);
 
-            user.setFull_name(jObject.getString("username"));
+            user.setUsername(jObject.getString("username"));
             user.setBio(jObject.getString("bio"));
             user.setWebsite(jObject.getString("website"));
             user.setProfile_picture_url(jObject.getString("profile_picture"));

@@ -99,6 +99,17 @@
     <string name="st_repost_text">Repost by CollageApp</string>
     <string name="st_repost_subtext">Repost by #CollageApp</string>
 
+    <!--Version 1.3.6-->
+    <string name="st_copy_url">Копировать URL</string>
+    <string name="st_user_url_prefix">http://i.instagram.com/</string>
+    <string name="st_text_clipped">Текст скопирован в буфер</string>
+    <string name="st_google_play">Google Play</string>
+    <string name="st_please_rate">Оцените приложение</string>
+    <string name="st_error_do_action">К сожалению, Вы не можете выполнить данное действие</string>
+    <string name="st_share_app">Поделиться</string>
+    <string name="st_share_app_sub">Расскажите друзьям о приложении</string>
+    <string name="st_share_app_text">Рекомендую \"CollageApp\"\nhttps://play.google.com/store/apps/details?id=org.almiso.collageapp.android</string>
+
     <!--Strings from color picker library-->
     <string name="positive">ОК</string>
     <string name="negative">Отмена</string>

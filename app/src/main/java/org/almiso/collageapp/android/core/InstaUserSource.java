@@ -202,7 +202,7 @@ public class InstaUserSource {
         for (int i = 0; i < results.length; i++) {
             JSONObject jObject = array.getJSONObject(i);
             InstaUser user = new InstaUser();
-            user.setFull_name(jObject.getString("username"));
+            user.setUsername(jObject.getString("username"));
             user.setBio(jObject.getString("bio"));
             user.setWebsite(jObject.getString("website"));
             user.setProfile_picture_url(jObject.getString("profile_picture"));

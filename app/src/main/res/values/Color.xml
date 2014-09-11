@@ -31,5 +31,7 @@
     <color name="st_div_bg">#ffe3e3e3</color>
     <color name="st_dialog_text">#282828</color>
 
+    <color name="st_divider">#4D808080</color>
+
 
 </resources>

@@ -1,5 +1,8 @@
 package org.almiso.collageapp.android.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -225,6 +229,7 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_user_profile, menu);
 
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -238,6 +243,14 @@ public class FragmentUserProfile extends CollageImageFragment implements View.On
         switch (item.getItemId()) {
             case android.R.id.home:
                 activity.onBackPressed();
+                return true;
+            case R.id.item_copy_url:
+                String userURL = getResources().getString(R.string.st_user_url_prefix) + user.getUsername();
+                ClipboardManager clipboard = (ClipboardManager) application.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Text label", userURL);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(application, R.string.st_text_clipped, Toast.LENGTH_SHORT).show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

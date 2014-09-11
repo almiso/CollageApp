@@ -14,10 +14,10 @@
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\classes-ccc524bf891707a70db669f4119fcd2428c53175.jar"
-        jar="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.0.77\classes.jar"
+        dex="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\pre-dexed\debug\classes-eb1b603502976d72ad50cace2d0b1ddcb35b70a6.jar"
+        jar="C:\Users\1\AndroidStudioProjects\CollageApp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services\5.0.89\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="b6a82434c1eca686607867cd906bcc80ed987837"/>
+        sha1="d71573c9c5ea98a8db47ad6ff993a63d492b3bfa"/>
 
 </pre-dex-items>
