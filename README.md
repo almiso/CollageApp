@@ -6,6 +6,9 @@ Application on Google Play Market:
 
 [![CollageApp](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=org.almiso.collageapp.android "CollageApp on Google Play Market")
 
+## Deprecated
+### This project is not supported.
+
 ## Changelog
 
 ### Version 1.3.5
